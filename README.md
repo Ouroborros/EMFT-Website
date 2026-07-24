@@ -9,14 +9,18 @@ Netlify, or any static host.
 ## Structure
 
 ```
-├── index.html          Home
-├── services.html       Services (deep-linkable: #corporate-training,
-│                       #open-courses, #advisory-capability, #e-learning)
-├── about.html          About — mission, values, approach
-├── contact.html        Contact — details + client-side validated form
-├── css/styles.css      Single stylesheet (design tokens at the top)
-├── js/main.js          Nav toggle, header state, scroll reveal, form, year
-└── favicon.svg         Monogram mark
+├── index.html            Home — implements "EMFT Homepage v2" from the
+│                         Claude Design handoff (navy/gold editorial identity)
+├── css/home.css          Homepage stylesheet (design tokens at the top)
+├── js/home.js            Nav toggle, count-up stats, year
+├── assets/img/           EMFT logo
+├── favicon.svg           Navy/gold monogram
+│
+│   Legacy pages (previous placeholder design, not linked from the homepage;
+│   replace with the Case Studies / Assessments / Program Catalog designs
+│   from the handoff bundle):
+├── services.html · about.html · contact.html
+└── css/styles.css · js/main.js
 ```
 
 ## Development
@@ -31,7 +35,17 @@ The only external request is the Inter font from Google Fonts; everything else
 (icons, hero graphics) is inline SVG and CSS gradients. Without network access
 the site falls back to the system font stack.
 
-## Placeholders to replace before launch
+## Homepage notes
+
+- **Photography** is hot-linked from Unsplash (as in the design mockup) —
+  replace with owned/licensed imagery for production. Institutional register
+  only: architecture, boardrooms, markets (per the design blueprint).
+- **Nav links** for Case Studies / Assessments / Programs point to homepage
+  sections until those pages (included in the design handoff) are built.
+- **Learning Portal** and Terms/Privacy links from the mockup are omitted
+  until real URLs/pages exist.
+
+## Placeholders to replace before launch (legacy pages)
 
 - **Stats band** (Home): `500+ professionals trained`, `30+ institutions`,
   `25 years`, `95% satisfaction` are placeholder figures — replace with real,

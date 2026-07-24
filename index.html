@@ -4,27 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EMFT — Emerging Market Financial Training</title>
-  <meta name="description" content="EMFT delivers practical financial training for banks, regulators, and investment professionals across emerging markets — in-house, open courses, and online.">
+  <meta name="description" content="Financial training for banks, central banks and sovereign wealth funds — with emerging-tech programs and technical assessments across both domains. Practitioner-led, built around your goals.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <script>document.documentElement.classList.add('js');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
 
   <header class="site-header">
-    <div class="container header-inner">
-      <a class="logo" href="index.html" aria-label="EMFT — Home">
-        <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-          <rect width="32" height="32" rx="7" fill="#1C4E80"/>
-          <rect x="8" y="9" width="16" height="3" rx="1.5" fill="#FFFFFF"/>
-          <rect x="8" y="14.5" width="11" height="3" rx="1.5" fill="#3FA796"/>
-          <rect x="8" y="20" width="16" height="3" rx="1.5" fill="#FFFFFF"/>
-        </svg>
-        EMFT
+    <div class="header-inner">
+      <a class="logo" href="index.html" aria-label="EMFT — Emerging Market Financial Training, home">
+        <img src="assets/img/emft-logo.png" alt="Emerging Market Financial Training" width="230" height="68">
       </a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
         <span class="visually-hidden">Menu</span>
@@ -34,10 +28,12 @@
       </button>
       <nav id="primary-nav" class="primary-nav" aria-label="Primary">
         <ul>
-          <li><a href="index.html" aria-current="page">Home</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a class="btn btn-primary btn-sm nav-cta" href="contact.html">Contact us</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#case-studies">Case Studies</a></li>
+          <li><a href="#assessments">Assessments</a></li>
+          <li><a href="#programs">Programs</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a class="nav-contact" href="#contact">Contact Us</a></li>
         </ul>
       </nav>
     </div>
@@ -45,133 +41,297 @@
 
   <main id="main" tabindex="-1">
 
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="container">
-        <span class="eyebrow">Emerging Market Financial Training</span>
-        <h1 id="hero-title">Financial training built for emerging markets.</h1>
-        <p class="lede">EMFT equips banks, regulators, and investment professionals across emerging markets with practical financial skills — taught by practitioners who know these markets first-hand.</p>
-        <div class="hero-actions">
-          <a class="btn btn-light" href="contact.html">Get in touch</a>
-          <a class="btn btn-inverse" href="services.html">Explore our services</a>
+    <!-- Hero -->
+    <section class="section-pad" aria-labelledby="hero-title">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">Emerging Market Financial Training</p>
+          <h1 id="hero-title" class="display-xl">Capability that compounds.</h1>
+          <p class="lede">Financial training for banks, central banks and sovereign wealth funds — with emerging-tech programs and technical assessments across both domains. Practitioner-led, built around your goals.</p>
+          <div class="hero-actions">
+            <a class="btn-solid" href="#services">Explore our services</a>
+            <a class="link-underline" href="#case-studies">See the results <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+        <div class="hero-media">
+          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80" alt="Modern office towers seen from below — the institutional world EMFT trains in" loading="eager">
         </div>
       </div>
     </section>
 
-    <section class="section" aria-label="Key figures">
+    <!-- Stats -->
+    <section class="section-pad" aria-label="Key figures">
       <div class="container">
-        <ul class="stats">
-          <li><span class="stat-value">500+</span><span class="stat-label">Professionals trained</span></li>
-          <li><span class="stat-value">30+</span><span class="stat-label">Institutions served</span></li>
-          <li><span class="stat-value">25</span><span class="stat-label">Years of combined market experience</span></li>
-          <li><span class="stat-value">95%</span><span class="stat-label">Participant satisfaction</span></li>
-        </ul>
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-value" data-countup="10000" data-suffix="+">10,000+</div>
+            <div class="stat-label">Professionals Trained</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" data-countup="80" data-suffix="+">80+</div>
+            <div class="stat-label">Global Practitioners</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" data-countup="13">13</div>
+            <div class="stat-label">Cities Delivered In, Worldwide</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" data-countup="100" data-suffix="+">100+</div>
+            <div class="stat-label">Years' Cumulative Experience</div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section section--surface" aria-labelledby="home-services-title">
-      <div class="container">
-        <div class="section-header reveal">
+    <!-- Services — editorial index -->
+    <section id="services" class="section-pad services-section" aria-labelledby="services-title">
+      <div class="container services-grid">
+        <div class="services-intro">
           <span class="eyebrow">What we do</span>
-          <h2 id="home-services-title">Four ways to train. One standard.</h2>
-          <p>Understand the need first, commit to clear learning outcomes, and see them through.</p>
+          <h2 id="services-title" class="display-lg">One partner for the whole learning journey.</h2>
+          <p>Corporate and individual programs — in person, virtual and blended — from technical depth to leadership breadth.</p>
         </div>
-        <div class="grid grid--4">
-          <article class="card is-link reveal">
-            <span class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5V3h6v1.5"/><path d="m9 13 2 2 4-4"/></svg>
+        <div class="services-index">
+          <a class="service-row" href="#contact">
+            <span class="service-num" aria-hidden="true">01</span>
+            <span>
+              <span class="service-name">Professional Skills &amp; Leadership Programs</span>
+              <span class="service-desc">From first-time managers to executive teams — leadership that sticks.</span>
             </span>
-            <h3>Corporate Training Programs</h3>
-            <p>Tailored in-house programs for banks, regulators, and financial institutions, delivered on-site or virtually.</p>
-            <a class="card-link" href="services.html#corporate-training">Learn more <span aria-hidden="true">&rarr;</span><span class="visually-hidden"> about Corporate Training Programs</span></a>
-          </article>
-          <article class="card is-link reveal">
-            <span class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 4 9 4.5-9 4.5-9-4.5z"/><path d="M6.5 10.8V16c0 1.2 2.5 2.5 5.5 2.5s5.5-1.3 5.5-2.5v-5.2"/></svg>
+            <span class="service-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a class="service-row" href="#contact">
+            <span class="service-num" aria-hidden="true">02</span>
+            <span>
+              <span class="service-name">Technical Training Programs</span>
+              <span class="service-desc">Deep financial and technical curricula, taught by practitioners.</span>
             </span>
-            <h3>Open Courses &amp; Workshops</h3>
-            <p>Scheduled courses on core finance topics, open to individual professionals and small teams.</p>
-            <a class="card-link" href="services.html#open-courses">Learn more <span aria-hidden="true">&rarr;</span><span class="visually-hidden"> about Open Courses and Workshops</span></a>
-          </article>
-          <article class="card is-link reveal">
-            <span class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>
+            <span class="service-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a class="service-row" href="#contact">
+            <span class="service-num" aria-hidden="true">03</span>
+            <span>
+              <span class="service-name">Coaching</span>
+              <span class="service-desc">One-to-one and team coaching tailored to your unique goals.</span>
             </span>
-            <h3>Advisory &amp; Capability Building</h3>
-            <p>Training-needs assessments, curriculum design, and support for building your own in-house academy.</p>
-            <a class="card-link" href="services.html#advisory-capability">Learn more <span aria-hidden="true">&rarr;</span><span class="visually-hidden"> about Advisory and Capability Building</span></a>
-          </article>
-          <article class="card is-link reveal">
-            <span class="icon-chip" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M12 17v3"/><path d="M8.5 20h7"/></svg>
+            <span class="service-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a class="service-row" href="#contact">
+            <span class="service-num" aria-hidden="true">04</span>
+            <span>
+              <span class="service-name">Professional Qualifications</span>
+              <span class="service-desc">CISI, CFA and other exam pathways with proven pass rates.</span>
             </span>
-            <h3>E-Learning &amp; Blended Programs</h3>
-            <p>Flexible online modules and blended delivery for distributed and busy teams.</p>
-            <a class="card-link" href="services.html#e-learning">Learn more <span aria-hidden="true">&rarr;</span><span class="visually-hidden"> about E-Learning and Blended Programs</span></a>
-          </article>
+            <span class="service-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a class="service-row" href="#contact">
+            <span class="service-num" aria-hidden="true">05</span>
+            <span>
+              <span class="service-name">Digital Solutions</span>
+              <span class="service-desc">Blended and digital-first learning built for modern teams.</span>
+            </span>
+            <span class="service-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a class="service-row" href="#contact">
+            <span class="service-num" aria-hidden="true">06</span>
+            <span>
+              <span class="service-name">Technical Assessments</span>
+              <span class="service-desc">Objective screening, benchmarking and capability assessments — a core EMFT strength.</span>
+            </span>
+            <span class="service-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a class="service-row" href="#contact">
+            <span class="service-num" aria-hidden="true">07</span>
+            <span>
+              <span class="service-name">Keynote Speakers</span>
+              <span class="service-desc">Industry voices for your conferences and leadership events.</span>
+            </span>
+            <span class="service-arrow" aria-hidden="true">&rarr;</span>
+          </a>
         </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="expect-title">
+    <!-- Case studies — dark editorial band -->
+    <section id="case-studies" class="section-pad cases-section" aria-labelledby="cases-title">
       <div class="container">
-        <div class="section-header reveal">
-          <span class="eyebrow">What you can expect</span>
-          <h2 id="expect-title">Trainers who have done the work themselves</h2>
+        <div class="cases-head">
+          <div>
+            <span class="eyebrow">Proven in the field</span>
+            <h2 id="cases-title" class="display-lg">Engagements that moved the numbers.</h2>
+          </div>
+          <a class="link-underline cases-link" href="#contact">All case studies <span aria-hidden="true">&rarr;</span></a>
         </div>
-        <div class="grid grid--3">
-          <div class="card reveal">
-            <h3>Taught by Practitioners</h3>
-            <p>Our instructors have worked in emerging-market banking, risk, and investment roles. You learn from people who have done the job, not just studied it.</p>
-          </div>
-          <div class="card reveal">
-            <h3>Grounded in Your Markets</h3>
-            <p>Case studies, data, and examples come from the markets you actually operate in — not from textbook economies that behave nothing like yours.</p>
-          </div>
-          <div class="card reveal">
-            <h3>Built Around Your Needs</h3>
-            <p>No off-the-shelf syllabus forced onto your team. Every program starts by understanding your people, goals, and context — then shaping the training to fit.</p>
+        <div class="cases-grid">
+          <a class="case-card" href="#contact">
+            <span class="case-tag">Banking &middot; KSA</span>
+            <span class="case-headline">Award-winning</span>
+            <p>A leading Saudi bank's graduate cohorts in Cybersecurity and Data &amp; AI won a national Best Graduate Training Award.</p>
+          </a>
+          <a class="case-card" href="#contact">
+            <span class="case-tag">Banking &middot; KSA</span>
+            <span class="case-headline">750+ people</span>
+            <p>A country-wide frontline transformation in service, sales, wealth management and banking products, 2025&ndash;27.</p>
+          </a>
+          <a class="case-card" href="#contact">
+            <span class="case-tag">Central Banking &middot; GCC</span>
+            <span class="case-headline">2 programs</span>
+            <p>Phased Bank Inspector and Financial Analysis programs built for a Gulf central bank's supervision teams.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why EMFT — editorial split -->
+    <section id="about" class="section-pad why-section" aria-labelledby="why-title">
+      <div class="container why-grid">
+        <div class="why-media">
+          <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1600&q=80" alt="A handshake across a meeting table" loading="lazy">
+        </div>
+        <div class="why-copy">
+          <span class="eyebrow">Why EMFT</span>
+          <h2 id="why-title" class="display-lg">Global expertise. Local insight. Practitioners, not presenters.</h2>
+          <div class="why-points">
+            <div class="why-point">
+              <div class="why-point-num" aria-hidden="true">01</div>
+              <div>
+                <h3>Glocal Trainer Facility</h3>
+                <p>Courses and consultancy delivered in New York, London, Shanghai, Dubai, Abu Dhabi, Bahrain, Oman, Singapore, Riyadh, Cairo, Doha, Mumbai and Pune.</p>
+              </div>
+            </div>
+            <div class="why-point">
+              <div class="why-point-num" aria-hidden="true">02</div>
+              <div>
+                <h3>Trending Programs</h3>
+                <p>Digital transformation, AI awareness, data analytics and Power BI, asset management in oil and gas — where knowledge meets what's next.</p>
+              </div>
+            </div>
+            <div class="why-point">
+              <div class="why-point-num" aria-hidden="true">03</div>
+              <div>
+                <h3>Practitioner Led</h3>
+                <p>Trainers and consultants involved from an early stage, in regular consultation with you, to ensure maximum return on investment.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section section--surface" aria-labelledby="why-title">
-      <div class="container">
-        <div class="feature-row">
-          <div class="reveal">
-            <span class="eyebrow">Why choose EMFT</span>
-            <h2 id="why-title">A partner, not just a provider</h2>
-            <p class="text-secondary">Our mission is simple: to close the skills gap in emerging-market finance with training our clients can rely on — honestly scoped, professionally delivered, and reinforced long after the last session.</p>
-            <p><a class="btn btn-secondary" href="about.html">More about us</a></p>
-          </div>
-          <ul class="checklist reveal">
+    <!-- Technical assessments — sand panel -->
+    <section id="assessments" class="section-pad assess-section" aria-labelledby="assess-title">
+      <div class="container assess-panel">
+        <div class="assess-copy">
+          <span class="eyebrow">Technical Assessments</span>
+          <h2 id="assess-title" class="display-lg">Measure before you invest.</h2>
+          <p>Objective technical assessments underpin every serious program we run — from screening 200+ graduate applicants into award-winning cohorts to benchmarking existing teams before a transformation.</p>
+          <ul class="assess-list">
             <li>
-              <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4 12.5 5 5L20 6.5"/></svg></span>
-              <div><h3>We tell you the truth</h3><p>If a program won't meet your goals, we say so early — honest assessment is worth more than easy agreement.</p></div>
+              <span class="num" aria-hidden="true">01</span>
+              <span><strong>Screening assessments</strong> — select the right candidates for technical tracks like cybersecurity and Data &amp; AI</span>
             </li>
             <li>
-              <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4 12.5 5 5L20 6.5"/></svg></span>
-              <div><h3>We deliver what we promise</h3><p>Clear syllabi, defined learning outcomes, and no surprises on delivery day.</p></div>
+              <span class="num" aria-hidden="true">02</span>
+              <span><strong>Capability benchmarks</strong> — know exactly where each team stands before designing the program</span>
             </li>
             <li>
-              <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4 12.5 5 5L20 6.5"/></svg></span>
-              <div><h3>We stay after the course</h3><p>Learning doesn't end at the last slide; follow-up sessions and materials are part of how we work.</p></div>
-            </li>
-            <li>
-              <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4 12.5 5 5L20 6.5"/></svg></span>
-              <div><h3>We keep it practical</h3><p>Plain language, real cases, and tools your people can use the very next day.</p></div>
+              <span class="num" aria-hidden="true">03</span>
+              <span><strong>Post-program validation</strong> — evidence of progress your board and regulator can trust</span>
             </li>
           </ul>
+          <a class="link-underline" href="#contact">Explore our assessments <span aria-hidden="true">&rarr;</span></a>
+        </div>
+        <div class="assess-media">
+          <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1600&q=80" alt="A professional in a dark suit adjusting their jacket" loading="lazy">
         </div>
       </div>
     </section>
 
-    <section class="cta-band" aria-labelledby="cta-title">
+    <!-- Trending programs -->
+    <section id="programs" class="section-pad programs-section" aria-labelledby="programs-title">
       <div class="container">
-        <h2 id="cta-title">Ready to build your team's skills?</h2>
-        <p>Tell us what your people need to learn. We'll come back with a straight answer about how we can help — and whether we're the right fit.</p>
-        <div class="hero-actions">
-          <a class="btn btn-light" href="contact.html">Get in touch</a>
+        <div class="programs-head">
+          <div>
+            <span class="eyebrow">In demand now</span>
+            <h2 id="programs-title" class="display-lg">Trending Programs</h2>
+          </div>
+          <a class="link-underline" href="#contact">Request a syllabus <span aria-hidden="true">&rarr;</span></a>
+        </div>
+        <div class="programs-grid">
+          <a class="program-card" href="#contact">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80" alt="" loading="lazy">
+            <div class="program-body">
+              <div class="program-tag">Certificate &middot; 7 weeks</div>
+              <div class="program-title">Introduction to Fintech</div>
+              <p>Speak fluently with fintechs, vendors and digital teams — and judge what is real.</p>
+            </div>
+          </a>
+          <a class="program-card" href="#contact">
+            <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1600&q=80" alt="" loading="lazy">
+            <div class="program-body">
+              <div class="program-tag">Workshop</div>
+              <div class="program-title">AI and ChatGPT</div>
+              <p>Put GenAI to work in your team's daily output — safely and measurably.</p>
+            </div>
+          </a>
+          <a class="program-card" href="#contact">
+            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1600&q=80" alt="" loading="lazy">
+            <div class="program-body">
+              <div class="program-tag">Qualification &middot; CISI</div>
+              <div class="program-title">International Introduction to Securities &amp; Investment</div>
+              <p>Earn the globally recognized CISI foundation for capital-markets roles.</p>
+            </div>
+          </a>
+          <a class="program-card" href="#contact">
+            <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1600&q=80" alt="" loading="lazy">
+            <div class="program-body">
+              <div class="program-tag">Workshop</div>
+              <div class="program-title">ESG Awareness</div>
+              <p>Read ESG risk the way investors and regulators now expect you to.</p>
+            </div>
+          </a>
+          <a class="program-card" href="#contact">
+            <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1600&q=80" alt="" loading="lazy">
+            <div class="program-body">
+              <div class="program-tag">Professional Skills</div>
+              <div class="program-title">Advanced Negotiation and Influencing Skills</div>
+              <p>Walk out of harder conversations with better terms.</p>
+            </div>
+          </a>
+          <a class="program-card" href="#contact">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80" alt="" loading="lazy">
+            <div class="program-body">
+              <div class="program-tag">Technical</div>
+              <div class="program-title">Data Analysis and Visualization</div>
+              <p>Turn raw data into decisions your management acts on.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Who we serve -->
+    <section class="section-pad serve-section" aria-labelledby="serve-title">
+      <div class="container">
+        <h2 id="serve-title" class="eyebrow">Trusted by the institutions that set the standard</h2>
+        <ul class="serve-chips">
+          <li>Central Banks</li>
+          <li>Sovereign Wealth Funds</li>
+          <li>Retail &amp; Corporate Banks</li>
+          <li>Financial Regulators</li>
+          <li>Government Entities</li>
+        </ul>
+        <p class="serve-note">We keep our clients' names confidential — the case studies speak instead.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="contact" class="section-pad cta-section" aria-labelledby="cta-title">
+      <div class="container">
+        <h2 id="cta-title">Start with a conversation.</h2>
+        <p>Every engagement begins with your goals. Tell us where you want your people to be.</p>
+        <div class="cta-actions">
+          <a class="btn-gold" href="mailto:info@emergingmarketft.com">info@emergingmarketft.com</a>
         </div>
       </div>
     </section>
@@ -182,50 +342,34 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a class="logo" href="index.html" aria-label="EMFT — Home">
-            <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-              <rect width="32" height="32" rx="7" fill="#FFFFFF"/>
-              <rect x="8" y="9" width="16" height="3" rx="1.5" fill="#1C4E80"/>
-              <rect x="8" y="14.5" width="11" height="3" rx="1.5" fill="#3FA796"/>
-              <rect x="8" y="20" width="16" height="3" rx="1.5" fill="#1C4E80"/>
-            </svg>
-            EMFT
-          </a>
-          <p>EMFT — Emerging Market Financial Training — equips financial professionals and institutions across emerging markets with practical, world-class skills.</p>
+          <div class="footer-brand-name">Emerging Market Financial Training</div>
+          <p>Tailored training programs for corporate and individual learning needs across emerging markets.</p>
         </div>
-        <nav aria-label="Footer">
-          <h2 class="footer-heading">Site</h2>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </nav>
-        <div>
+        <nav class="footer-col" aria-label="Footer — services">
           <h2 class="footer-heading">Services</h2>
-          <ul>
-            <li><a href="services.html#corporate-training">Corporate Training</a></li>
-            <li><a href="services.html#open-courses">Open Courses &amp; Workshops</a></li>
-            <li><a href="services.html#advisory-capability">Advisory &amp; Capability</a></li>
-            <li><a href="services.html#e-learning">E-Learning</a></li>
-          </ul>
-        </div>
-        <div>
+          <a href="#services">Leadership Programs</a>
+          <a href="#services">Technical Training</a>
+          <a href="#services">Coaching</a>
+          <a href="#services">Professional Qualifications</a>
+        </nav>
+        <nav class="footer-col" aria-label="Footer — company">
+          <h2 class="footer-heading">Company</h2>
+          <a href="#about">About Us</a>
+          <a href="#case-studies">Case Studies</a>
+          <a href="#assessments">Assessments</a>
+        </nav>
+        <nav class="footer-col" aria-label="Footer — contact">
           <h2 class="footer-heading">Contact</h2>
-          <address>
-            <a href="mailto:info@emft.com">info@emft.com</a>
-            <a href="tel:+10000000000">+1 (000) 000-0000</a>
-            <span>[Street Address],<br>[City], [State] [Postal Code]</span>
-          </address>
-        </div>
+          <a href="mailto:info@emergingmarketft.com">info@emergingmarketft.com</a>
+          <a href="#contact">Start a conversation</a>
+        </nav>
       </div>
       <div class="footer-legal">
-        <p>&copy; <span id="year">2026</span> EMFT. All rights reserved.</p>
+        <span>EMFT &copy; <span id="year">2026</span>. All rights reserved.</span>
       </div>
     </div>
   </footer>
 
-  <script src="js/main.js" defer></script>
+  <script src="js/home.js" defer></script>
 </body>
 </html>
