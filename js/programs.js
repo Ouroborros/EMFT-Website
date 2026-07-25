@@ -34,7 +34,7 @@
         tech: 'Data, AI & Technology',
         digital: 'Digital Banking & FinTech',
         qualifications: 'Qualifications & Exam Training',
-        talent: 'Talent, Graduates & Assessment'
+        talent: 'Talent & Graduates'
       }
     },
     ar: {
@@ -62,7 +62,7 @@
         tech: 'البيانات والذكاء الاصطناعي والتقنية',
         digital: 'الخدمات المصرفية الرقمية والتقنية المالية',
         qualifications: 'المؤهلات المهنية والتدريب على الامتحانات',
-        talent: 'المواهب والخريجون والتقييم'
+        talent: 'المواهب والخريجون'
       }
     }
   };

@@ -1,6 +1,6 @@
-/* EMFT program catalog. Body must stay valid JSON — parsed by the static-row
-   generator and read by the browser. g: group, d: domain (fin|tech|skills),
-   a: audiences (banks|cb|swf|grad|exec). */
+/* EMFT program catalog. Body must stay valid JSON — parsed by
+   scripts/build-catalog.py and read by the browser. g: group, d: domain
+   (fin|tech|skills), a: audiences (banks|cb|swf|grad|exec). */
 window.EMFT_PROGRAMS =
 [
   {"g": "leadership", "d": "skills", "a": ["banks", "cb", "swf", "exec"], "en": {"tag": "Leadership", "name": "Leadership Development", "outcome": "Grow effective leaders at every level of the institution."}, "ar": {"tag": "قيادة", "name": "تطوير القيادة", "outcome": "طوّر قادة فاعلين في كل مستويات المؤسسة."}},
@@ -78,10 +78,6 @@ window.EMFT_PROGRAMS =
   {"g": "qualifications", "d": "skills", "a": ["banks", "exec"], "en": {"tag": "Qualification", "name": "Lean Six Sigma Certification", "outcome": "Certify process-improvement leaders who cut real waste."}, "ar": {"tag": "مؤهل مهني", "name": "شهادة لين سيكس سيجما", "outcome": "أهّل قادة تحسين العمليات لخفض الهدر."}},
   {"g": "talent", "d": "skills", "a": ["banks", "cb", "swf", "grad"], "en": {"tag": "Talent", "name": "Graduate Development Program", "outcome": "From screening to certification — award-winning specialist cohorts."}, "ar": {"tag": "مواهب", "name": "برنامج تطوير الخريجين", "outcome": "من الفرز إلى الشهادة — برامج متخصصة حائزة على جوائز."}},
   {"g": "talent", "d": "skills", "a": ["banks", "cb", "swf"], "en": {"tag": "Talent", "name": "Nationalization Program", "outcome": "Build national talent pipelines with real capability."}, "ar": {"tag": "مواهب", "name": "برنامج التوطين", "outcome": "ابنِ كوادر وطنية بقدرات حقيقية."}},
-  {"g": "talent", "d": "skills", "a": ["banks", "exec"], "en": {"tag": "Talent", "name": "High-Potential Talent Program", "outcome": "Identify and accelerate your next generation of leaders."}, "ar": {"tag": "مواهب", "name": "برنامج أصحاب الإمكانات العالية", "outcome": "اكتشف الجيل القادم من القادة وسرّع تطويرهم."}},
-  {"g": "talent", "d": "fin", "a": ["banks", "cb", "swf", "grad"], "en": {"tag": "Assessment", "name": "Technical & Behavioral Assessments", "outcome": "Screen, benchmark and validate across both domains."}, "ar": {"tag": "تقييم", "name": "التقييمات التقنية والسلوكية", "outcome": "فرز وقياس وتحقق في المجالين."}},
-  {"g": "talent", "d": "tech", "a": ["banks", "cb", "swf"], "en": {"tag": "Assessment", "name": "Skills Gap Analysis & Capability Intelligence", "outcome": "Map the workforce before you spend on training."}, "ar": {"tag": "تقييم", "name": "تحليل فجوات المهارات وذكاء القدرات", "outcome": "ارسم خريطة القوى العاملة قبل الإنفاق على التدريب."}},
-  {"g": "talent", "d": "skills", "a": ["exec", "cb", "swf"], "en": {"tag": "Assessment", "name": "Leadership Assessment & Impact Measurement", "outcome": "Prove leadership development worked."}, "ar": {"tag": "تقييم", "name": "تقييم القيادة وقياس الأثر", "outcome": "أثبت أن تطوير القيادة أتى بنتيجة."}},
-  {"g": "talent", "d": "skills", "a": ["banks", "cb", "exec"], "en": {"tag": "Assessment", "name": "Competency-Based Interviewing & Assessment", "outcome": "Hire and promote on evidence, not impression."}, "ar": {"tag": "تقييم", "name": "المقابلات القائمة على الجدارات", "outcome": "وظّف ورقِّ بناءً على الأدلة لا الانطباع."}}
+  {"g": "talent", "d": "skills", "a": ["banks", "exec"], "en": {"tag": "Talent", "name": "High-Potential Talent Program", "outcome": "Identify and accelerate your next generation of leaders."}, "ar": {"tag": "مواهب", "name": "برنامج أصحاب الإمكانات العالية", "outcome": "اكتشف الجيل القادم من القادة وسرّع تطويرهم."}}
 ]
 ;
