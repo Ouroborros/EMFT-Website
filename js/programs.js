@@ -12,7 +12,7 @@
     en: {
       dir: 'ltr', lang: 'en', langLabel: 'العربية',
       navServices: 'Services', navCases: 'Case Studies', navAssessments: 'Assessments',
-      navPrograms: 'Programs', navAbout: 'About', navContact: 'Contact Us',
+      navPrograms: 'Programs', navElearning: 'E-Learning', navAbout: 'About', navContact: 'Contact Us',
       eyebrow: 'Program Catalog',
       title: 'Every program. One standard.',
       subtitle: 'Filter by domain and audience. Every program is customized to your institution before delivery — this catalog is the starting point, not the limit.',
@@ -27,7 +27,7 @@
     ar: {
       dir: 'rtl', lang: 'ar', langLabel: 'English',
       navServices: 'الخدمات', navCases: 'دراسات الحالة', navAssessments: 'التقييمات',
-      navPrograms: 'البرامج', navAbout: 'من نحن', navContact: 'اتصل بنا',
+      navPrograms: 'البرامج', navElearning: 'التعلم الإلكتروني', navAbout: 'من نحن', navContact: 'اتصل بنا',
       eyebrow: 'دليل البرامج',
       title: 'كل البرامج. معيار واحد.',
       subtitle: 'صفِّ البرامج حسب المجال والجمهور. كل برنامج يُصمَّم خصيصاً لمؤسستك قبل التنفيذ — هذا الدليل نقطة البداية، وليس الحد.',
