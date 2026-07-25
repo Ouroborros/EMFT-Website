@@ -12,7 +12,7 @@
     en: {
       dir: 'ltr', lang: 'en', langLabel: 'العربية',
       navServices: 'Services', navCases: 'Case Studies', navAssessments: 'Assessments',
-      navPrograms: 'Programs', navSpeakers: 'Speakers', navElearning: 'Learning Portal',
+      navPrograms: 'Programs', navCoaching: 'Coaching', navSpeakers: 'Speakers', navElearning: 'Learning Portal',
       navAbout: 'About', navContact: 'Contact Us',
       eyebrow: 'Program Catalog',
       title: 'Every program. One standard.',
@@ -40,7 +40,7 @@
     ar: {
       dir: 'rtl', lang: 'ar', langLabel: 'English',
       navServices: 'الخدمات', navCases: 'دراسات الحالة', navAssessments: 'التقييمات',
-      navPrograms: 'البرامج', navSpeakers: 'المتحدثون', navElearning: 'بوابة التعلم',
+      navPrograms: 'البرامج', navCoaching: 'التدريب الفردي', navSpeakers: 'المتحدثون', navElearning: 'بوابة التعلم',
       navAbout: 'من نحن', navContact: 'اتصل بنا',
       eyebrow: 'دليل البرامج',
       title: 'كل البرامج. معيار واحد.',
