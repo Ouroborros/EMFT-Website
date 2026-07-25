@@ -196,9 +196,10 @@ a:hover { color: var(--gold); }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) { opacity: 0; }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(4) { transform: translateY(-7px) rotate(-45deg); }
 
-/* Header collapses well before the layout grids: nine nav items plus the
-   language toggle need more room than a laptop viewport can give them. */
-@media (max-width: 1340px) {
+/* Header collapses well before the layout grids. The binding case is the
+   catalog page: nine nav items plus the Arabic toggle measure 995px, which
+   with the logo and gutters needs a 1385px viewport. */
+@media (max-width: 1400px) {
   :root { --header-h: 84px; }
   .logo { width: 170px; height: 50px; }
   html.js .nav-toggle { display: flex; }
