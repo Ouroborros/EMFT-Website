@@ -493,6 +493,13 @@ a:hover { color: var(--gold); }
   transform: translateY(-3px);
   color: var(--navy);
 }
+.program-card img {
+  width: 100%;
+  height: auto;          /* without this the height attribute beats aspect-ratio */
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-bottom: 1px solid var(--line);
+}
 .program-body {
   padding: 28px 30px 30px;
   display: flex;

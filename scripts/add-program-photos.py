@@ -33,7 +33,7 @@ IMG_DIR = os.path.join(ROOT, 'assets', 'img')
 PAGE = os.path.join(ROOT, 'index.html')
 CSS = os.path.join(ROOT, 'css', 'home.css')
 
-CARD_W, CARD_H = 1200, 800
+CARD_W, CARD_H = 960, 640      # 2.3x the card's rendered width; no upscaling
 MIN_MEAN = 60      # near-black deck backdrops read as broken; reject them
 MAX_MEAN = 235     # blown-out shots lose the title's contrast
 
