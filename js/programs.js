@@ -22,7 +22,20 @@
       ctaSub: 'Most of our engagements are built to order. Tell us the capability you want to build.',
       footer: 'All rights reserved.', backHome: '← Back to Home',
       domains: { all: 'All', fin: 'Financial', tech: 'Emerging Tech', skills: 'Professional Skills' },
-      audiences: { all: 'All', banks: 'Banks', cb: 'Central Banks & Regulators', swf: 'Sovereign Wealth Funds', grad: 'Graduates', exec: 'Executives' }
+      audiences: { all: 'All', banks: 'Banks', cb: 'Central Banks & Regulators', swf: 'Sovereign Wealth Funds', grad: 'Graduates', exec: 'Executives' },
+      groups: {
+        leadership: 'Leadership & Management',
+        skills: 'Professional Skills',
+        frontline: 'Retail & Frontline Banking',
+        credit: 'Credit & Corporate Banking',
+        finance: 'Finance, Accounting & Reporting',
+        risk: 'Risk, Regulation & Compliance',
+        investment: 'Investment, Markets & Insurance',
+        tech: 'Data, AI & Technology',
+        digital: 'Digital Banking & FinTech',
+        qualifications: 'Qualifications & Exam Training',
+        talent: 'Talent, Graduates & Assessment'
+      }
     },
     ar: {
       dir: 'rtl', lang: 'ar', langLabel: 'English',
@@ -37,7 +50,20 @@
       ctaSub: 'معظم برامجنا تُبنى حسب الطلب. أخبرنا عن القدرات التي تريد بناءها.',
       footer: 'جميع الحقوق محفوظة.', backHome: '→ العودة إلى الرئيسية',
       domains: { all: 'الكل', fin: 'مالي', tech: 'التقنيات الناشئة', skills: 'المهارات المهنية' },
-      audiences: { all: 'الكل', banks: 'البنوك', cb: 'البنوك المركزية والجهات الرقابية', swf: 'صناديق الثروة السيادية', grad: 'الخريجون', exec: 'التنفيذيون' }
+      audiences: { all: 'الكل', banks: 'البنوك', cb: 'البنوك المركزية والجهات الرقابية', swf: 'صناديق الثروة السيادية', grad: 'الخريجون', exec: 'التنفيذيون' },
+      groups: {
+        leadership: 'القيادة والإدارة',
+        skills: 'المهارات المهنية',
+        frontline: 'الخدمات المصرفية للأفراد والفروع',
+        credit: 'الائتمان والخدمات المصرفية للشركات',
+        finance: 'المالية والمحاسبة والتقارير',
+        risk: 'المخاطر والرقابة والامتثال',
+        investment: 'الاستثمار والأسواق والتأمين',
+        tech: 'البيانات والذكاء الاصطناعي والتقنية',
+        digital: 'الخدمات المصرفية الرقمية والتقنية المالية',
+        qualifications: 'المؤهلات المهنية والتدريب على الامتحانات',
+        talent: 'المواهب والخريجون والتقييم'
+      }
     }
   };
 
@@ -66,6 +92,9 @@
     build('audience-filters', t.audiences, state.audience, 'audience');
   };
 
+  var GROUP_ORDER = ['leadership','skills','frontline','credit','finance','risk',
+                    'investment','tech','digital','qualifications','talent'];
+
   var renderCatalog = function () {
     var t = T[state.lang];
     var filtered = PROGRAMS.filter(function (p) {
@@ -74,28 +103,48 @@
     });
 
     catalog.textContent = '';
-    filtered.forEach(function (p) {
-      var item = p[state.lang];
-      var row = document.createElement('a');
-      row.className = 'program-row';
-      row.href = 'index.html#contact';
+    GROUP_ORDER.forEach(function (key) {
+      var items = filtered.filter(function (p) { return p.g === key; });
+      if (!items.length) return;           // hide empty groups while filtering
 
-      var tag = document.createElement('span');
-      tag.className = 'tag';
-      tag.textContent = item.tag;
+      var section = document.createElement('section');
+      section.className = 'catalog-group';
 
-      var name = document.createElement('span');
-      name.className = 'name';
-      name.textContent = item.name;
+      var heading = document.createElement('h2');
+      heading.className = 'catalog-group-title';
+      heading.textContent = t.groups[key] || key;
 
-      var outcome = document.createElement('span');
-      outcome.className = 'outcome';
-      outcome.textContent = item.outcome;
+      var count = document.createElement('span');
+      count.className = 'catalog-group-count';
+      count.textContent = items.length;
+      heading.appendChild(count);
+      section.appendChild(heading);
 
-      row.appendChild(tag);
-      row.appendChild(name);
-      row.appendChild(outcome);
-      catalog.appendChild(row);
+      items.forEach(function (p) {
+        var item = p[state.lang];
+        var row = document.createElement('a');
+        row.className = 'program-row';
+        row.href = 'index.html#contact';
+
+        var tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.textContent = item.tag;
+
+        var name = document.createElement('span');
+        name.className = 'name';
+        name.textContent = item.name;
+
+        var outcome = document.createElement('span');
+        outcome.className = 'outcome';
+        outcome.textContent = item.outcome;
+
+        row.appendChild(tag);
+        row.appendChild(name);
+        row.appendChild(outcome);
+        section.appendChild(row);
+      });
+
+      catalog.appendChild(section);
     });
 
     if (countEl) countEl.textContent = filtered.length + ' ' + t.programsWord;

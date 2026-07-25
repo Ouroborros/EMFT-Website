@@ -285,3 +285,25 @@ html[dir="rtl"] .case-lists ul { padding-left: 0; padding-right: 20px; }
   text-wrap: balance;
 }
 .portal-band p { font-size: 16px; line-height: 1.6; color: var(--blue-mist); max-width: 520px; text-wrap: pretty; }
+
+/* Catalog groups ----------------------------------------------------------- */
+.catalog-group { display: block; margin-bottom: clamp(32px, 4vw, 48px); }
+.catalog-group-title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: var(--serif);
+  font-size: clamp(20px, 1.1rem + 0.6vw, 24px);
+  font-weight: 600;
+  color: var(--navy);
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+  border-bottom: 2px solid var(--gold);
+}
+.catalog-group-count {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
