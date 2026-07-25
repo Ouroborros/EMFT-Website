@@ -15,6 +15,8 @@ Licence text: https://creativecommons.org/publicdomain/zero/1.0/
 | `program-relationship.jpg` | [Writing Papers](https://stocksnap.io/photo/writing-papers-Y01VDYAX63) | Helloquence | StockSnap | CC0 1.0 |
 | `program-cx.jpg` | [Flowchart Whiteboard](https://stocksnap.io/photo/flowchart-whiteboard-CDC8HFPYWR) | Startup Stock Photos | StockSnap | CC0 1.0 |
 | `program-data-science.jpg` | [Coding Programming](https://stocksnap.io/photo/coding-programming-SCC00WCQ3I) | Startup Stock Photos | StockSnap | CC0 1.0 |
+| `why-facilitator.jpg` | [Office Graph](https://stocksnap.io/photo/office-graph-3PLFDQQZ5M) | Matt Moloney | StockSnap | CC0 1.0 |
+| `case-cohorts-tech.jpg` | [Team Meeting](https://stocksnap.io/photo/team-meeting-VQXYE2ZEHC) | Startup Stock Photos | StockSnap | CC0 1.0 |
 
 Note on `program-cyber.jpg`: the rawpixel record titles it "Officers U.S.
 Customs Border Protection". The frame used shows analysts at workstations
@@ -26,5 +28,14 @@ Each was cropped centre-weighted to 3:2 at 960x640 and re-encoded by
 `scripts/add-program-photos.py`, which also rejects anything too dark or too
 washed out to carry a card title.
 
-The remaining site photography (`hero-*`, `case-*`, `assessments-*`,
-`about-*`) was extracted from EMFT's own company profile.
+The remaining site photography — `hero-towers.jpg`, `case-meeting.jpg`,
+`case-workstation.jpg`, `case-markets-analysis.jpg` and
+`assessments-dashboards.jpg` — was extracted from
+EMFT's own company profile.
+
+Replaced and removed: `hero-training-room.jpg` (a conference room of gift
+bags), the old `case-cohorts-tech.jpg` (a stock composite of fists over a
+circuit graphic). `case-markets-analysis.jpg` is similar to
+`assessments-dashboards.jpg` — same session, different frame — but they sit on
+different pages, and EMFT's own photography beat every stock substitute tried
+for that case study.
