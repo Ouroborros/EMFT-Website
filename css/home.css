@@ -372,11 +372,14 @@ a:hover { color: var(--gold); }
 .why-section { padding-block: clamp(72px, 8vw, 112px); }
 .why-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 64px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  gap: 56px;
   align-items: center;
 }
-.why-media img { width: 100%; height: clamp(320px, 42vw, 560px); object-fit: cover; }
+/* Hairline frame set off the photo by a band of page — the picture reads as
+   mounted rather than cropped hard against the copy. */
+.why-media { padding: 14px; border: 1px solid rgba(14, 42, 71, 0.14); }
+.why-media img { width: 100%; height: clamp(360px, 50vw, 660px); object-fit: cover; }
 .why-copy .eyebrow { margin-bottom: 20px; display: block; }
 .why-copy h2 { margin-bottom: 40px; }
 .why-points { display: flex; flex-direction: column; gap: 32px; }
@@ -396,13 +399,16 @@ a:hover { color: var(--gold); }
 /* Technical assessments — sand panel -------------------------------------- */
 .assess-section { padding-bottom: clamp(72px, 8vw, 112px); }
 .assess-panel {
+  --assess-pad: clamp(40px, 6vw, 88px);
   background: var(--sand);
-  padding: clamp(40px, 6vw, 88px);
+  padding: var(--assess-pad);
   display: grid;
   grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-  gap: 72px;
-  align-items: center;
+  gap: clamp(40px, 4.5vw, 64px);
+  align-items: stretch;
+  overflow: hidden;
 }
+.assess-copy { align-self: center; }
 .assess-copy .eyebrow { margin-bottom: 20px; display: block; }
 .assess-copy h2 { margin-bottom: 24px; }
 .assess-copy > p { font-size: 17px; line-height: 1.65; color: var(--muted); margin-bottom: 36px; text-wrap: pretty; }
@@ -419,9 +425,28 @@ a:hover { color: var(--gold); }
 }
 .assess-list .num { font-family: var(--serif); font-size: 17px; color: var(--gold); flex: none; }
 .assess-copy .link-underline { display: inline-block; margin-top: 32px; color: var(--navy); }
-.assess-media img { width: 100%; height: clamp(300px, 34vw, 460px); object-fit: cover; }
+/* The photo runs to the top, bottom and outer edges of the sand panel —
+   floated in the middle it read as cramped. margin-inline-end flips in RTL. */
+.assess-media {
+  margin-block: calc(-1 * var(--assess-pad));
+  margin-inline-end: calc(-1 * var(--assess-pad));
+}
+.assess-media img {
+  width: 100%;
+  height: 100%;
+  min-height: clamp(340px, 38vw, 560px);
+  object-fit: cover;
+}
 
-@media (max-width: 980px) { .assess-panel { grid-template-columns: 1fr; gap: 40px; } }
+@media (max-width: 980px) {
+  .assess-panel { grid-template-columns: 1fr; gap: 40px; align-items: start; }
+  .assess-copy { align-self: start; }
+  .assess-media {
+    margin-block: 0 calc(-1 * var(--assess-pad));
+    margin-inline: calc(-1 * var(--assess-pad));
+  }
+  .assess-media img { min-height: 0; height: clamp(240px, 46vw, 340px); }
+}
 
 /* Trending programs — sand section with paper cards ----------------------- */
 .programs-section { background: var(--sand); padding-block: clamp(72px, 8vw, 112px); }
