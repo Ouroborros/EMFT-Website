@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collection | Masar</title>
+  <meta name="description" content="An editorial shortlist of executive programmes.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" hreflang="en" href="list.html">
+  <link rel="alternate" hreflang="ar" href="ar/list.html">
+  <link rel="alternate" hreflang="x-default" href="list.html">
+  <script>
+    /* Set the theme before first paint so the page never flashes light. */
+    (function () {
+      try {
+        var saved = localStorage.getItem('masar:theme');
+        if (!saved) saved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', saved);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,600;6..72,700&display=swap">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".28"/><path d="M7 22.5 16 6l9 16.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M11.5 22.5 16 14l4.5 8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" opacity=".5"/></svg>
+        <span class="brand-name">Masar<small>Executive Courses</small></span>
+      </a>
+
+      <nav id="main-nav" class="main-nav" aria-label="Primary">
+        <ul>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="schools.html">Schools</a></li>
+          <li><a href="lists.html">Collections</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-tools">
+        <a class="lang-switch" href="ar/list.html" data-lang-switch hreflang="ar" lang="ar"
+           aria-label="اقرأ هذه الصفحة بالعربية">العربية</a>
+        <button class="icon-btn shortlist-btn" type="button" data-drawer-open aria-label="Shortlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10a1 1 0 0 1 1 1v15l-6-4-6 4V5a1 1 0 0 1 1-1Z"/></svg><span class="shortlist-count" data-shortlist-count>0</span>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Switch theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.8 6.8 0 0 0 10.7 10.7Z"/></svg></button>
+        <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-expanded="false"
+                aria-controls="main-nav" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="lists.html">Collections</a></li>
+          <li aria-current="page" data-list-crumb>Collection</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section--tight">
+      <div class="container" data-list-detail></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".28"/><path d="M7 22.5 16 6l9 16.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M11.5 22.5 16 14l4.5 8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" opacity=".5"/></svg><span class="brand-name">Masar</span></a>
+          <p class="footer-blurb">An independent index of executive education — searchable in English and Arabic, free to use, and honest about what it does not know.</p>
+        </div>
+        <div>
+          <h3>Browse</h3>
+          <ul>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="schools.html">Schools</a></li>
+            <li><a href="lists.html">Collections</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Popular subjects</h3>
+          <ul>
+            <li><a href="courses.html?subject=leadership">Leadership</a></li>
+            <li><a href="courses.html?subject=finance">Finance</a></li>
+            <li><a href="courses.html?subject=digital">AI & digital</a></li>
+            <li><a href="courses.html?subject=strategy">Strategy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Masar</h3>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="ar/list.html" data-lang-switch>العربية</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> Masar</span>
+        <span>Portfolio project · the schools and listings below are fictional sample data</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="drawer-backdrop" data-drawer-backdrop></div>
+  <aside class="drawer" data-drawer aria-label="Your shortlist" aria-hidden="true">
+    <div class="drawer__head">
+      <h2 class="h3">Your shortlist</h2>
+      <button class="icon-btn" type="button" data-drawer-close aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="drawer__body" data-drawer-body></div>
+    <div class="drawer__foot">
+      <button class="btn btn--ghost btn--block" type="button" data-shortlist-clear>Clear shortlist</button>
+    </div>
+  </aside>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
