@@ -67,7 +67,7 @@
     }
   };
 
-  var state = { lang: 'en', domain: 'all', audience: 'all' };
+  var state = { lang: 'en', domain: 'all' };
 
   var renderFilters = function () {
     var t = T[state.lang];
@@ -89,7 +89,6 @@
       });
     };
     build('domain-filters', t.domains, state.domain, 'domain');
-    build('audience-filters', t.audiences, state.audience, 'audience');
   };
 
   var GROUP_ORDER = ['leadership','skills','frontline','credit','finance','risk',
@@ -98,8 +97,7 @@
   var renderCatalog = function () {
     var t = T[state.lang];
     var filtered = PROGRAMS.filter(function (p) {
-      return (state.domain === 'all' || p.d === state.domain) &&
-             (state.audience === 'all' || p.a.indexOf(state.audience) !== -1);
+      return state.domain === 'all' || p.d === state.domain;
     });
 
     catalog.textContent = '';
