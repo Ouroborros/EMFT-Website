@@ -379,7 +379,7 @@ a:hover { color: var(--gold); }
 /* Hairline frame set off the photo by a band of page — the picture reads as
    mounted rather than cropped hard against the copy. */
 .why-media { padding: 14px; border: 1px solid rgba(14, 42, 71, 0.14); }
-.why-media img { width: 100%; height: clamp(360px, 50vw, 660px); object-fit: cover; }
+.why-media .media-frame { height: clamp(360px, 50vw, 660px); }
 .why-copy .eyebrow { margin-bottom: 20px; display: block; }
 .why-copy h2 { margin-bottom: 40px; }
 .why-points { display: flex; flex-direction: column; gap: 32px; }
@@ -406,7 +406,8 @@ a:hover { color: var(--gold); }
   grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
   gap: clamp(40px, 4.5vw, 64px);
   align-items: stretch;
-  overflow: hidden;
+  overflow: clip; /* clip, not hidden — hidden would make the panel a scroll
+                     container and freeze the photo's view timeline */
 }
 .assess-copy { align-self: center; }
 .assess-copy .eyebrow { margin-bottom: 20px; display: block; }
@@ -431,12 +432,7 @@ a:hover { color: var(--gold); }
   margin-block: calc(-1 * var(--assess-pad));
   margin-inline-end: calc(-1 * var(--assess-pad));
 }
-.assess-media img {
-  width: 100%;
-  height: 100%;
-  min-height: clamp(340px, 38vw, 560px);
-  object-fit: cover;
-}
+.assess-media .media-frame { height: 100%; min-height: clamp(340px, 38vw, 560px); }
 
 @media (max-width: 980px) {
   .assess-panel { grid-template-columns: 1fr; gap: 40px; align-items: start; }
@@ -445,7 +441,20 @@ a:hover { color: var(--gold); }
     margin-block: 0 calc(-1 * var(--assess-pad));
     margin-inline: calc(-1 * var(--assess-pad));
   }
-  .assess-media img { min-height: 0; height: clamp(240px, 46vw, 340px); }
+  .assess-media .media-frame { min-height: 0; height: clamp(240px, 46vw, 340px); }
+}
+
+/* Photo frames — the image is cut 10% taller than its frame so it can drift
+   inside it on scroll without ever exposing an edge. Static without the
+   animation, so no-JS and reduced-motion users just see a covered photo. */
+.media-frame { position: relative; overflow: hidden; }
+.media-frame img {
+  position: absolute;
+  top: -5%;
+  left: 0;
+  width: 100%;
+  height: 110%;
+  object-fit: cover;
 }
 
 /* Trending programs — sand section with paper cards ----------------------- */
@@ -581,6 +590,24 @@ a:hover { color: var(--gold); }
       animation: emft-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
       animation-timeline: view();
       animation-range: entry 0% entry 45%;
+    }
+
+    /* Parallax: the photo drifts against the page as its section passes.
+       ±4% of a frame cut 10% oversize, so the edges never show. Linear and
+       tied to scroll position — it never moves on its own. */
+    @keyframes emft-drift {
+      from { transform: translateY(-4%); }
+      to   { transform: translateY(4%); }
+    }
+    /* The timeline is named on the frame, not left to view() on the image:
+       the frame's overflow:hidden makes it a scroll container, so an image
+       inside it would measure against a scrollport that never moves. */
+    .media-frame { view-timeline-name: --emft-media; view-timeline-axis: block; }
+    .media-frame img {
+      animation: emft-drift linear both;
+      animation-timeline: --emft-media;
+      animation-range: cover 0% cover 100%;
+      will-change: transform;
     }
   }
 }
