@@ -613,6 +613,34 @@ a:hover { color: var(--gold); }
     }
   }
 }
+/* Page transitions — one cross-fade between documents, header held still.
+   Kept to 240ms: long enough to read as deliberate, short enough that it
+   never feels like waiting. Browsers without support just navigate. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+
+  @keyframes emft-page-out { to { opacity: 0; } }
+  @keyframes emft-page-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  ::view-transition-old(root) {
+    animation: emft-page-out 120ms cubic-bezier(0.4, 0, 1, 1) both;
+  }
+  ::view-transition-new(root) {
+    animation: emft-page-in 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  /* Named, so the header is its own group and stays put while the page
+     beneath it changes. Its snapshots keep the default cross-fade unless we
+     say otherwise, so both are pinned — the nav never blinks. */
+  .site-header { view-transition-name: emft-header; }
+  ::view-transition-old(emft-header),
+  ::view-transition-new(emft-header) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation: none !important;
