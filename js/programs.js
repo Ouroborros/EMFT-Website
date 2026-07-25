@@ -107,6 +107,7 @@
 
       var section = document.createElement('section');
       section.className = 'catalog-group';
+      section.id = key;            // deep links from the homepage services list
 
       var heading = document.createElement('h2');
       heading.className = 'catalog-group-title';
@@ -177,4 +178,11 @@
   }
 
   render();
+
+  // The static rows are replaced above, which drops whatever the browser had
+  // already scrolled to. Re-honour the group anchor once, after first paint.
+  if (location.hash) {
+    var target = document.getElementById(location.hash.slice(1));
+    if (target) target.scrollIntoView();
+  }
 })();

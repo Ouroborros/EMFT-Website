@@ -62,7 +62,7 @@ def write_rows(programs):
         items = [p for p in programs if p['g'] == key]
         if not items:
             continue
-        out.append('        <section class="catalog-group">')
+        out.append('        <section class="catalog-group" id="%s">' % key)
         out.append('          <h2 class="catalog-group-title">%s'
                    '<span class="catalog-group-count">%d</span></h2>'
                    % (e(title), len(items)))
