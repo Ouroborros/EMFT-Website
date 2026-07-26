@@ -255,7 +255,7 @@ function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':
 
 /* ---------- Vocabulary ---------- */
 
-const OWNERS = ['Hussam','Bilal','Fatima','Trainer','Client','Unassigned'];
+const OWNERS = ['Hussam','Bilal','Fatima','Walid','Trainer','Client','Unassigned'];
 
 const PHASES = {
   proposal: ['Qualify','Design','Cost','Write','Submit','Follow-up'],
@@ -541,6 +541,40 @@ function applyBsfCohorts(){
   return true;
 }
 
+/* ---------- AJB assessment update, 26 Jul 2026 ----------
+   Badr has been told 185 are through and that rankings and a report will
+   follow. That closes the chase and opens a commitment: the report cannot go
+   until Walid has sat with Aali and confirmed the ranking order. */
+
+function applyAjbAssessmentUpdate(){
+  const e = state.engagements.find(x =>
+    x.client.toLowerCase().includes('aljazira') &&
+    x.program.toLowerCase().includes('tech graduate programme'));
+  if(!e) return false;
+
+  if(e.assessment){
+    e.assessment.note = 'Badr told on 26 Jul that 185 are through; rankings and report promised as a follow-up. '
+                      + 'His decision on extending the window is still open.';
+  }
+
+  const sent = e.items.find(i=>i.title.startsWith('Send Badr the list of the 16 outstanding'));
+  if(sent){
+    sent.state = 'done';
+    sent.note = 'Emailed 26 Jul — confirmed 185 completions and promised rankings and a report to follow.';
+  }
+
+  [
+    ['Assessment','Walid to meet Aali and confirm the ranking order','Walid','2026-07-30','todo',
+     'Blocks the rankings going to Badr.'],
+    ['Assessment','Send Badr the rankings and the assessment report','Bilal','2026-08-05','todo',
+     'Committed to in the 26 Jul email. Needs Walid and Aali to settle the ranking order first.']
+  ].forEach(([phase,title,owner,due,st,note])=>{
+    if(e.items.some(i=>i.title === title)) return;
+    e.items.push({id:uid(), phase, title, owner, due, state:st, note});
+  });
+  return true;
+}
+
 /* The bank's name is Aljazira Bank, not Bank Al Jazira. */
 function renameAljazira(){
   state.engagements.forEach(e=>{
@@ -553,7 +587,8 @@ function renameAljazira(){
 const PATCHES = {
   'ajb-tech-2026-07-26': applyAjbTech,
   'bsf-cohorts-2026-07-26': applyBsfCohorts,
-  'aljazira-rename': renameAljazira
+  'aljazira-rename': renameAljazira,
+  'ajb-assessment-update-2026-07-26': applyAjbAssessmentUpdate
 };
 
 function seed2026(){
@@ -875,7 +910,9 @@ function renderList(){
 /* ---------- Detail rendering ---------- */
 
 function ownerOptions(sel){
-  return OWNERS.map(o=>`<option value="${o}" ${sel===o?'selected':''}>${o}</option>`).join('');
+  // Keep an owner the list does not know about rather than silently reassigning it.
+  const list = OWNERS.includes(sel) || !sel ? OWNERS : [sel].concat(OWNERS);
+  return list.map(o=>`<option value="${escapeHtml(o)}" ${sel===o?'selected':''}>${escapeHtml(o)}</option>`).join('');
 }
 function stageOptions(track, sel){
   return STAGES[track].map(s=>`<option value="${s}" ${sel===s?'selected':''}>${s}</option>`).join('');
@@ -1313,7 +1350,11 @@ document.getElementById('by-owner').onclick = ()=>{
   const open = allOpenTasks();
   const overlay = openModal('Split by owner', open.length + ' open tasks across the board');
   let html = '';
-  OWNERS.forEach(o=>{
+  // Cover every owner actually on the board, not just the canonical list —
+  // otherwise a task assigned to someone off-list disappears from this view.
+  const names = OWNERS.concat(
+    [...new Set(open.map(x=>x.i.owner))].filter(o=>o && !OWNERS.includes(o)).sort());
+  names.forEach(o=>{
     const mine = open.filter(x=>x.i.owner === o).sort(byDue);
     if(!mine.length) return;
     const late = mine.filter(x=>isOverdue(x.i)).length;
