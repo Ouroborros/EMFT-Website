@@ -1,0 +1,839 @@
+<title>EMFT Operations Board</title>
+<style>
+  :root{
+    --bg:#F2F4F1;
+    --surface:#FFFFFF;
+    --ink:#12232E;
+    --ink-soft:#4B5D63;
+    --primary:#1D4E45;
+    --primary-soft:#E4ECE8;
+    --accent:#C08A2E;
+    --accent-soft:#F5E9D2;
+    --danger:#B23A3A;
+    --danger-soft:#F6E4E2;
+    --blocked:#8A5A2B;
+    --blocked-soft:#F3E6D6;
+    --done:#1D8F5B;
+    --done-soft:#E2F1E9;
+    --line:#DCE1DE;
+    --mono:'IBM Plex Mono', ui-monospace, monospace;
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'IBM Plex Sans', -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);}
+  #app{display:flex;min-height:100vh;}
+
+  /* ---------- Sidebar ---------- */
+  #sidebar{width:340px;min-width:340px;background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;}
+  #sidebar-head{padding:20px 20px 12px;border-bottom:1px solid var(--line);}
+  #sidebar-head h1{font-family:var(--serif);font-size:22px;font-weight:600;margin:0 0 2px;letter-spacing:-0.01em;}
+  #sidebar-head .sub{font-size:12px;color:var(--ink-soft);font-family:var(--mono);}
+
+  #due-now{margin:12px 20px 4px;padding:11px;border:none;border-radius:9px;background:var(--accent);color:#fff;font-size:13.5px;font-weight:600;cursor:pointer;width:calc(100% - 40px);font-family:var(--sans);}
+  #due-now:hover{opacity:.9;}
+  #blocked-view{margin:0 20px 4px;padding:10px;border:1.5px solid var(--primary);border-radius:9px;background:var(--surface);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;width:calc(100% - 40px);font-family:var(--sans);}
+  #blocked-view:hover{background:var(--primary-soft);}
+  #by-owner{margin:0 20px 10px;padding:10px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink-soft);font-size:12.5px;font-weight:500;cursor:pointer;width:calc(100% - 40px);font-family:var(--sans);}
+  #by-owner:hover{border-color:var(--primary);color:var(--primary);}
+
+  #stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 20px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .stat{background:var(--bg);border-radius:8px;padding:8px 10px;}
+  .stat .n{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1;}
+  .stat .l{font-size:10.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-top:3px;}
+  .stat.danger .n{color:var(--danger);}
+  .stat.accent .n{color:var(--accent);}
+  .stat.primary .n{color:var(--primary);}
+  .stat.blocked .n{color:var(--blocked);}
+
+  #filters{display:flex;gap:6px;padding:10px 20px;flex-wrap:wrap;border-bottom:1px solid var(--line);}
+  .chip{font-size:11px;padding:5px 10px;border-radius:100px;border:1px solid var(--line);background:var(--surface);cursor:pointer;color:var(--ink-soft);font-family:var(--sans);}
+  .chip.active{background:var(--primary);border-color:var(--primary);color:#fff;}
+
+  #search{margin:10px 20px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;width:calc(100% - 40px);font-family:var(--sans);}
+
+  #eng-list{flex:1;overflow-y:auto;padding:6px 12px 20px;}
+  .eng-row{padding:11px 12px;border-radius:10px;cursor:pointer;margin-bottom:3px;border:1px solid transparent;}
+  .eng-row:hover{background:var(--bg);}
+  .eng-row.selected{background:var(--primary-soft);border-color:var(--primary);}
+  .eng-row .top{display:flex;justify-content:space-between;align-items:center;gap:6px;}
+  .eng-row .name{font-weight:600;font-size:13.5px;min-width:0;}
+  .eng-row .prog{font-size:11.5px;color:var(--ink-soft);margin-top:1px;}
+  .eng-row .meta{font-size:11px;color:var(--ink-soft);margin-top:4px;font-family:var(--mono);}
+  .eng-row .meta.late{color:var(--danger);}
+
+  .bar{height:4px;border-radius:100px;background:var(--line);margin-top:7px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:var(--primary);}
+  .bar.late i{background:var(--danger);}
+
+  .trk{font-family:var(--mono);font-size:9.5px;font-weight:600;padding:1px 6px;border-radius:100px;flex-shrink:0;}
+  .trk.proposal{background:var(--accent-soft);color:var(--accent);}
+  .trk.delivery{background:var(--primary-soft);color:var(--primary);}
+
+  #addeng{margin:8px 20px 4px;padding:9px;border:1px dashed var(--line);border-radius:8px;background:none;color:var(--ink-soft);font-size:12.5px;cursor:pointer;width:calc(100% - 40px);font-family:var(--sans);}
+  #addeng:hover{border-color:var(--primary);color:var(--primary);}
+  #tools-drawer{margin:6px 20px 16px;border:1px solid var(--line);border-radius:9px;background:var(--bg);}
+  #tools-drawer summary{padding:9px 12px;font-size:12px;color:var(--ink-soft);cursor:pointer;font-family:var(--sans);user-select:none;}
+  #tools-drawer[open] summary{border-bottom:1px solid var(--line);}
+  #tools-drawer button{display:block;margin:8px 10px;padding:8px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font-size:12px;cursor:pointer;width:calc(100% - 20px);font-family:var(--sans);text-align:left;}
+  #tools-drawer button:hover{border-color:var(--primary);color:var(--primary);}
+  #tools-drawer button:last-of-type{margin-bottom:10px;}
+
+  /* ---------- Main ---------- */
+  #main{flex:1;overflow-y:auto;padding:32px 40px;}
+  #empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;color:var(--ink-soft);text-align:center;}
+  #empty .glyph{font-family:var(--serif);font-size:48px;color:var(--line);margin-bottom:8px;}
+
+  #detail-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px;}
+  #detail-head .titles{flex:1;min-width:0;}
+  #detail-head input.eng-client{font-family:var(--serif);font-size:30px;font-weight:600;border:none;background:none;padding:0;width:100%;color:var(--ink);}
+  #detail-head input.eng-program{font-size:14px;border:none;background:none;padding:2px 0 0;width:100%;color:var(--ink-soft);font-family:var(--sans);}
+  #detail-head input:focus{outline:1px dashed var(--line);}
+  .del-eng{border:none;background:none;color:var(--ink-soft);cursor:pointer;font-size:12px;font-family:var(--sans);flex-shrink:0;}
+  .del-eng:hover{color:var(--danger);}
+
+  .eng-banner{border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;}
+  .eng-banner.proposal{background:linear-gradient(135deg,#8A6321 0%,#6F4E17 100%);color:#fff;}
+  .eng-banner.delivery{background:linear-gradient(135deg,var(--primary) 0%,#16382F 100%);color:#fff;}
+  .eng-banner .bf{min-width:120px;}
+  .eng-banner .bf label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.06em;opacity:.72;margin-bottom:3px;}
+  .eng-banner .bf select,.eng-banner .bf input{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:7px;color:#fff;padding:5px 7px;font-size:12.5px;font-family:var(--sans);width:100%;}
+  .eng-banner .bf select option{color:var(--ink);}
+  .eng-banner .bf input::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.7;}
+
+  .nextup{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:12px 16px;margin-bottom:18px;}
+  .nextup .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-bottom:4px;}
+  .nextup .txt{font-size:14px;font-weight:600;}
+  .nextup .sub{font-size:11.5px;color:var(--ink-soft);margin-top:3px;font-family:var(--mono);}
+  .nextup.clear{border-left-color:var(--done);}
+
+  .phase{margin-bottom:14px;}
+  .phase h3{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:0 0 7px;font-weight:600;display:flex;justify-content:space-between;}
+  .phase h3 .pc{font-family:var(--mono);font-weight:400;text-transform:none;letter-spacing:0;}
+
+  .item{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:5px;}
+  .item.overdue{border-color:var(--danger);background:#FFFBFA;}
+  .item.isdone{opacity:.6;}
+  .st{border:none;border-radius:100px;padding:4px 9px;font-size:10px;font-weight:600;font-family:var(--mono);cursor:pointer;flex-shrink:0;margin-top:1px;letter-spacing:.02em;}
+  .st.todo{background:var(--bg);color:var(--ink-soft);border:1px solid var(--line);}
+  .st.doing{background:var(--accent-soft);color:var(--accent);}
+  .st.blocked{background:var(--blocked-soft);color:var(--blocked);}
+  .st.done{background:var(--done-soft);color:var(--done);}
+  .item .body{flex:1;min-width:0;}
+  .item .title{width:100%;border:none;background:none;font-size:13.5px;font-family:var(--sans);color:var(--ink);padding:0;}
+  .item.isdone .title{text-decoration:line-through;}
+  .item .title:focus{outline:1px dashed var(--line);}
+  .item .row2{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap;}
+  .item select,.item input[type=date]{border:1px solid var(--line);border-radius:6px;padding:3px 6px;font-size:11px;font-family:var(--mono);background:var(--surface);color:var(--ink-soft);}
+  .item input[type=date].late{border-color:var(--danger);color:var(--danger);}
+  .item .note{flex:1;min-width:140px;border:1px solid transparent;border-radius:6px;padding:3px 6px;font-size:11.5px;font-family:var(--sans);color:var(--ink-soft);background:var(--bg);}
+  .item .note:focus{border-color:var(--line);outline:none;background:var(--surface);}
+  .item .del{border:none;background:none;color:var(--line);cursor:pointer;font-size:14px;line-height:1;padding:2px 4px;flex-shrink:0;}
+  .item .del:hover{color:var(--danger);}
+
+  .additem{border:1px dashed var(--line);background:none;border-radius:8px;padding:7px 10px;width:100%;color:var(--ink-soft);cursor:pointer;font-size:12px;font-family:var(--sans);text-align:left;}
+  .additem:hover{border-color:var(--primary);color:var(--primary);}
+  .btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 13px;font-size:12.5px;cursor:pointer;font-family:var(--sans);color:var(--ink);}
+  .btn:hover{border-color:var(--primary);color:var(--primary);}
+  .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .btn.primary:hover{opacity:.9;color:#fff;}
+
+  /* ---------- Modal ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(18,35,46,.45);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px;}
+  .modal{background:var(--surface);border-radius:14px;max-width:620px;width:100%;max-height:82vh;overflow-y:auto;padding:24px;}
+  .modal h3{font-family:var(--serif);margin:0 0 4px;font-size:20px;}
+  .modal .modal-sub{font-size:12px;color:var(--ink-soft);font-family:var(--mono);margin-bottom:16px;}
+  .modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;}
+  .grp{font-size:12.5px;font-weight:700;margin:14px 0 6px;}
+  .grp:first-child{margin-top:2px;}
+  .qrow{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:9px;margin-bottom:5px;background:var(--bg);cursor:pointer;}
+  .qrow:hover{border-color:var(--primary);}
+  .qrow .who{font-family:var(--mono);font-size:9.5px;font-weight:600;padding:3px 7px;border-radius:5px;background:var(--primary);color:#fff;flex-shrink:0;margin-top:1px;}
+  .qrow .qt{font-size:12.5px;font-weight:600;}
+  .qrow .qs{font-size:11px;color:var(--ink-soft);margin-top:2px;}
+  .none{font-size:11.5px;color:var(--ink-soft);margin-bottom:8px;}
+  .foot-note{font-size:10.5px;color:var(--ink-soft);margin-top:14px;line-height:1.6;}
+
+  @media (max-width:900px){
+    #app{flex-direction:column;}
+    #sidebar{width:100%;min-width:0;border-right:none;border-bottom:1px solid var(--line);}
+    #eng-list{max-height:44vh;}
+    #main{padding:22px 18px;}
+  }
+</style>
+
+<div id="app">
+  <div id="sidebar">
+    <div id="sidebar-head">
+      <h1>Operations Board</h1>
+      <div class="sub" id="today-label"></div>
+    </div>
+    <button id="due-now">📋 What&rsquo;s due now</button>
+    <button id="blocked-view">🚦 Blocked &amp; waiting on others</button>
+    <button id="by-owner">👥 Split by owner</button>
+    <div id="stats"></div>
+    <div id="filters"></div>
+    <input id="search" placeholder="Search client, programme or task..." />
+    <div id="eng-list"></div>
+    <button id="addeng">+ Add engagement</button>
+    <details id="tools-drawer">
+      <summary>⚙ Data &amp; tools</summary>
+      <button id="seed-2026">★ Load 2026 engagements</button>
+      <button id="export-data">💾 Backup board (download JSON)</button>
+      <button id="import-data">⤵ Restore from backup file</button>
+      <input type="file" id="import-file" accept="application/json,.json" style="display:none;" />
+    </details>
+  </div>
+  <div id="main"></div>
+</div>
+
+<script>
+(function(){
+
+const STORAGE_KEY = 'emft-ops-board-v1';
+
+// Prefer the artifact storage API when hosted; fall back to localStorage so the
+// file also works opened straight from disk.
+const storageBackend = (typeof window.storage !== 'undefined' && window.storage && window.storage.get)
+  ? window.storage
+  : {
+      get: async (key)=>({ value: localStorage.getItem(key) }),
+      set: async (key, value)=>{ localStorage.setItem(key, value); }
+    };
+
+const today = startOfDay(new Date());
+document.getElementById('today-label').textContent =
+  today.toLocaleDateString('en-GB',{weekday:'long', day:'2-digit', month:'short', year:'numeric'});
+
+function startOfDay(d){ const x = new Date(d); x.setHours(0,0,0,0); return x; }
+function uid(){ return Math.random().toString(36).slice(2,10); }
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---------- Vocabulary ---------- */
+
+const OWNERS = ['Hussam','Bilal','Fatima','Trainer','Client','Unassigned'];
+
+const PHASES = {
+  proposal: ['Qualify','Design','Cost','Write','Submit','Follow-up'],
+  delivery: ['Content','Assessment','Schedule','Logistics','Deliver','Report & close']
+};
+
+const STAGES = {
+  proposal: ['Brief received','Scoping','Designing','Pricing','Writing','With client','Clarifications','Won','Lost','Parked'],
+  delivery: ['Mobilising','Content build','Assessment','Scheduled','In delivery','Reporting','Closed','Parked']
+};
+
+const STATE_LABEL = {todo:'TO DO', doing:'DOING', blocked:'BLOCKED', done:'DONE'};
+const STATE_CYCLE = {todo:'doing', doing:'blocked', blocked:'done', done:'todo'};
+
+/* ---------- Standard checklists ----------
+   The two repeatable EMFT work sequences: what it takes to get a proposal out
+   the door, and what it takes to run a programme once it is won. */
+
+const TEMPLATES = {
+  proposal: [
+    ['Qualify','Confirm scope, audience and headcount with the client','Hussam'],
+    ['Qualify','Confirm budget range and decision timeline','Hussam'],
+    ['Qualify','Log the deal in Zoho with value and stage','Hussam'],
+    ['Design','Draft learning objectives and competency map','Bilal'],
+    ['Design','Build the modular agenda — days, modules, methods','Bilal'],
+    ['Design','Decide the assessment component (pre/post, JD-based)','Bilal'],
+    ['Design','Confirm delivery language and materials language','Hussam'],
+    ['Cost','Confirm trainer / speaker availability and day rate','Fatima'],
+    ['Cost','Build the cost sheet — trainer, content, platform, travel, margin','Hussam'],
+    ['Cost','Get pricing sign-off before anything goes out','Hussam'],
+    ['Write','Write the proposal document from the agreed agenda','Bilal'],
+    ['Write','Add credentials, case studies and trainer bios','Fatima'],
+    ['Write','Internal review pass — numbers, dates, client name, typos','Hussam'],
+    ['Submit','Send the proposal with a short covering note','Hussam'],
+    ['Submit','Log the submission and set the follow-up date','Hussam'],
+    ['Follow-up','Follow up 5 working days after sending','Hussam'],
+    ['Follow-up','Handle clarifications and any revised scope','Hussam'],
+    ['Follow-up','Get the PO / signed contract before mobilising','Hussam']
+  ],
+  delivery: [
+    ['Content','Apply client feedback and finalise the content','Bilal'],
+    ['Content','Tailor examples to the client’s own systems and products','Bilal'],
+    ['Content','Translate and review materials in Arabic','Bilal'],
+    ['Content','Client sign-off on the final deck','Hussam'],
+    ['Assessment','Whitelist the assessment domains with client IT','Bilal'],
+    ['Assessment','Dry run the assessment with a real end user','Bilal'],
+    ['Assessment','Send participants the instructions and conditions','Fatima'],
+    ['Assessment','Chase non-completions before the cut-off','Fatima'],
+    ['Assessment','Issue the results report to the trainer before day 1','Bilal'],
+    ['Schedule','Collect trainer availability','Fatima'],
+    ['Schedule','Lock the dates with the business — aim six months ahead','Hussam'],
+    ['Schedule','Confirm the participant list and role split','Fatima'],
+    ['Schedule','Issue calendar invites','Fatima'],
+    ['Logistics','Book the venue / set up the virtual room','Fatima'],
+    ['Logistics','Print and ship participant materials','Fatima'],
+    ['Logistics','Confirm catering, equipment and attendance sheet','Fatima'],
+    ['Logistics','Brief the trainer on client context and sensitivities','Hussam'],
+    ['Deliver','Run the session','Trainer'],
+    ['Deliver','Collect attendance and reaction feedback each day','Fatima'],
+    ['Deliver','Capture the trainer debrief','Fatima'],
+    ['Report & close','Issue the progress / completion report to the client','Fatima'],
+    ['Report & close','Issue certificates','Fatima'],
+    ['Report & close','Raise the invoice','Hussam'],
+    ['Report & close','Post-programme review and the next-phase ask','Hussam']
+  ]
+};
+
+function templateItems(track){
+  return TEMPLATES[track].map(([phase,title,owner])=>
+    ({id:uid(), phase, title, owner, due:'', state:'todo', note:''}));
+}
+
+function newEngagement(client, program, track){
+  return {id:uid(), client, program, track,
+          stage: STAGES[track][0], value:0, deadline:'',
+          items: templateItems(track)};
+}
+
+/* ---------- 2026 engagements ----------
+   Clients and programme names come from the 2026 Zoho deals already tracked on
+   the sales board; the checklists start blank so nothing here claims progress
+   that has not actually happened. */
+
+const SEED_2026 = [
+  {client:'BSF', program:'Branch Transformation — Universal Banker', track:'delivery', value:666068, stage:'In delivery',
+   carried:[
+     ['Schedule','Provide the first six months of trainer availability for approval','Fatima'],
+     ['Schedule','Lock the 2026 schedule with the business and the branch transformation PMs','Hussam'],
+     ['Report & close','Agree reporting expectations and the level-4 ROI measure with Sherby','Hussam'],
+     ['Content','Customise banking-products content per level — UB / Senior UB / Branch Manager','Bilal']
+   ]},
+  {client:'Bank Al Jazira', program:'Cyber Graduate Programme — Phase 3/4', track:'delivery', value:66800, stage:'Mobilising'},
+  {client:'Bank Al Jazira', program:'Tech Graduate Programme', track:'proposal', value:212500, stage:'With client'},
+  {client:'Bank Al Jazira', program:'AJB IT Needs', track:'proposal', value:179000, stage:'Scoping'},
+  {client:'SAB', program:'Cohort 2 & 3 — Future Capability', track:'proposal', value:140000, stage:'With client'},
+  {client:'Al Rajhi', program:'Contract Finance Training — Standard & Advanced', track:'proposal', value:0, stage:'Writing'},
+  {client:'Al Rajhi', program:'Graduate Programme Overview', track:'proposal', value:150000, stage:'Brief received'},
+  {client:'SDB', program:'Micro-learning platform + JD-based assessment pilot', track:'proposal', value:0, stage:'Scoping'},
+  {client:'Alinma Bank', program:'Graduate Programme Overview', track:'proposal', value:100000, stage:'Brief received'},
+  {client:'Alinma Bank', program:'International Learning Expedition', track:'proposal', value:100000, stage:'Brief received'},
+  {client:'ANB', program:'Bank Transformation Programme', track:'proposal', value:100000, stage:'Brief received'},
+  {client:'ENBD', program:'Banking Competency Training', track:'proposal', value:65733, stage:'Brief received'}
+];
+
+function seed2026(){
+  let added = 0;
+  SEED_2026.forEach(s=>{
+    const exists = state.engagements.some(e =>
+      e.client.toLowerCase() === s.client.toLowerCase() &&
+      e.program.toLowerCase() === s.program.toLowerCase());
+    if(exists) return;
+    const e = newEngagement(s.client, s.program, s.track);
+    e.value = s.value;
+    e.stage = s.stage;
+    (s.carried||[]).forEach(([phase,title,owner])=>{
+      e.items.push({id:uid(), phase, title, owner, due:'', state:'todo',
+                    note:'Carried over from planning notes — confirm still open.'});
+    });
+    state.engagements.push(e);
+    added++;
+  });
+  save(); render();
+  return added;
+}
+
+/* ---------- State ---------- */
+
+const state = {engagements: [], selectedId: null, filter: 'all', query: ''};
+let saveTimer = null;
+
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async ()=>{
+    try{ await storageBackend.set(STORAGE_KEY, JSON.stringify({engagements: state.engagements}), false); }
+    catch(e){ console.error('save failed', e); }
+  }, 300);
+}
+
+async function load(){
+  try{
+    const raw = await storageBackend.get(STORAGE_KEY);
+    const val = raw && raw.value;
+    if(val){
+      const parsed = JSON.parse(val);
+      if(Array.isArray(parsed.engagements)) state.engagements = parsed.engagements;
+    }
+  }catch(e){ console.error('load failed', e); }
+  if(!state.engagements.length) seed2026();
+  if(!state.selectedId && state.engagements.length) state.selectedId = state.engagements[0].id;
+  render();
+}
+
+/* ---------- Derived values ---------- */
+
+function dueDays(item){
+  if(!item.due) return null;
+  const d = startOfDay(new Date(item.due));
+  if(isNaN(d)) return null;
+  return Math.round((d - today) / 86400000);
+}
+function isOverdue(item){
+  if(item.state === 'done') return false;
+  const d = dueDays(item);
+  return d !== null && d < 0;
+}
+function isDueSoon(item){
+  if(item.state === 'done') return false;
+  const d = dueDays(item);
+  return d !== null && d >= 0 && d <= 7;
+}
+function openItems(e){ return e.items.filter(i=>i.state !== 'done'); }
+function doneCount(e){ return e.items.filter(i=>i.state === 'done').length; }
+
+function engStatus(e){
+  if(e.items.some(isOverdue)) return 'overdue';
+  if(e.items.some(i=>i.state === 'blocked')) return 'blocked';
+  if(e.items.some(i=>i.state === 'doing')) return 'active';
+  if(e.items.length && openItems(e).length === 0) return 'complete';
+  return 'idle';
+}
+
+// The single next thing to do on an engagement: whatever is in progress and
+// most overdue, otherwise the earliest unblocked to-do in phase order.
+function nextItem(e){
+  const rank = i => {
+    const phaseIdx = PHASES[e.track].indexOf(i.phase);
+    const d = dueDays(i);
+    return [isOverdue(i) ? 0 : 1,
+            i.state === 'doing' ? 0 : 1,
+            d === null ? 1 : 0,
+            d === null ? 0 : d,
+            phaseIdx < 0 ? 99 : phaseIdx];
+  };
+  const candidates = e.items.filter(i => i.state === 'doing' || i.state === 'todo');
+  if(!candidates.length) return null;
+  return candidates.slice().sort((a,b)=>{
+    const ra = rank(a), rb = rank(b);
+    for(let k = 0; k < ra.length; k++){ if(ra[k] !== rb[k]) return ra[k] - rb[k]; }
+    return 0;
+  })[0];
+}
+
+function fmtMoney(v){
+  if(!v) return '';
+  if(v >= 1000000) return '$' + (v/1000000).toFixed(2) + 'M';
+  if(v >= 1000) return '$' + Math.round(v/1000) + 'K';
+  return '$' + v;
+}
+function fmtDue(item){
+  const d = dueDays(item);
+  if(d === null) return 'no date';
+  if(d < 0) return Math.abs(d) + 'd overdue';
+  if(d === 0) return 'due today';
+  if(d === 1) return 'due tomorrow';
+  return 'in ' + d + 'd';
+}
+
+/* ---------- Sidebar rendering ---------- */
+
+function computeStats(){
+  const s = {overdue:0, soon:0, blocked:0, open:0};
+  state.engagements.forEach(e=>e.items.forEach(i=>{
+    if(i.state === 'done') return;
+    s.open++;
+    if(isOverdue(i)) s.overdue++;
+    else if(isDueSoon(i)) s.soon++;
+    if(i.state === 'blocked') s.blocked++;
+  }));
+  return s;
+}
+
+function renderStats(){
+  const s = computeStats();
+  document.getElementById('stats').innerHTML = `
+    <div class="stat danger"><div class="n">${s.overdue}</div><div class="l">Overdue</div></div>
+    <div class="stat accent"><div class="n">${s.soon}</div><div class="l">Due in 7 days</div></div>
+    <div class="stat blocked"><div class="n">${s.blocked}</div><div class="l">Blocked</div></div>
+    <div class="stat primary"><div class="n">${s.open}</div><div class="l">Open tasks</div></div>`;
+}
+
+function renderFilters(){
+  const opts = [['all','All'],['proposal','✍ Proposals'],['delivery','🎓 Delivery'],
+                ['overdue','Overdue'],['blocked','Blocked'],['active','In progress']];
+  document.getElementById('filters').innerHTML = opts.map(([k,l])=>
+    `<button class="chip ${state.filter===k?'active':''}" data-f="${k}">${l}</button>`).join('');
+  document.querySelectorAll('#filters .chip').forEach(el=>
+    el.onclick = ()=>{ state.filter = el.dataset.f; render(); });
+}
+
+function renderList(){
+  let list = state.engagements;
+  if(state.filter === 'proposal' || state.filter === 'delivery') list = list.filter(e=>e.track === state.filter);
+  else if(state.filter === 'overdue') list = list.filter(e=>e.items.some(isOverdue));
+  else if(state.filter === 'blocked') list = list.filter(e=>e.items.some(i=>i.state === 'blocked'));
+  else if(state.filter === 'active') list = list.filter(e=>engStatus(e) === 'active');
+
+  if(state.query){
+    const q = state.query.toLowerCase();
+    list = list.filter(e => (e.client + ' ' + e.program).toLowerCase().includes(q)
+                         || e.items.some(i => i.title.toLowerCase().includes(q)));
+  }
+
+  const el = document.getElementById('eng-list');
+  if(!list.length){
+    el.innerHTML = '<div style="padding:20px;color:var(--ink-soft);font-size:12.5px;">Nothing matches this filter.</div>';
+    return;
+  }
+
+  el.innerHTML = list.map(e=>{
+    const total = e.items.length, done = doneCount(e);
+    const pct = total ? Math.round(done / total * 100) : 0;
+    const late = e.items.filter(isOverdue).length;
+    const blocked = e.items.filter(i=>i.state === 'blocked').length;
+    const nxt = nextItem(e);
+    let meta;
+    if(late) meta = `<div class="meta late">${late} overdue${blocked?' · '+blocked+' blocked':''}</div>`;
+    else if(blocked) meta = `<div class="meta">${blocked} blocked</div>`;
+    else if(nxt) meta = `<div class="meta">next: ${escapeHtml(nxt.title.slice(0,34))}${nxt.title.length>34?'…':''}</div>`;
+    else meta = `<div class="meta">all clear</div>`;
+    return `<div class="eng-row ${e.id===state.selectedId?'selected':''}" data-id="${e.id}">
+      <div class="top">
+        <div class="name">${escapeHtml(e.client)}</div>
+        <span class="trk ${e.track}">${e.track === 'proposal' ? 'PROPOSAL' : 'DELIVERY'}</span>
+      </div>
+      <div class="prog">${escapeHtml(e.program)}</div>
+      ${meta}
+      <div class="bar ${late?'late':''}"><i style="width:${pct}%"></i></div>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.eng-row').forEach(el=>
+    el.onclick = ()=>{ state.selectedId = el.dataset.id; render(); });
+}
+
+/* ---------- Detail rendering ---------- */
+
+function ownerOptions(sel){
+  return OWNERS.map(o=>`<option value="${o}" ${sel===o?'selected':''}>${o}</option>`).join('');
+}
+function stageOptions(track, sel){
+  return STAGES[track].map(s=>`<option value="${s}" ${sel===s?'selected':''}>${s}</option>`).join('');
+}
+
+function itemHtml(item){
+  const late = isOverdue(item);
+  return `<div class="item ${late?'overdue':''} ${item.state==='done'?'isdone':''}" data-iid="${item.id}">
+    <button class="st ${item.state}" data-role="state" title="Click to advance">${STATE_LABEL[item.state]}</button>
+    <div class="body">
+      <input class="title" data-role="title" value="${escapeHtml(item.title)}" />
+      <div class="row2">
+        <select data-role="owner">${ownerOptions(item.owner)}</select>
+        <input type="date" class="${late?'late':''}" data-role="due" value="${escapeHtml(item.due)}" />
+        <input class="note" data-role="note" placeholder="note / blocker…" value="${escapeHtml(item.note)}" />
+      </div>
+    </div>
+    <button class="del" data-role="del" title="Delete task">×</button>
+  </div>`;
+}
+
+function renderMain(){
+  const main = document.getElementById('main');
+  const e = state.engagements.find(x=>x.id === state.selectedId);
+  if(!e){
+    main.innerHTML = `<div id="empty"><div class="glyph">§</div>
+      <div>Pick an engagement on the left,<br/>or add one to start tracking it.</div></div>`;
+    return;
+  }
+
+  const nxt = nextItem(e);
+  const late = e.items.filter(isOverdue).length;
+
+  main.innerHTML = `
+    <div id="detail-head">
+      <div class="titles">
+        <input class="eng-client" data-role="client" value="${escapeHtml(e.client)}" />
+        <input class="eng-program" data-role="program" value="${escapeHtml(e.program)}" />
+      </div>
+      <button class="del-eng" data-role="del-eng">Remove engagement</button>
+    </div>
+
+    <div class="eng-banner ${e.track}">
+      <div class="bf"><label>Track</label>
+        <select data-role="track">
+          <option value="proposal" ${e.track==='proposal'?'selected':''}>✍ Proposal build</option>
+          <option value="delivery" ${e.track==='delivery'?'selected':''}>🎓 Delivery operations</option>
+        </select></div>
+      <div class="bf"><label>Stage</label>
+        <select data-role="stage">${stageOptions(e.track, e.stage)}</select></div>
+      <div class="bf"><label>Client deadline</label>
+        <input type="date" data-role="deadline" value="${escapeHtml(e.deadline||'')}" /></div>
+      <div class="bf"><label>Value (USD)</label>
+        <input type="number" data-role="value" value="${e.value||0}" /></div>
+      <div class="bf" style="min-width:90px;"><label>Progress</label>
+        <div style="font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.1;">
+          ${doneCount(e)}<span style="opacity:.6;font-size:14px;">/${e.items.length}</span></div></div>
+    </div>
+
+    <div class="nextup ${nxt?'':'clear'}">
+      <div class="lbl">${nxt ? 'Next up' : 'Nothing outstanding'}</div>
+      <div class="txt">${nxt ? escapeHtml(nxt.title) : 'Every task on this engagement is done or blocked.'}</div>
+      ${nxt ? `<div class="sub">${escapeHtml(nxt.phase)} · ${escapeHtml(nxt.owner)} · ${fmtDue(nxt)}${late?` · ${late} overdue on this engagement`:''}</div>` : ''}
+    </div>
+
+    <div id="phases"></div>
+    <button class="btn" id="reset-checklist" style="margin-top:6px;">↺ Append the standard ${e.track === 'proposal' ? 'proposal' : 'delivery'} checklist</button>
+  `;
+
+  // Phases — template phases first, then any phase the user has invented.
+  const phaseNames = PHASES[e.track].slice();
+  e.items.forEach(i=>{ if(!phaseNames.includes(i.phase)) phaseNames.push(i.phase); });
+
+  document.getElementById('phases').innerHTML = phaseNames.map(p=>{
+    const items = e.items.filter(i=>i.phase === p);
+    if(!items.length) return '';
+    const d = items.filter(i=>i.state === 'done').length;
+    return `<div class="phase">
+      <h3>${escapeHtml(p)}<span class="pc">${d}/${items.length}</span></h3>
+      ${items.map(itemHtml).join('')}
+      <button class="additem" data-phase="${escapeHtml(p)}">+ task in ${escapeHtml(p)}</button>
+    </div>`;
+  }).join('');
+
+  wireDetail(e);
+}
+
+function wireDetail(e){
+  const main = document.getElementById('main');
+  const q = sel => main.querySelector(sel);
+
+  q('[data-role="client"]').oninput = ev=>{ e.client = ev.target.value; save(); renderList(); };
+  q('[data-role="program"]').oninput = ev=>{ e.program = ev.target.value; save(); renderList(); };
+  q('[data-role="deadline"]').onchange = ev=>{ e.deadline = ev.target.value; save(); };
+  q('[data-role="value"]').oninput = ev=>{ e.value = Number(ev.target.value) || 0; save(); };
+  q('[data-role="stage"]').onchange = ev=>{ e.stage = ev.target.value; save(); };
+
+  q('[data-role="track"]').onchange = ev=>{
+    e.track = ev.target.value;
+    if(!STAGES[e.track].includes(e.stage)) e.stage = STAGES[e.track][0];
+    save(); render();
+  };
+
+  q('[data-role="del-eng"]').onclick = ()=>{
+    if(!confirm('Remove "' + e.client + ' — ' + e.program + '" from the board?')) return;
+    state.engagements = state.engagements.filter(x=>x.id !== e.id);
+    state.selectedId = state.engagements[0] ? state.engagements[0].id : null;
+    save(); render();
+  };
+
+  q('#reset-checklist').onclick = ()=>{
+    const existing = new Set(e.items.map(i=>i.phase + '|' + i.title));
+    let added = 0;
+    templateItems(e.track).forEach(i=>{
+      if(existing.has(i.phase + '|' + i.title)) return;
+      e.items.push(i); added++;
+    });
+    if(!added) alert('The standard checklist is already on this engagement.');
+    save(); render();
+  };
+
+  main.querySelectorAll('.additem').forEach(btn=>btn.onclick = ()=>{
+    const title = prompt('New task in ' + btn.dataset.phase + ':');
+    if(!title || !title.trim()) return;
+    e.items.push({id:uid(), phase:btn.dataset.phase, title:title.trim(),
+                  owner:'Unassigned', due:'', state:'todo', note:''});
+    save(); render();
+  });
+
+  main.querySelectorAll('.item').forEach(row=>{
+    const item = e.items.find(i=>i.id === row.dataset.iid);
+    if(!item) return;
+    row.querySelector('[data-role="state"]').onclick = ()=>{
+      item.state = STATE_CYCLE[item.state]; save(); render();
+    };
+    row.querySelector('[data-role="title"]').oninput = ev=>{ item.title = ev.target.value; save(); };
+    row.querySelector('[data-role="owner"]').onchange = ev=>{ item.owner = ev.target.value; save(); renderStats(); };
+    row.querySelector('[data-role="due"]').onchange = ev=>{ item.due = ev.target.value; save(); render(); };
+    row.querySelector('[data-role="note"]').oninput = ev=>{ item.note = ev.target.value; save(); };
+    row.querySelector('[data-role="del"]').onclick = ()=>{
+      e.items = e.items.filter(i=>i.id !== item.id); save(); render();
+    };
+  });
+}
+
+function render(){ renderStats(); renderFilters(); renderList(); renderMain(); }
+
+/* ---------- Cross-engagement check-in views ---------- */
+
+function openModal(title, sub){
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.innerHTML = `<div class="modal">
+      <h3>${escapeHtml(title)}</h3>
+      <div class="modal-sub">${escapeHtml(sub)}</div>
+      <div class="modal-content"></div>
+      <div class="modal-foot"><button class="btn primary" data-role="close">Close</button></div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.querySelector('[data-role="close"]').onclick = ()=>overlay.remove();
+  overlay.onclick = ev=>{ if(ev.target === overlay) overlay.remove(); };
+  return overlay;
+}
+
+function allOpenTasks(){
+  const out = [];
+  state.engagements.forEach(e=>e.items.forEach(i=>{
+    if(i.state !== 'done') out.push({e, i});
+  }));
+  return out;
+}
+
+function qrow(x){
+  return `<div class="qrow" data-eng="${x.e.id}">
+    <span class="who">${escapeHtml(x.i.owner.slice(0,8).toUpperCase())}</span>
+    <div style="min-width:0;">
+      <div class="qt">${escapeHtml(x.i.title)}</div>
+      <div class="qs">${escapeHtml(x.e.client)} — ${escapeHtml(x.e.program)}</div>
+      <div class="qs">${escapeHtml(x.i.phase)} · ${fmtDue(x.i)}${x.i.note ? ' · ' + escapeHtml(x.i.note) : ''}</div>
+    </div>
+  </div>`;
+}
+
+function wireRows(overlay){
+  overlay.querySelectorAll('[data-eng]').forEach(el=>el.onclick = ()=>{
+    state.selectedId = el.dataset.eng; render(); overlay.remove();
+  });
+}
+
+function section(label, rows, emptyMsg, color){
+  let html = `<div class="grp" style="color:${color}">${label} (${rows.length})</div>`;
+  html += rows.length ? rows.map(qrow).join('') : `<div class="none">${emptyMsg}</div>`;
+  return html;
+}
+
+function byDue(a,b){
+  const da = dueDays(a.i), db = dueDays(b.i);
+  if(da === null && db === null) return 0;
+  if(da === null) return 1;
+  if(db === null) return -1;
+  return da - db;
+}
+
+document.getElementById('due-now').onclick = ()=>{
+  const open = allOpenTasks();
+  const overdue = open.filter(x=>isOverdue(x.i)).sort(byDue);
+  const soon    = open.filter(x=>isDueSoon(x.i)).sort(byDue);
+  const doing   = open.filter(x=>x.i.state === 'doing' && !isOverdue(x.i) && !isDueSoon(x.i)).sort(byDue);
+  const undated = open.filter(x=>x.i.state === 'todo' && !x.i.due);
+
+  // Only the head of each engagement's queue — the rest is noise at check-in.
+  const heads = state.engagements.map(nextItem).filter(Boolean).map(i=>i.id);
+  const nextUndated = undated.filter(x=>heads.includes(x.i.id));
+
+  const overlay = openModal("What's due now",
+    today.toLocaleDateString('en-GB',{weekday:'long', day:'2-digit', month:'short'}));
+  let html = '';
+  html += section('⚠ OVERDUE', overdue, 'Nothing overdue.', 'var(--danger)');
+  html += section('📅 DUE WITHIN 7 DAYS', soon, 'Nothing lands this week.', 'var(--accent)');
+  html += section('▶ IN PROGRESS', doing, 'Nothing in flight.', 'var(--primary)');
+  html += section('○ NEXT UP, NO DATE SET', nextUndated,
+                  'Every engagement has a dated next step.', 'var(--ink-soft)');
+  html += `<div class="foot-note">One line per engagement in the last group — the next unblocked task.
+    Give it a date and it moves up into the dated lists. Blocked work is on its own view.</div>`;
+  overlay.querySelector('.modal-content').innerHTML = html;
+  wireRows(overlay);
+};
+
+document.getElementById('blocked-view').onclick = ()=>{
+  const open = allOpenTasks();
+  const blocked = open.filter(x=>x.i.state === 'blocked').sort(byDue);
+  const onClient  = blocked.filter(x=>x.i.owner === 'Client');
+  const onTrainer = blocked.filter(x=>x.i.owner === 'Trainer');
+  const onUs      = blocked.filter(x=>x.i.owner !== 'Client' && x.i.owner !== 'Trainer');
+
+  const overlay = openModal('Blocked & waiting on others',
+    blocked.length + ' blocked task' + (blocked.length === 1 ? '' : 's'));
+  let html = '';
+  html += section('🏛 WAITING ON THE CLIENT', onClient, 'Nothing sitting with a client.', 'var(--blocked)');
+  html += section('🎤 WAITING ON A TRAINER', onTrainer, 'No trainer holding anything up.', 'var(--blocked)');
+  html += section('🏠 BLOCKED ON US', onUs, 'Nothing blocked internally.', 'var(--danger)');
+  html += `<div class="foot-note">Anything waiting on a client or a trainer needs a chase, not a wait —
+    put the chase date in the task&rsquo;s due field so it surfaces on the due list.</div>`;
+  overlay.querySelector('.modal-content').innerHTML = html;
+  wireRows(overlay);
+};
+
+document.getElementById('by-owner').onclick = ()=>{
+  const open = allOpenTasks();
+  const overlay = openModal('Split by owner', open.length + ' open tasks across the board');
+  let html = '';
+  OWNERS.forEach(o=>{
+    const mine = open.filter(x=>x.i.owner === o).sort(byDue);
+    if(!mine.length) return;
+    const late = mine.filter(x=>isOverdue(x.i)).length;
+    html += section(o.toUpperCase() + (late ? ` — ${late} overdue` : ''), mine, '', 'var(--primary)');
+  });
+  if(!html) html = '<div class="none">No open tasks on the board.</div>';
+  overlay.querySelector('.modal-content').innerHTML = html;
+  wireRows(overlay);
+};
+
+/* ---------- Sidebar controls ---------- */
+
+document.getElementById('search').oninput = ev=>{ state.query = ev.target.value; renderList(); };
+
+document.getElementById('addeng').onclick = ()=>{
+  const client = prompt('Client / account name:');
+  if(!client || !client.trim()) return;
+  const program = prompt('Programme or proposal name:') || 'Untitled';
+  const track = confirm('OK = proposal build\nCancel = delivery operations') ? 'proposal' : 'delivery';
+  const e = newEngagement(client.trim(), program.trim(), track);
+  state.engagements.unshift(e);
+  state.selectedId = e.id;
+  save(); render();
+};
+
+document.getElementById('seed-2026').onclick = function(){
+  const n = seed2026();
+  this.textContent = n ? `★ Loaded ${n} engagement${n===1?'':'s'} ✓` : '★ Already loaded — nothing new';
+};
+
+document.getElementById('export-data').onclick = async function(){
+  const json = JSON.stringify({engagements: state.engagements}, null, 2);
+  const filename = 'emft-ops-board-' + new Date().toISOString().slice(0,10) + '.json';
+  if(window.claude && window.claude.downloads){
+    try{
+      await window.claude.downloads.save({filename, data: json});
+      this.textContent = '💾 Backup saved ✓';
+      return;
+    }catch(err){
+      this.textContent = '💾 Save declined — try again';
+      return;
+    }
+  }
+  const url = URL.createObjectURL(new Blob([json], {type:'application/json'}));
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+  this.textContent = '💾 Backup downloaded ✓';
+};
+
+document.getElementById('import-data').onclick = ()=>document.getElementById('import-file').click();
+document.getElementById('import-file').onchange = ev=>{
+  const file = ev.target.files && ev.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      const parsed = JSON.parse(reader.result);
+      if(!Array.isArray(parsed.engagements)) throw new Error('no engagements array');
+      if(!confirm('Replace the current board with ' + parsed.engagements.length + ' engagements from this file?')) return;
+      state.engagements = parsed.engagements;
+      state.selectedId = state.engagements[0] ? state.engagements[0].id : null;
+      save(); render();
+      document.getElementById('import-data').textContent = '⤵ Board restored ✓';
+    }catch(err){
+      alert('That file is not a board backup.');
+    }
+  };
+  reader.readAsText(file);
+  ev.target.value = '';
+};
+
+load();
+})();
+</script>
