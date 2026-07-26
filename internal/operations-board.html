@@ -347,9 +347,9 @@ const SEED_2026 = [
      ['Report & close','Agree reporting expectations and the level-4 ROI measure with Sherby','Hussam'],
      ['Content','Customise banking-products content per level — UB / Senior UB / Branch Manager','Bilal']
    ]},
-  {client:'Bank Al Jazira', program:'Cyber Graduate Programme — Phase 3/4', track:'delivery', value:66800, stage:'Mobilising'},
-  {client:'Bank Al Jazira', program:'Tech Graduate Programme', track:'proposal', value:212500, stage:'With client'},
-  {client:'Bank Al Jazira', program:'AJB IT Needs', track:'proposal', value:179000, stage:'Scoping'},
+  {client:'Aljazira Bank', program:'Cyber Graduate Programme — Phase 3/4', track:'delivery', value:66800, stage:'Mobilising'},
+  {client:'Aljazira Bank', program:'Tech Graduate Programme', track:'proposal', value:212500, stage:'With client'},
+  {client:'Aljazira Bank', program:'AJB IT Needs', track:'proposal', value:179000, stage:'Scoping'},
   {client:'SAB', program:'Cohort 2 & 3 — Future Capability', track:'proposal', value:140000, stage:'With client'},
   {client:'Al Rajhi', program:'Contract Finance Training — Standard & Advanced', track:'proposal', value:0, stage:'Writing'},
   {client:'Al Rajhi', program:'Graduate Programme Overview', track:'proposal', value:150000, stage:'Brief received'},
@@ -367,7 +367,7 @@ const SEED_2026 = [
    exactly as given. */
 
 const AJB_TECH = {
-  match: {client:'bank al jazira', program:'tech graduate programme'},
+  match: {client:'aljazira', program:'tech graduate programme'},
   track: 'delivery',
   stage: 'Mobilising',
   deadline: '2026-09-27',
@@ -541,10 +541,19 @@ function applyBsfCohorts(){
   return true;
 }
 
+/* The bank's name is Aljazira Bank, not Bank Al Jazira. */
+function renameAljazira(){
+  state.engagements.forEach(e=>{
+    if(/bank\s*al\s*jazira/i.test(e.client)) e.client = 'Aljazira Bank';
+  });
+  return true;
+}
+
 /* One-time patches, applied to boards that already carry saved state. */
 const PATCHES = {
   'ajb-tech-2026-07-26': applyAjbTech,
-  'bsf-cohorts-2026-07-26': applyBsfCohorts
+  'bsf-cohorts-2026-07-26': applyBsfCohorts,
+  'aljazira-rename': renameAljazira
 };
 
 function seed2026(){
