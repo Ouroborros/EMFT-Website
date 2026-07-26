@@ -136,6 +136,20 @@
   .cf.yes{background:var(--done-soft);color:var(--done);}
   .cf.no{background:var(--danger-soft);color:var(--danger);}
   .cf.na{background:var(--bg);color:var(--ink-soft);cursor:default;}
+  .cf.info{background:var(--primary-soft);color:var(--primary);}
+  .cf.warn{background:var(--blocked-soft);color:var(--blocked);}
+
+  .sched td.flags{white-space:nowrap;}
+  .flag{display:inline-block;font-size:9px;font-family:var(--mono);padding:2px 6px;border-radius:100px;background:var(--danger-soft);color:var(--danger);margin-right:3px;}
+
+  .rollup{display:flex;gap:20px;flex-wrap:wrap;padding:0 0 12px;margin-bottom:12px;border-bottom:1px solid var(--line);}
+  .rollup .r{min-width:78px;}
+  .rollup .rn{font-family:var(--serif);font-size:23px;font-weight:600;line-height:1.1;}
+  .rollup .rn small{font-size:13px;opacity:.55;}
+  .rollup .rl{font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-top:2px;}
+  .rollup .r.bad .rn{color:var(--danger);}
+  .rollup .r.good .rn{color:var(--done);}
+  .rollup .r.warn .rn{color:var(--blocked);}
 
   .phase{margin-bottom:14px;}
   .phase h3{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:0 0 7px;font-weight:600;display:flex;justify-content:space-between;}
@@ -359,16 +373,29 @@ const AJB_TECH = {
   deadline: '2026-09-27',
   assessment: {done:185, total:201,
     note:'Badr has 8 more and wants the outstanding list before deciding whether to extend the window.'},
-  schedule: [
-    {id:uid(), phase:'Phase 1 – IT Banking Technology Foundation', days:'5', dates:'27 Sep – 1 Oct', primary:'Tariq',  backup:'Murrad',   backup2:'',       confirmed:true},
-    {id:uid(), phase:'Phase 1 – Soft Skills for IT Graduates',      days:'6', dates:'4 Oct – 11 Oct', primary:'Zeina',  backup:'Waleed',   backup2:'Yasser', confirmed:true},
-    {id:uid(), phase:'Break Week',                                   days:'–', dates:'12 Oct – 17 Oct', primary:'-',     backup:'',         backup2:'',       confirmed:false, brk:true},
-    {id:uid(), phase:'Workshop 1 – Technology Foundations & Banking Systems',        days:'7', dates:'18 Oct – 26 Oct', primary:'Murrad', backup:'Kadir',    backup2:'', confirmed:false},
-    {id:uid(), phase:'Workshop 2 – Cloud-Native Applications & Platform Engineering', days:'5', dates:'1 Nov – 5 Nov',  primary:'Kadir',  backup:'Tariq',    backup2:'', confirmed:false},
-    {id:uid(), phase:'Workshop 3 – DevOps, Automation & Quality Engineering',         days:'5', dates:'8 Nov – 12 Nov', primary:'Kadir',  backup:'Tariq',    backup2:'', confirmed:false},
-    {id:uid(), phase:'Workshop 4 – Enterprise Technology Governance, Operations & Resilience', days:'6', dates:'15 Nov – 22 Nov', primary:'Tariq', backup:'Abdullah', backup2:'', confirmed:true},
-    {id:uid(), phase:'Workshop 5 – Banking Technology Simulation & Final Presentations', days:'3', dates:'23 Nov – 25 Nov', primary:'Murrad', backup:'Qadir', backup2:'', confirmed:false}
-  ],
+  grid: {
+    title: 'Schedule & trainer confirmation',
+    rules: 'trainerConfirm',
+    cols: [
+      {k:'phase',     l:'Phase / Workshop', min:230},
+      {k:'days',      l:'Days',      min:44},
+      {k:'dates',     l:'Dates',     min:108},
+      {k:'primary',   l:'Primary',   min:78},
+      {k:'backup',    l:'Backup',    min:78},
+      {k:'backup2',   l:'Backup 2',  min:78},
+      {k:'confirmed', l:'Confirmed', min:96, pill:['Pending','Confirmed','N/A']}
+    ],
+    rows: [
+      {phase:'Phase 1 – IT Banking Technology Foundation', days:'5', dates:'27 Sep – 1 Oct', primary:'Tariq', backup:'Murrad', backup2:'', confirmed:'Confirmed'},
+      {phase:'Phase 1 – Soft Skills for IT Graduates', days:'6', dates:'4 Oct – 11 Oct', primary:'Zeina', backup:'Waleed', backup2:'Yasser', confirmed:'Confirmed'},
+      {phase:'Break Week', days:'–', dates:'12 Oct – 17 Oct', primary:'-', backup:'', backup2:'', confirmed:'N/A'},
+      {phase:'Workshop 1 – Technology Foundations & Banking Systems', days:'7', dates:'18 Oct – 26 Oct', primary:'Murrad', backup:'Kadir', backup2:'', confirmed:'Pending'},
+      {phase:'Workshop 2 – Cloud-Native Applications & Platform Engineering', days:'5', dates:'1 Nov – 5 Nov', primary:'Kadir', backup:'Tariq', backup2:'', confirmed:'Pending'},
+      {phase:'Workshop 3 – DevOps, Automation & Quality Engineering', days:'5', dates:'8 Nov – 12 Nov', primary:'Kadir', backup:'Tariq', backup2:'', confirmed:'Pending'},
+      {phase:'Workshop 4 – Enterprise Technology Governance, Operations & Resilience', days:'6', dates:'15 Nov – 22 Nov', primary:'Tariq', backup:'Abdullah', backup2:'', confirmed:'Confirmed'},
+      {phase:'Workshop 5 – Banking Technology Simulation & Final Presentations', days:'3', dates:'23 Nov – 25 Nov', primary:'Murrad', backup:'Qadir', backup2:'', confirmed:'Pending'}
+    ]
+  },
   tasks: [
     ['Assessment','Send Badr the list of the 16 outstanding assessment participants','Hussam','2026-07-29','doing',
      'He is waiting on this to decide whether to extend the window.'],
@@ -394,7 +421,9 @@ function applyAjbTech(){
   e.stage = AJB_TECH.stage;
   e.deadline = AJB_TECH.deadline;
   e.assessment = JSON.parse(JSON.stringify(AJB_TECH.assessment));
-  e.schedule = JSON.parse(JSON.stringify(AJB_TECH.schedule)).map(r=>({...r, id:uid()}));
+  e.grid = JSON.parse(JSON.stringify(AJB_TECH.grid));
+  e.grid.rows = e.grid.rows.map(r=>({...r, id:uid()}));
+  delete e.schedule;
   // The delivery checklist replaces the proposal one; keep anything already ticked.
   const kept = e.items.filter(i=>i.state === 'done');
   e.items = kept.concat(templateItems('delivery').filter(t =>
@@ -406,8 +435,117 @@ function applyAjbTech(){
   return true;
 }
 
+/* ---------- BSF Branch Transformation cohort roster ----------
+   Supplied by Hussam, 26 Jul 2026. Registered and attended totals reconcile to
+   the 465 / 232 on the source sheet. Blank cells are left blank on purpose —
+   the board flags them rather than guessing at them. */
+
+const BSF_COHORTS = {
+  match: {client:'bsf', program:'branch transformation'},
+  grid: {
+    title: 'Cohort schedule',
+    rules: 'cohorts',
+    rollup: 'cohorts',
+    cols: [
+      {k:'course',       l:'Course',   min:186},
+      {k:'cohort',       l:'Cohort',   min:48},
+      {k:'start',        l:'Start',    min:84},
+      {k:'end',          l:'End',      min:84},
+      {k:'location',     l:'Location', min:74},
+      {k:'status',       l:'Status',   min:106, pill:['Scheduled','Completed','Rescheduled','Cancelled']},
+      {k:'participants', l:'Reg.',     min:46},
+      {k:'attended',     l:'Att.',     min:46},
+      {k:'trainer',      l:'Trainer',  min:86}
+    ],
+    rows: [
+      ['Customer Service Excellence','1','29-Dec-25','30-Dec-25','Riyadh','Completed','30','14',''],
+      ['Customer Service Excellence','2','25-Jan-26','26-Jan-26','Riyadh','Completed','34','14',''],
+      ['Customer Service Excellence','3','1-Feb-26','2-Feb-26','Riyadh','Completed','29','15',''],
+      ['Sales Skills','1','4-Feb-26','5-Feb-26','Riyadh','Completed','19','14',''],
+      ['Sales Skills','2','8-Feb-26','9-Feb-26','Riyadh','Completed','16','11',''],
+      ['RMs - Wealth Management','1','10-Feb-26','12-Feb-26','Riyadh','Completed','34','28',''],
+      ['Sales Skills','3','11-Feb-26','12-Feb-26','Riyadh','Completed','30','16',''],
+      ['Customer Service Excellence','4','8-Apr-26','9-Apr-26','Riyadh','Completed','24','15',''],
+      ['Customer Service Excellence','5','13-Apr-26','14-Apr-26','Jeddah','Completed','22','18',''],
+      ['Customer Service Excellence','6','15-Apr-26','16-Apr-26','Jeddah','Completed','26','21',''],
+      ['Customer Service Excellence','7','3-May-26','4-May-26','Riyadh','Completed','26','18',''],
+      ['Customer Service Excellence','8','6-May-26','7-May-26','Khobar','Completed','25','24',''],
+      ['Customer Service Excellence','9','10-May-26','11-May-26','Khobar','Completed','26','',''],
+      ['Customer Service Excellence','10','7-Jun-26','8-Jun-26','Jeddah','Completed','27','24',''],
+      ['ML - Wealth Management','1','9-Jun-26','11-Jun-26','Riyadh','Rescheduled','','',''],
+      ['Sales Skills','4','14-Jun-26','15-Jun-26','Khobar','Rescheduled','','',''],
+      ['Sales Skills','5','17-Jun-26','18-Jun-26','Khobar','Rescheduled','','',''],
+      ['RMs - Wealth Management','2','21-Jun-26','23-Jun-26','Jeddah','Completed','24','','Bassel'],
+      ['Sales Skills','6','1-Jul-26','2-Jul-26','Jeddah','Scheduled','','','Zeina'],
+      ['Sales Skills','7','5-Jul-26','6-Jul-26','Riyadh','Scheduled','','','Yasser'],
+      ['Sales Skills','8','8-Jul-26','9-Jul-26','Riyadh','Scheduled','','','Yasser'],
+      ['Sales Skills','9','12-Jul-26','13-Jul-26','Jeddah','Scheduled','','','Yasser'],
+      ['RMs - Wealth Management','3','14-Jul-26','16-Jul-26','Khobar','Completed','23','','Samir'],
+      ['UB - Banking Products','1','19-Jul-26','21-Jul-26','Riyadh','Rescheduled','','',''],
+      ['Sales Skills','10','2-Aug-26','3-Aug-26','Jeddah','Scheduled','','','Yasser'],
+      ['ML - Wealth Management','3','4-Aug-26','6-Aug-26','Jeddah','Rescheduled','25','',''],
+      ['UB - Banking Products','3','4-Aug-26','6-Aug-26','Jeddah','Rescheduled','','','Ahmed Fadl'],
+      ['ML - Wealth Management','2','9-Aug-26','11-Aug-26','Khobar','Scheduled','25','','Yasser'],
+      ['UB - Banking Products','2','11-Aug-26','13-Aug-26','Riyadh','Scheduled','','','Ahmed Fadl'],
+      ['UB - Banking Products','3','16-Aug-26','18-Aug-26','Khobar','Scheduled','','',''],
+      ['UB - Banking Products','4','1-Sep-26','3-Sep-26','Jeddah','Scheduled','','',''],
+      ['UB - Banking Products','5','6-Sep-26','8-Sep-26','Jeddah','Scheduled','','',''],
+      ['RMs - Banking Products','1','13-Sep-26','15-Sep-26','Riyadh','Scheduled','','',''],
+      ['UB - Banking Products','6','4-Oct-26','6-Oct-26','Riyadh','Scheduled','','',''],
+      ['UB - Banking Products','7','11-Oct-26','13-Oct-26','Khobar','Scheduled','','',''],
+      ['ML - Banking Products','1','13-Oct-26','15-Oct-26','Riyadh','Scheduled','','',''],
+      ['UB - Banking Products','8','18-Oct-26','20-Oct-26','Jeddah','Scheduled','','',''],
+      ['RMs - Banking Products','2','1-Nov-26','3-Nov-26','Jeddah','Scheduled','','',''],
+      ['ML - Banking Products','2','3-Nov-26','5-Nov-26','Khobar','Scheduled','','',''],
+      ['UB - Banking Products','9','8-Nov-26','10-Nov-26','Riyadh','Scheduled','','',''],
+      ['RMs - Banking Products','3','10-Nov-26','12-Nov-26','Khobar','Scheduled','','',''],
+      ['UB - Banking Products','10','15-Nov-26','17-Nov-26','Riyadh','Scheduled','','',''],
+      ['ML - Banking Products','3','17-Nov-26','19-Nov-26','Jeddah','Scheduled','','','']
+    ]
+  },
+  tasks: [
+    ['Schedule','Rebook the six rescheduled cohorts — ML-WM 1, Sales Skills 4 & 5, UB-BP 1 & 3, ML-WM 3','Fatima','2026-08-03','doing',
+     'None of them carry a new date yet.'],
+    ['Schedule','Resolve the duplicate UB - Banking Products cohort 3 — 4–6 Aug Jeddah vs 16–18 Aug Khobar','Fatima','2026-08-03','todo',
+     'Looks like one is the reschedule of the other. Close the stale row so the count is right.'],
+    ['Schedule','Check the 4–6 Aug Jeddah double-booking — ML-WM 3 and UB-BP 3 are both there','Fatima','2026-08-01','todo',''],
+    ['Schedule','Assign trainers to the 14 scheduled sessions that have none','Fatima','2026-08-10','todo',
+     'Everything from 16 Aug onward is unstaffed.'],
+    ['Report & close','Chase attendance figures for the three completed cohorts with none recorded','Fatima','2026-08-03','todo',
+     'CSE 9, RMs-WM 2 and RMs-WM 3 — 73 registered participants unaccounted for.'],
+    ['Report & close','Raise the attendance shortfall with BSF — 232 showed up of 342 recorded','Hussam','2026-08-07','todo',
+     'Roughly a third of registered participants are not turning up. Worst on the early CSE cohorts (30→14, 34→14, 29→15).']
+  ]
+};
+
+function applyBsfCohorts(){
+  const e = state.engagements.find(x =>
+    x.client.toLowerCase().includes(BSF_COHORTS.match.client) &&
+    x.program.toLowerCase().includes(BSF_COHORTS.match.program));
+  if(!e) return false;
+  const g = BSF_COHORTS.grid;
+  const keys = g.cols.map(c=>c.k);
+  e.grid = {
+    title: g.title, rules: g.rules, rollup: g.rollup,
+    cols: JSON.parse(JSON.stringify(g.cols)),
+    rows: g.rows.map(vals=>{
+      const row = {id: uid()};
+      keys.forEach((k, idx)=>{ row[k] = vals[idx]; });
+      return row;
+    })
+  };
+  BSF_COHORTS.tasks.forEach(([phase,title,owner,due,st,note])=>{
+    if(e.items.some(i=>i.title === title)) return;
+    e.items.push({id:uid(), phase, title, owner, due, state:st, note});
+  });
+  return true;
+}
+
 /* One-time patches, applied to boards that already carry saved state. */
-const PATCHES = {'ajb-tech-2026-07-26': applyAjbTech};
+const PATCHES = {
+  'ajb-tech-2026-07-26': applyAjbTech,
+  'bsf-cohorts-2026-07-26': applyBsfCohorts
+};
 
 function seed2026(){
   let added = 0;
@@ -458,6 +596,22 @@ async function load(){
 
   if(!state.engagements.length) seed2026();
 
+  // Boards saved before the grid was generalised carry `schedule` as a flat
+  // array of trainer slots. Fold those into the grid shape.
+  state.engagements.forEach(e=>{
+    if(!Array.isArray(e.schedule)) return;
+    e.grid = {
+      title:'Schedule & trainer confirmation', rules:'trainerConfirm',
+      cols: JSON.parse(JSON.stringify(AJB_TECH.grid.cols)),
+      rows: e.schedule.map(r=>({
+        id: r.id || uid(), phase:r.phase||'', days:r.days||'', dates:r.dates||'',
+        primary:r.primary||'', backup:r.backup||'', backup2:r.backup2||'',
+        confirmed: r.brk ? 'N/A' : (r.confirmed ? 'Confirmed' : 'Pending')
+      }))
+    };
+    delete e.schedule;
+  });
+
   // Apply anything the board has not seen yet, once.
   let patched = false;
   Object.entries(PATCHES).forEach(([key, fn])=>{
@@ -490,9 +644,85 @@ function isDueSoon(item){
 }
 function openItems(e){ return e.items.filter(i=>i.state !== 'done'); }
 
-// A schedule row needs confirming if it actually has a trainer on it.
-function teachingRows(e){ return (e.schedule||[]).filter(r=>!r.brk); }
-function unconfirmedRows(e){ return teachingRows(e).filter(r=>!r.confirmed); }
+/* ---------- Grid rules ----------
+   Each ruleset turns a row into a list of plain-language problems. This is what
+   makes a schedule actionable rather than just a record: the board reads the
+   gaps rather than waiting for someone to write a task about them. */
+
+const RULES = {
+  trainerConfirm: r => {
+    if(r.confirmed === 'N/A') return [];
+    if(r.confirmed !== 'Confirmed') return ['trainer not confirmed'];
+    return [];
+  },
+  cohorts: r => {
+    const out = [];
+    const has = v => String(v == null ? '' : v).trim() !== '';
+    if(r.status === 'Rescheduled') out.push('needs a new date');
+    if(r.status === 'Scheduled' && !has(r.trainer)) out.push('no trainer');
+    if(r.status === 'Completed'){
+      if(!has(r.participants)) out.push('no headcount');
+      else if(!has(r.attended)) out.push('attendance not recorded');
+    }
+    return out;
+  }
+};
+
+const PILL_CLASS = {
+  Confirmed:'yes', Completed:'yes',
+  Scheduled:'info', Pending:'no', Cancelled:'no',
+  Rescheduled:'warn', 'N/A':'na'
+};
+
+function gridRows(e){ return (e.grid && e.grid.rows) || []; }
+
+// Row issues, plus grid-wide duplicate detection where a cohort number repeats.
+function rowIssues(e){
+  const g = e.grid;
+  if(!g) return new Map();
+  const fn = RULES[g.rules] || (()=>[]);
+  const map = new Map();
+  g.rows.forEach(r=>map.set(r.id, fn(r).slice()));
+
+  if(g.rules === 'cohorts'){
+    const seen = {};
+    g.rows.forEach(r=>{
+      const key = (r.course||'').trim().toLowerCase() + '#' + (r.cohort||'').trim();
+      (seen[key] = seen[key] || []).push(r.id);
+    });
+    Object.values(seen).forEach(ids=>{
+      if(ids.length > 1) ids.forEach(id=>map.get(id).push('duplicate cohort'));
+    });
+  }
+  return map;
+}
+
+function issueCount(e){
+  let n = 0;
+  rowIssues(e).forEach(list=>{ n += list.length ? 1 : 0; });
+  return n;
+}
+
+// Attendance rollup — only counts sessions that actually have figures against
+// them, so unrecorded cohorts do not quietly drag the rate down.
+function cohortRollup(e){
+  const rows = gridRows(e);
+  const num = v => { const n = parseInt(String(v||'').trim(), 10); return isNaN(n) ? null : n; };
+  let done = 0, sched = 0, resch = 0, reg = 0, att = 0, regRecorded = 0, unrecorded = 0;
+  rows.forEach(r=>{
+    if(r.status === 'Completed') done++;
+    else if(r.status === 'Scheduled') sched++;
+    else if(r.status === 'Rescheduled') resch++;
+    const p = num(r.participants), a = num(r.attended);
+    if(p !== null) reg += p;
+    if(r.status === 'Completed'){
+      if(a !== null && p !== null){ regRecorded += p; att += a; }
+      else if(p !== null) unrecorded += p;
+    }
+  });
+  const rate = regRecorded ? Math.round(att / regRecorded * 100) : null;
+  return {total: rows.length, done, sched, resch, reg, att, regRecorded, unrecorded, rate};
+}
 function assessmentLeft(e){
   const a = e.assessment;
   if(!a || !a.total) return 0;
@@ -556,7 +786,7 @@ function computeStats(){
       else if(isDueSoon(i)) s.soon++;
       if(i.state === 'blocked') s.blocked++;
     });
-    s.slots += unconfirmedRows(e).length;
+    s.slots += issueCount(e);
     s.asmt  += assessmentLeft(e);
   });
   return s;
@@ -569,7 +799,7 @@ function renderStats(){
     <div class="stat accent"><div class="n">${s.soon}</div><div class="l">Due in 7 days</div></div>
     <div class="stat blocked"><div class="n">${s.blocked}</div><div class="l">Blocked</div></div>
     <div class="stat primary"><div class="n">${s.open}</div><div class="l">Open tasks</div></div>`;
-  if(s.slots) html += `<div class="stat danger"><div class="n">${s.slots}</div><div class="l">Slots to confirm</div></div>`;
+  if(s.slots) html += `<div class="stat danger"><div class="n">${s.slots}</div><div class="l">Schedule gaps</div></div>`;
   if(s.asmt)  html += `<div class="stat accent"><div class="n">${s.asmt}</div><div class="l">Assessments left</div></div>`;
   document.getElementById('stats').innerHTML = html;
 }
@@ -608,9 +838,9 @@ function renderList(){
     const late = e.items.filter(isOverdue).length;
     const blocked = e.items.filter(i=>i.state === 'blocked').length;
     const nxt = nextItem(e);
-    const slots = unconfirmedRows(e).length;
+    const slots = issueCount(e);
     const left = assessmentLeft(e);
-    const extra = (slots ? ` · ${slots} slot${slots===1?'':'s'} pending` : '')
+    const extra = (slots ? ` · ${slots} schedule gap${slots===1?'':'s'}` : '')
                 + (left ? ` · ${left} assessment${left===1?'':'s'} left` : '');
     let meta;
     if(late) meta = `<div class="meta late">${late} overdue${blocked?' · '+blocked+' blocked':''}${extra}</div>`;
@@ -680,32 +910,57 @@ function assessmentPanelHtml(e){
   </div>`;
 }
 
-function schedulePanelHtml(e){
-  if(!e.schedule || !e.schedule.length) return '';
-  const un = unconfirmedRows(e).length;
-  const cell = (r, f, ph) =>
-    `<td><input data-sid="${r.id}" data-sf="${f}" value="${escapeHtml(r[f]||'')}" placeholder="${ph||''}" /></td>`;
+function rollupHtml(e){
+  if(!e.grid || e.grid.rollup !== 'cohorts') return '';
+  const r = cohortRollup(e);
+  const cell = (n, l, cls) => `<div class="r ${cls||''}"><div class="rn">${n}</div><div class="rl">${l}</div></div>`;
+  return `<div class="rollup">
+    ${cell(`${r.done}<small>/${r.total}</small>`, 'Sessions run')}
+    ${r.sched ? cell(r.sched, 'Scheduled') : ''}
+    ${r.resch ? cell(r.resch, 'Rescheduled', 'warn') : ''}
+    ${cell(r.reg, 'Registered')}
+    ${cell(r.att, 'Attended', 'good')}
+    ${r.rate !== null ? cell(r.rate + '%', 'Turnout', r.rate < 70 ? 'bad' : 'good') : ''}
+    ${r.unrecorded ? cell(r.unrecorded, 'Not recorded', 'bad') : ''}
+  </div>`;
+}
+
+function gridPanelHtml(e){
+  const g = e.grid;
+  if(!g || !g.rows.length) return '';
+  const issues = rowIssues(e);
+  const flagged = [...issues.values()].filter(l=>l.length).length;
+
+  const head = g.cols.map(c=>`<th style="min-width:${c.min||70}px;">${escapeHtml(c.l)}</th>`).join('');
+
+  const body = g.rows.map(r=>{
+    const iss = issues.get(r.id) || [];
+    const cells = g.cols.map(c=>{
+      if(c.pill){
+        const val = r[c.k] || c.pill[0];
+        const cls = PILL_CLASS[val] || 'na';
+        return `<td><button class="cf ${cls}" data-rid="${r.id}" data-rk="${c.k}" data-role="pill"
+                  title="Click to change">${escapeHtml(String(val).toUpperCase())}</button></td>`;
+      }
+      return `<td><input data-rid="${r.id}" data-rk="${c.k}" value="${escapeHtml(String(r[c.k] == null ? '' : r[c.k]))}" placeholder="—" /></td>`;
+    }).join('');
+    return `<tr class="${iss.length ? 'unconf' : ''}">
+      ${cells}
+      <td class="flags">${iss.map(s=>`<span class="flag">${escapeHtml(s)}</span>`).join('')}</td>
+      <td><button class="rmrow" data-rid="${r.id}" data-role="rmrow" title="Remove row">×</button></td>
+    </tr>`;
+  }).join('');
+
   return `<div class="panel" id="sched-panel">
-    <h4>Schedule &amp; trainer confirmation<span class="hint">${
-      un ? un + ' of ' + teachingRows(e).length + ' slots unconfirmed — dates tentative'
-         : 'all slots confirmed'}</span></h4>
+    <h4>${escapeHtml(g.title || 'Schedule')}<span class="hint">${
+      flagged ? flagged + ' of ' + g.rows.length + ' rows need attention'
+              : g.rows.length + ' rows, nothing outstanding'}</span></h4>
+    ${rollupHtml(e)}
     <div class="sched-wrap"><table class="sched">
-      <thead><tr>
-        <th style="min-width:230px;">Phase / Workshop</th><th>Days</th><th>Dates</th>
-        <th>Primary</th><th>Backup</th><th>Backup 2</th><th>Confirmed</th><th></th>
-      </tr></thead>
-      <tbody>${e.schedule.map(r=>`
-        <tr class="${r.brk?'brk':''} ${(!r.brk && !r.confirmed)?'unconf':''}">
-          ${cell(r,'phase')}${cell(r,'days')}${cell(r,'dates')}
-          ${cell(r,'primary')}${cell(r,'backup','—')}${cell(r,'backup2','—')}
-          <td>${r.brk
-            ? '<span class="cf na">N/A</span>'
-            : `<button class="cf ${r.confirmed?'yes':'no'}" data-sid="${r.id}" data-role="confirm">${
-                r.confirmed ? 'CONFIRMED' : 'PENDING'}</button>`}</td>
-          <td><button class="rmrow" data-sid="${r.id}" data-role="rmrow" title="Remove row">×</button></td>
-        </tr>`).join('')}</tbody>
+      <thead><tr>${head}<th style="min-width:120px;">Needs</th><th></th></tr></thead>
+      <tbody>${body}</tbody>
     </table></div>
-    <button class="additem" data-role="addrow" style="margin-top:8px;">+ schedule row</button>
+    <button class="additem" data-role="addrow" style="margin-top:8px;">+ row</button>
   </div>`;
 }
 
@@ -754,7 +1009,7 @@ function renderMain(){
     </div>
 
     ${assessmentPanelHtml(e)}
-    ${schedulePanelHtml(e)}
+    ${gridPanelHtml(e)}
     <div id="phases"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
       <button class="btn" id="reset-checklist">↺ Append the standard ${e.track === 'proposal' ? 'proposal' : 'delivery'} checklist</button>
@@ -820,32 +1075,46 @@ function wireDetail(e){
   if(aDone) aDone.onchange = ev=>{ e.assessment.done = Number(ev.target.value)||0; save(); render(); };
   if(aTotal) aTotal.onchange = ev=>{ e.assessment.total = Number(ev.target.value)||0; save(); render(); };
 
-  // --- schedule grid ---
-  main.querySelectorAll('.sched input[data-sf]').forEach(inp=>{
+  // --- grid ---
+  const findRow = id => gridRows(e).find(r=>r.id === id);
+  main.querySelectorAll('.sched input[data-rk]').forEach(inp=>{
     inp.oninput = ev=>{
-      const row = (e.schedule||[]).find(r=>r.id === inp.dataset.sid);
+      const row = findRow(inp.dataset.rid);
       if(!row) return;
-      row[inp.dataset.sf] = ev.target.value;
+      row[inp.dataset.rk] = ev.target.value;
       save();
     };
+    // Re-derive the flags once the field settles, without stealing focus mid-type.
+    inp.onblur = ()=>render();
   });
-  main.querySelectorAll('[data-role="confirm"]').forEach(btn=>btn.onclick = ()=>{
-    const row = e.schedule.find(r=>r.id === btn.dataset.sid);
-    if(!row) return;
-    row.confirmed = !row.confirmed; save(); render();
+  main.querySelectorAll('[data-role="pill"]').forEach(btn=>btn.onclick = ()=>{
+    const row = findRow(btn.dataset.rid);
+    const col = e.grid.cols.find(c=>c.k === btn.dataset.rk);
+    if(!row || !col) return;
+    const i = col.pill.indexOf(row[col.k]);
+    row[col.k] = col.pill[(i + 1) % col.pill.length];
+    save(); render();
   });
   main.querySelectorAll('[data-role="rmrow"]').forEach(btn=>btn.onclick = ()=>{
-    e.schedule = e.schedule.filter(r=>r.id !== btn.dataset.sid); save(); render();
+    e.grid.rows = e.grid.rows.filter(r=>r.id !== btn.dataset.rid); save(); render();
   });
   const addRow = q('[data-role="addrow"]');
   if(addRow) addRow.onclick = ()=>{
-    e.schedule.push({id:uid(), phase:'', days:'', dates:'', primary:'', backup:'', backup2:'', confirmed:false});
-    save(); render();
+    const row = {id:uid()};
+    e.grid.cols.forEach(c=>{ row[c.k] = c.pill ? c.pill[0] : ''; });
+    e.grid.rows.push(row); save(); render();
   };
 
   const addSched = q('#add-schedule');
   if(addSched) addSched.onclick = ()=>{
-    e.schedule = [{id:uid(), phase:'', days:'', dates:'', primary:'', backup:'', backup2:'', confirmed:false}];
+    e.grid = {
+      title:'Schedule', rules:'trainerConfirm',
+      cols: JSON.parse(JSON.stringify(AJB_TECH.grid.cols)),
+      rows: []
+    };
+    const row = {id:uid()};
+    e.grid.cols.forEach(c=>{ row[c.k] = c.pill ? c.pill[0] : ''; });
+    e.grid.rows.push(row);
     save(); render();
   };
   const addAsmt = q('#add-assessment');
@@ -955,19 +1224,41 @@ document.getElementById('due-now').onclick = ()=>{
   html += section('○ NEXT UP, NO DATE SET', nextUndated,
                   'Every engagement has a dated next step.', 'var(--ink-soft)');
 
-  // Unconfirmed trainer slots are outstanding work even without a task attached.
-  const slots = [];
-  state.engagements.forEach(e=>unconfirmedRows(e).forEach(r=>slots.push({e, r})));
-  if(slots.length){
-    html += `<div class="grp" style="color:var(--danger)">⏳ TRAINER SLOTS NOT CONFIRMED (${slots.length})</div>`;
-    html += slots.map(x=>`<div class="qrow" data-eng="${x.e.id}">
-      <span class="who" style="background:var(--danger);">${escapeHtml((x.r.primary||'?').slice(0,8).toUpperCase())}</span>
-      <div style="min-width:0;">
-        <div class="qt">${escapeHtml(x.r.phase || 'Untitled slot')}</div>
-        <div class="qs">${escapeHtml(x.e.client)} — ${escapeHtml(x.e.program)}</div>
-        <div class="qs">${escapeHtml(x.r.dates || 'no dates')}${x.r.days ? ' · ' + escapeHtml(x.r.days) + ' days' : ''}${
-          x.r.backup ? ' · backup ' + escapeHtml(x.r.backup) : ''}</div>
-      </div></div>`).join('');
+  // Schedule gaps are outstanding work even when nobody has written a task for
+  // them. Grouped by the problem rather than by row — that is how you act on it.
+  const byIssue = new Map();
+  state.engagements.forEach(e=>{
+    const issues = rowIssues(e);
+    gridRows(e).forEach(r=>{
+      (issues.get(r.id) || []).forEach(msg=>{
+        if(!byIssue.has(msg)) byIssue.set(msg, []);
+        byIssue.get(msg).push({e, r});
+      });
+    });
+  });
+  if(byIssue.size){
+    const totalGaps = [...byIssue.values()].reduce((n,v)=>n + v.length, 0);
+    html += `<div class="grp" style="color:var(--danger)">⏳ SCHEDULE GAPS (${totalGaps})</div>`;
+    [...byIssue.entries()].sort((a,b)=>b[1].length - a[1].length).forEach(([msg, rows])=>{
+      html += `<div style="font-size:11.5px;font-weight:600;color:var(--ink-soft);margin:8px 0 4px;">
+        ${escapeHtml(msg)} — ${rows.length}</div>`;
+      html += rows.slice(0, 8).map(x=>{
+        const label = x.r.course || x.r.phase || 'Untitled';
+        const when  = x.r.start ? x.r.start + (x.r.end ? ' – ' + x.r.end : '') : (x.r.dates || 'no dates');
+        const where = [x.r.cohort ? 'cohort ' + x.r.cohort : '', x.r.location || '', x.r.trainer || x.r.primary || '']
+                        .filter(Boolean).join(' · ');
+        return `<div class="qrow" data-eng="${x.e.id}">
+          <span class="who" style="background:var(--danger);">GAP</span>
+          <div style="min-width:0;">
+            <div class="qt">${escapeHtml(label)}</div>
+            <div class="qs">${escapeHtml(x.e.client)} — ${escapeHtml(x.e.program)}</div>
+            <div class="qs">${escapeHtml(when)}${where ? ' · ' + escapeHtml(where) : ''}</div>
+          </div></div>`;
+      }).join('');
+      if(rows.length > 8){
+        html += `<div class="none">…and ${rows.length - 8} more — open the engagement for the full grid.</div>`;
+      }
+    });
   }
 
   const asmts = state.engagements.filter(e=>assessmentLeft(e) > 0);

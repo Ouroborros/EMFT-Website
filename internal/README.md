@@ -27,6 +27,25 @@ pill: `TO DO → DOING → BLOCKED → DONE`.
 | **Blocked & waiting on others** | Split by who is holding it up — client, trainer, or us |
 | **Split by owner** | Every open task grouped by Hussam / Bilal / Fatima / Trainer / Client |
 
+### Schedule grids
+
+An engagement can carry a grid — a schedule, a cohort roster, whatever the
+programme needs. Columns are defined per engagement, so the AJB grid tracks
+trainer confirmation and the BSF grid tracks cohorts, locations and attendance.
+Pill columns (Confirmed, Status) cycle on click; everything else is a text cell.
+
+The grid derives its own problems through a ruleset, and those problems appear
+in **What's due now** whether or not anyone wrote a task about them:
+
+- `trainerConfirm` — flags any slot not marked Confirmed
+- `cohorts` — flags `Rescheduled` with no new date, `Scheduled` with no trainer,
+  `Completed` with no headcount or no attendance, and any repeated cohort number
+
+A `cohorts` grid also rolls up sessions run, registered, attended and turnout.
+Turnout is calculated only over completed sessions that actually have figures
+recorded, so unrecorded cohorts show up as their own number instead of quietly
+dragging the rate down.
+
 ### Running it
 
 Open the file directly in a browser, or serve it:
