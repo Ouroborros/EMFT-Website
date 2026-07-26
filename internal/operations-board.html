@@ -107,6 +107,36 @@
   .nextup .sub{font-size:11.5px;color:var(--ink-soft);margin-top:3px;font-family:var(--mono);}
   .nextup.clear{border-left-color:var(--done);}
 
+  /* Assessment + schedule panels */
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:16px;}
+  .panel h4{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:0 0 10px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .panel h4 .hint{font-family:var(--mono);font-weight:400;text-transform:none;letter-spacing:0;font-size:10.5px;}
+
+  .asmt{display:flex;gap:18px;align-items:center;flex-wrap:wrap;}
+  .asmt .big{font-family:var(--serif);font-size:28px;font-weight:600;line-height:1;}
+  .asmt .big small{font-size:15px;opacity:.55;font-weight:600;}
+  .asmt .left{color:var(--danger);}
+  .asmt .abar{flex:1;min-width:160px;height:8px;border-radius:100px;background:var(--line);overflow:hidden;}
+  .asmt .abar i{display:block;height:100%;background:var(--done);}
+  .asmt input[type=number]{width:74px;border:1px solid var(--line);border-radius:6px;padding:5px 7px;font-size:12.5px;font-family:var(--mono);}
+  .asmt .lab{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);display:block;margin-bottom:3px;}
+
+  .sched-wrap{overflow-x:auto;}
+  .sched{width:100%;border-collapse:collapse;font-size:12px;min-width:720px;}
+  .sched th{text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);padding:0 5px 7px;font-weight:600;white-space:nowrap;}
+  .sched td{padding:2px 3px;border-top:1px solid var(--line);vertical-align:middle;}
+  .sched input{border:1px solid transparent;background:none;border-radius:5px;padding:5px;font-size:12px;font-family:var(--sans);color:var(--ink);width:100%;min-width:52px;}
+  .sched input:focus{border-color:var(--line);background:var(--bg);outline:none;}
+  .sched tr.brk{background:var(--bg);}
+  .sched tr.brk input{color:var(--ink-soft);font-style:italic;}
+  .sched tr.unconf td{background:#FFFBFA;}
+  .sched .rmrow{border:none;background:none;color:var(--line);cursor:pointer;font-size:14px;line-height:1;padding:2px 3px;}
+  .sched .rmrow:hover{color:var(--danger);}
+  .cf{border:none;border-radius:100px;padding:4px 9px;font-size:9.5px;font-weight:600;font-family:var(--mono);cursor:pointer;white-space:nowrap;letter-spacing:.02em;}
+  .cf.yes{background:var(--done-soft);color:var(--done);}
+  .cf.no{background:var(--danger-soft);color:var(--danger);}
+  .cf.na{background:var(--bg);color:var(--ink-soft);cursor:default;}
+
   .phase{margin-bottom:14px;}
   .phase h3{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:0 0 7px;font-weight:600;display:flex;justify-content:space-between;}
   .phase h3 .pc{font-family:var(--mono);font-weight:400;text-transform:none;letter-spacing:0;}
@@ -316,6 +346,69 @@ const SEED_2026 = [
   {client:'ENBD', program:'Banking Competency Training', track:'proposal', value:65733, stage:'Brief received'}
 ];
 
+/* ---------- AJB Tech Graduate Programme ----------
+   Real schedule and assessment numbers supplied by Hussam, 26 Jul 2026. Dates
+   and trainers are tentative until each main trainer confirms — the four
+   unconfirmed slots are the live piece of work. Trainer names are recorded
+   exactly as given. */
+
+const AJB_TECH = {
+  match: {client:'bank al jazira', program:'tech graduate programme'},
+  track: 'delivery',
+  stage: 'Mobilising',
+  deadline: '2026-09-27',
+  assessment: {done:185, total:201,
+    note:'Badr has 8 more and wants the outstanding list before deciding whether to extend the window.'},
+  schedule: [
+    {id:uid(), phase:'Phase 1 – IT Banking Technology Foundation', days:'5', dates:'27 Sep – 1 Oct', primary:'Tariq',  backup:'Murrad',   backup2:'',       confirmed:true},
+    {id:uid(), phase:'Phase 1 – Soft Skills for IT Graduates',      days:'6', dates:'4 Oct – 11 Oct', primary:'Zeina',  backup:'Waleed',   backup2:'Yasser', confirmed:true},
+    {id:uid(), phase:'Break Week',                                   days:'–', dates:'12 Oct – 17 Oct', primary:'-',     backup:'',         backup2:'',       confirmed:false, brk:true},
+    {id:uid(), phase:'Workshop 1 – Technology Foundations & Banking Systems',        days:'7', dates:'18 Oct – 26 Oct', primary:'Murrad', backup:'Kadir',    backup2:'', confirmed:false},
+    {id:uid(), phase:'Workshop 2 – Cloud-Native Applications & Platform Engineering', days:'5', dates:'1 Nov – 5 Nov',  primary:'Kadir',  backup:'Tariq',    backup2:'', confirmed:false},
+    {id:uid(), phase:'Workshop 3 – DevOps, Automation & Quality Engineering',         days:'5', dates:'8 Nov – 12 Nov', primary:'Kadir',  backup:'Tariq',    backup2:'', confirmed:false},
+    {id:uid(), phase:'Workshop 4 – Enterprise Technology Governance, Operations & Resilience', days:'6', dates:'15 Nov – 22 Nov', primary:'Tariq', backup:'Abdullah', backup2:'', confirmed:true},
+    {id:uid(), phase:'Workshop 5 – Banking Technology Simulation & Final Presentations', days:'3', dates:'23 Nov – 25 Nov', primary:'Murrad', backup:'Qadir', backup2:'', confirmed:false}
+  ],
+  tasks: [
+    ['Assessment','Send Badr the list of the 16 outstanding assessment participants','Hussam','2026-07-29','doing',
+     'He is waiting on this to decide whether to extend the window.'],
+    ['Assessment','Badr to confirm whether the assessment window gets extended','Client','2026-08-02','blocked',
+     'Waiting on Badr. He mentioned 8 more of the 16.'],
+    ['Assessment','Chase the remaining assessment completions (185/201 done)','Fatima','2026-08-06','todo',''],
+    ['Schedule','Chase Murrad and Kadir to confirm Workshops 1, 2, 3 and 5','Fatima','2026-08-07','doing',
+     'Four of eight teaching slots still unconfirmed.'],
+    ['Schedule','Reconcile the two spellings of the Workshop 5 backup — Kadir vs Qadir','Fatima','2026-08-07','todo',
+     'W1 backup reads Kadir, W5 backup reads Qadir. Confirm whether this is one person.'],
+    ['Schedule','Issue the confirmed schedule to AJB once every trainer has locked','Hussam','2026-08-21','todo',
+     'Dates are tentative until then — do not let AJB circulate them internally yet.'],
+    ['Schedule','Hold backup trainers against the confirmed dates','Fatima','2026-08-21','todo','']
+  ]
+};
+
+function applyAjbTech(){
+  const e = state.engagements.find(x =>
+    x.client.toLowerCase().includes(AJB_TECH.match.client) &&
+    x.program.toLowerCase().includes(AJB_TECH.match.program));
+  if(!e) return false;
+  e.track = AJB_TECH.track;
+  e.stage = AJB_TECH.stage;
+  e.deadline = AJB_TECH.deadline;
+  e.assessment = JSON.parse(JSON.stringify(AJB_TECH.assessment));
+  e.schedule = JSON.parse(JSON.stringify(AJB_TECH.schedule)).map(r=>({...r, id:uid()}));
+  // The delivery checklist replaces the proposal one; keep anything already ticked.
+  const kept = e.items.filter(i=>i.state === 'done');
+  e.items = kept.concat(templateItems('delivery').filter(t =>
+    !kept.some(k => k.phase === t.phase && k.title === t.title)));
+  AJB_TECH.tasks.forEach(([phase,title,owner,due,st,note])=>{
+    if(e.items.some(i=>i.title === title)) return;
+    e.items.push({id:uid(), phase, title, owner, due, state:st, note});
+  });
+  return true;
+}
+
+/* One-time patches, applied to boards that already carry saved state. */
+const PATCHES = {'ajb-tech-2026-07-26': applyAjbTech};
+
 function seed2026(){
   let added = 0;
   SEED_2026.forEach(s=>{
@@ -339,14 +432,16 @@ function seed2026(){
 
 /* ---------- State ---------- */
 
-const state = {engagements: [], selectedId: null, filter: 'all', query: ''};
+const state = {engagements: [], selectedId: null, filter: 'all', query: '', patches: {}};
 let saveTimer = null;
 
 function save(){
   clearTimeout(saveTimer);
   saveTimer = setTimeout(async ()=>{
-    try{ await storageBackend.set(STORAGE_KEY, JSON.stringify({engagements: state.engagements}), false); }
-    catch(e){ console.error('save failed', e); }
+    try{
+      await storageBackend.set(STORAGE_KEY,
+        JSON.stringify({engagements: state.engagements, patches: state.patches}), false);
+    }catch(e){ console.error('save failed', e); }
   }, 300);
 }
 
@@ -357,9 +452,20 @@ async function load(){
     if(val){
       const parsed = JSON.parse(val);
       if(Array.isArray(parsed.engagements)) state.engagements = parsed.engagements;
+      if(parsed.patches && typeof parsed.patches === 'object') state.patches = parsed.patches;
     }
   }catch(e){ console.error('load failed', e); }
+
   if(!state.engagements.length) seed2026();
+
+  // Apply anything the board has not seen yet, once.
+  let patched = false;
+  Object.entries(PATCHES).forEach(([key, fn])=>{
+    if(state.patches[key]) return;
+    if(fn()){ state.patches[key] = true; patched = true; }
+  });
+  if(patched) save();
+
   if(!state.selectedId && state.engagements.length) state.selectedId = state.engagements[0].id;
   render();
 }
@@ -383,6 +489,15 @@ function isDueSoon(item){
   return d !== null && d >= 0 && d <= 7;
 }
 function openItems(e){ return e.items.filter(i=>i.state !== 'done'); }
+
+// A schedule row needs confirming if it actually has a trainer on it.
+function teachingRows(e){ return (e.schedule||[]).filter(r=>!r.brk); }
+function unconfirmedRows(e){ return teachingRows(e).filter(r=>!r.confirmed); }
+function assessmentLeft(e){
+  const a = e.assessment;
+  if(!a || !a.total) return 0;
+  return Math.max(0, (a.total||0) - (a.done||0));
+}
 function doneCount(e){ return e.items.filter(i=>i.state === 'done').length; }
 
 function engStatus(e){
@@ -432,24 +547,31 @@ function fmtDue(item){
 /* ---------- Sidebar rendering ---------- */
 
 function computeStats(){
-  const s = {overdue:0, soon:0, blocked:0, open:0};
-  state.engagements.forEach(e=>e.items.forEach(i=>{
-    if(i.state === 'done') return;
-    s.open++;
-    if(isOverdue(i)) s.overdue++;
-    else if(isDueSoon(i)) s.soon++;
-    if(i.state === 'blocked') s.blocked++;
-  }));
+  const s = {overdue:0, soon:0, blocked:0, open:0, slots:0, asmt:0};
+  state.engagements.forEach(e=>{
+    e.items.forEach(i=>{
+      if(i.state === 'done') return;
+      s.open++;
+      if(isOverdue(i)) s.overdue++;
+      else if(isDueSoon(i)) s.soon++;
+      if(i.state === 'blocked') s.blocked++;
+    });
+    s.slots += unconfirmedRows(e).length;
+    s.asmt  += assessmentLeft(e);
+  });
   return s;
 }
 
 function renderStats(){
   const s = computeStats();
-  document.getElementById('stats').innerHTML = `
+  let html = `
     <div class="stat danger"><div class="n">${s.overdue}</div><div class="l">Overdue</div></div>
     <div class="stat accent"><div class="n">${s.soon}</div><div class="l">Due in 7 days</div></div>
     <div class="stat blocked"><div class="n">${s.blocked}</div><div class="l">Blocked</div></div>
     <div class="stat primary"><div class="n">${s.open}</div><div class="l">Open tasks</div></div>`;
+  if(s.slots) html += `<div class="stat danger"><div class="n">${s.slots}</div><div class="l">Slots to confirm</div></div>`;
+  if(s.asmt)  html += `<div class="stat accent"><div class="n">${s.asmt}</div><div class="l">Assessments left</div></div>`;
+  document.getElementById('stats').innerHTML = html;
 }
 
 function renderFilters(){
@@ -486,8 +608,13 @@ function renderList(){
     const late = e.items.filter(isOverdue).length;
     const blocked = e.items.filter(i=>i.state === 'blocked').length;
     const nxt = nextItem(e);
+    const slots = unconfirmedRows(e).length;
+    const left = assessmentLeft(e);
+    const extra = (slots ? ` · ${slots} slot${slots===1?'':'s'} pending` : '')
+                + (left ? ` · ${left} assessment${left===1?'':'s'} left` : '');
     let meta;
-    if(late) meta = `<div class="meta late">${late} overdue${blocked?' · '+blocked+' blocked':''}</div>`;
+    if(late) meta = `<div class="meta late">${late} overdue${blocked?' · '+blocked+' blocked':''}${extra}</div>`;
+    else if(slots || left) meta = `<div class="meta late">${(blocked?blocked+' blocked':'').replace(/^ · /,'')}${extra.replace(/^ · /, blocked?' · ':'')}</div>`;
     else if(blocked) meta = `<div class="meta">${blocked} blocked</div>`;
     else if(nxt) meta = `<div class="meta">next: ${escapeHtml(nxt.title.slice(0,34))}${nxt.title.length>34?'…':''}</div>`;
     else meta = `<div class="meta">all clear</div>`;
@@ -528,6 +655,57 @@ function itemHtml(item){
       </div>
     </div>
     <button class="del" data-role="del" title="Delete task">×</button>
+  </div>`;
+}
+
+function assessmentPanelHtml(e){
+  const a = e.assessment;
+  if(!a) return '';
+  const left = assessmentLeft(e);
+  const pct = a.total ? Math.round((a.done||0) / a.total * 100) : 0;
+  return `<div class="panel" id="asmt-panel">
+    <h4>Pre-programme assessment<span class="hint">${pct}% complete</span></h4>
+    <div class="asmt">
+      <div><span class="lab">Done</span>
+        <div class="big">${a.done||0}<small>/${a.total||0}</small></div></div>
+      <div><span class="lab">Outstanding</span>
+        <div class="big ${left?'left':''}">${left}</div></div>
+      <div class="abar"><i style="width:${pct}%"></i></div>
+      <div><span class="lab">Completed</span>
+        <input type="number" data-role="asmt-done" value="${a.done||0}" min="0" /></div>
+      <div><span class="lab">Invited</span>
+        <input type="number" data-role="asmt-total" value="${a.total||0}" min="0" /></div>
+    </div>
+    ${a.note ? `<div style="font-size:11.5px;color:var(--ink-soft);margin-top:10px;">${escapeHtml(a.note)}</div>` : ''}
+  </div>`;
+}
+
+function schedulePanelHtml(e){
+  if(!e.schedule || !e.schedule.length) return '';
+  const un = unconfirmedRows(e).length;
+  const cell = (r, f, ph) =>
+    `<td><input data-sid="${r.id}" data-sf="${f}" value="${escapeHtml(r[f]||'')}" placeholder="${ph||''}" /></td>`;
+  return `<div class="panel" id="sched-panel">
+    <h4>Schedule &amp; trainer confirmation<span class="hint">${
+      un ? un + ' of ' + teachingRows(e).length + ' slots unconfirmed — dates tentative'
+         : 'all slots confirmed'}</span></h4>
+    <div class="sched-wrap"><table class="sched">
+      <thead><tr>
+        <th style="min-width:230px;">Phase / Workshop</th><th>Days</th><th>Dates</th>
+        <th>Primary</th><th>Backup</th><th>Backup 2</th><th>Confirmed</th><th></th>
+      </tr></thead>
+      <tbody>${e.schedule.map(r=>`
+        <tr class="${r.brk?'brk':''} ${(!r.brk && !r.confirmed)?'unconf':''}">
+          ${cell(r,'phase')}${cell(r,'days')}${cell(r,'dates')}
+          ${cell(r,'primary')}${cell(r,'backup','—')}${cell(r,'backup2','—')}
+          <td>${r.brk
+            ? '<span class="cf na">N/A</span>'
+            : `<button class="cf ${r.confirmed?'yes':'no'}" data-sid="${r.id}" data-role="confirm">${
+                r.confirmed ? 'CONFIRMED' : 'PENDING'}</button>`}</td>
+          <td><button class="rmrow" data-sid="${r.id}" data-role="rmrow" title="Remove row">×</button></td>
+        </tr>`).join('')}</tbody>
+    </table></div>
+    <button class="additem" data-role="addrow" style="margin-top:8px;">+ schedule row</button>
   </div>`;
 }
 
@@ -575,8 +753,14 @@ function renderMain(){
       ${nxt ? `<div class="sub">${escapeHtml(nxt.phase)} · ${escapeHtml(nxt.owner)} · ${fmtDue(nxt)}${late?` · ${late} overdue on this engagement`:''}</div>` : ''}
     </div>
 
+    ${assessmentPanelHtml(e)}
+    ${schedulePanelHtml(e)}
     <div id="phases"></div>
-    <button class="btn" id="reset-checklist" style="margin-top:6px;">↺ Append the standard ${e.track === 'proposal' ? 'proposal' : 'delivery'} checklist</button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+      <button class="btn" id="reset-checklist">↺ Append the standard ${e.track === 'proposal' ? 'proposal' : 'delivery'} checklist</button>
+      ${e.schedule ? '' : '<button class="btn" id="add-schedule">＋ Add a schedule grid</button>'}
+      ${e.assessment ? '' : '<button class="btn" id="add-assessment">＋ Track an assessment</button>'}
+    </div>
   `;
 
   // Phases — template phases first, then any phase the user has invented.
@@ -631,7 +815,45 @@ function wireDetail(e){
     save(); render();
   };
 
-  main.querySelectorAll('.additem').forEach(btn=>btn.onclick = ()=>{
+  // --- assessment counters ---
+  const aDone = q('[data-role="asmt-done"]'), aTotal = q('[data-role="asmt-total"]');
+  if(aDone) aDone.onchange = ev=>{ e.assessment.done = Number(ev.target.value)||0; save(); render(); };
+  if(aTotal) aTotal.onchange = ev=>{ e.assessment.total = Number(ev.target.value)||0; save(); render(); };
+
+  // --- schedule grid ---
+  main.querySelectorAll('.sched input[data-sf]').forEach(inp=>{
+    inp.oninput = ev=>{
+      const row = (e.schedule||[]).find(r=>r.id === inp.dataset.sid);
+      if(!row) return;
+      row[inp.dataset.sf] = ev.target.value;
+      save();
+    };
+  });
+  main.querySelectorAll('[data-role="confirm"]').forEach(btn=>btn.onclick = ()=>{
+    const row = e.schedule.find(r=>r.id === btn.dataset.sid);
+    if(!row) return;
+    row.confirmed = !row.confirmed; save(); render();
+  });
+  main.querySelectorAll('[data-role="rmrow"]').forEach(btn=>btn.onclick = ()=>{
+    e.schedule = e.schedule.filter(r=>r.id !== btn.dataset.sid); save(); render();
+  });
+  const addRow = q('[data-role="addrow"]');
+  if(addRow) addRow.onclick = ()=>{
+    e.schedule.push({id:uid(), phase:'', days:'', dates:'', primary:'', backup:'', backup2:'', confirmed:false});
+    save(); render();
+  };
+
+  const addSched = q('#add-schedule');
+  if(addSched) addSched.onclick = ()=>{
+    e.schedule = [{id:uid(), phase:'', days:'', dates:'', primary:'', backup:'', backup2:'', confirmed:false}];
+    save(); render();
+  };
+  const addAsmt = q('#add-assessment');
+  if(addAsmt) addAsmt.onclick = ()=>{
+    e.assessment = {done:0, total:0, note:''}; save(); render();
+  };
+
+  main.querySelectorAll('.additem[data-phase]').forEach(btn=>btn.onclick = ()=>{
     const title = prompt('New task in ' + btn.dataset.phase + ':');
     if(!title || !title.trim()) return;
     e.items.push({id:uid(), phase:btn.dataset.phase, title:title.trim(),
@@ -732,8 +954,38 @@ document.getElementById('due-now').onclick = ()=>{
   html += section('▶ IN PROGRESS', doing, 'Nothing in flight.', 'var(--primary)');
   html += section('○ NEXT UP, NO DATE SET', nextUndated,
                   'Every engagement has a dated next step.', 'var(--ink-soft)');
-  html += `<div class="foot-note">One line per engagement in the last group — the next unblocked task.
-    Give it a date and it moves up into the dated lists. Blocked work is on its own view.</div>`;
+
+  // Unconfirmed trainer slots are outstanding work even without a task attached.
+  const slots = [];
+  state.engagements.forEach(e=>unconfirmedRows(e).forEach(r=>slots.push({e, r})));
+  if(slots.length){
+    html += `<div class="grp" style="color:var(--danger)">⏳ TRAINER SLOTS NOT CONFIRMED (${slots.length})</div>`;
+    html += slots.map(x=>`<div class="qrow" data-eng="${x.e.id}">
+      <span class="who" style="background:var(--danger);">${escapeHtml((x.r.primary||'?').slice(0,8).toUpperCase())}</span>
+      <div style="min-width:0;">
+        <div class="qt">${escapeHtml(x.r.phase || 'Untitled slot')}</div>
+        <div class="qs">${escapeHtml(x.e.client)} — ${escapeHtml(x.e.program)}</div>
+        <div class="qs">${escapeHtml(x.r.dates || 'no dates')}${x.r.days ? ' · ' + escapeHtml(x.r.days) + ' days' : ''}${
+          x.r.backup ? ' · backup ' + escapeHtml(x.r.backup) : ''}</div>
+      </div></div>`).join('');
+  }
+
+  const asmts = state.engagements.filter(e=>assessmentLeft(e) > 0);
+  if(asmts.length){
+    html += `<div class="grp" style="color:var(--accent)">📝 ASSESSMENTS OUTSTANDING (${asmts.length})</div>`;
+    html += asmts.map(e=>`<div class="qrow" data-eng="${e.id}">
+      <span class="who" style="background:var(--accent);">${assessmentLeft(e)} LEFT</span>
+      <div style="min-width:0;">
+        <div class="qt">${e.assessment.done}/${e.assessment.total} completed</div>
+        <div class="qs">${escapeHtml(e.client)} — ${escapeHtml(e.program)}</div>
+        ${e.assessment.note ? `<div class="qs">${escapeHtml(e.assessment.note)}</div>` : ''}
+      </div></div>`).join('');
+  }
+
+  html += `<div class="foot-note">One line per engagement in the &ldquo;next up&rdquo; group — the next unblocked task.
+    Give it a date and it moves up into the dated lists. Blocked work is on its own view.
+    Trainer slots and assessments are read straight off the engagement, so they show up here
+    whether or not anyone has written a task for them.</div>`;
   overlay.querySelector('.modal-content').innerHTML = html;
   wireRows(overlay);
 };
