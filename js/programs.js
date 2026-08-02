@@ -149,32 +149,21 @@
     if (countEl) countEl.textContent = filtered.length + ' ' + t.programsWord;
   };
 
-  var renderText = function () {
-    var t = T[state.lang];
-    document.documentElement.setAttribute('lang', t.lang);
-    document.documentElement.setAttribute('dir', t.dir);
-    document.querySelectorAll('[data-i18n]').forEach(function (el) {
-      var key = el.getAttribute('data-i18n');
-      if (t[key] !== undefined) el.textContent = t[key];
-    });
-  };
-
-  var langToggle = document.getElementById('lang-toggle');
-
   var render = function () {
-    renderText();
     renderFilters();
     renderCatalog();
-    if (langToggle) {
-      langToggle.textContent = T[state.lang].langLabel;
-      langToggle.setAttribute('lang', state.lang === 'en' ? 'ar' : 'en');
-    }
   };
-  if (langToggle) {
-    langToggle.addEventListener('click', function () {
-      state.lang = state.lang === 'en' ? 'ar' : 'en';
+
+  // js/i18n.js owns the toggle, the stored preference and the document's
+  // lang/dir. It applies this dictionary's [data-i18n] strings for us; all the
+  // catalog has to do is rebuild its filters and rows in the new language.
+  if (window.EMFT_I18N) {
+    document.addEventListener('emft:langchange', function (event) {
+      state.lang = event.detail.lang;
       render();
     });
+    state.lang = window.EMFT_I18N.lang;
+    window.EMFT_I18N.register(T);
   }
 
   render();

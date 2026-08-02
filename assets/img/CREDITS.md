@@ -9,12 +9,12 @@ Licence text: https://creativecommons.org/publicdomain/zero/1.0/
 
 | File | Source photo | Photographer | Library | Licence |
 |---|---|---|---|---|
-| `program-agentic-ai.jpg` | [Business Team](https://stocksnap.io/photo/business-team-Q1OSKR7D42) | Startup Stock Photos | StockSnap | CC0 1.0 |
+| `program-agentic-ai.jpg` | [Coding Programming](https://stocksnap.io/photo/coding-programming-SCC00WCQ3I) | Startup Stock Photos | StockSnap | CC0 1.0 |
 | `program-modelling.jpg` | [Accounting Finance](https://stocksnap.io/photo/accounting-finance-JONMP7TPGK) | Wilfred Iven | StockSnap | CC0 1.0 |
 | `program-cyber.jpg` | [Operations centre](https://www.rawpixel.com/image/8723847/photo-image-border-public-domain-map) | — | rawpixel | CC0 1.0 |
 | `program-relationship.jpg` | [Writing Papers](https://stocksnap.io/photo/writing-papers-Y01VDYAX63) | Helloquence | StockSnap | CC0 1.0 |
 | `program-cx.jpg` | [Flowchart Whiteboard](https://stocksnap.io/photo/flowchart-whiteboard-CDC8HFPYWR) | Startup Stock Photos | StockSnap | CC0 1.0 |
-| `program-data-science.jpg` | [Coding Programming](https://stocksnap.io/photo/coding-programming-SCC00WCQ3I) | Startup Stock Photos | StockSnap | CC0 1.0 |
+| `program-data-science.jpg` | Market chart (Openverse, CC0 pool) | — | StockSnap | CC0 1.0 |
 | `why-facilitator.jpg` | [Office Graph](https://stocksnap.io/photo/office-graph-3PLFDQQZ5M) | Matt Moloney | StockSnap | CC0 1.0 |
 | `case-cohorts-tech.jpg` | [Team Meeting](https://stocksnap.io/photo/team-meeting-VQXYE2ZEHC) | Startup Stock Photos | StockSnap | CC0 1.0 |
 
@@ -38,3 +38,15 @@ Removed: `hero-training-room.jpg` (a conference room of gift bags) and
 `assessments-dashboards.jpg` — same session, different frame — but they sit on
 different pages, and EMFT's own photography beat every stock substitute tried
 for that case study.
+
+Reassigned 2 August 2026: the Agentic AI card was carrying a meeting-room
+photograph of laptops from around 2013, which read as neither AI nor current, so
+it now uses the code-on-screen frame that was on the Data Science card, and Data
+Science takes a market-chart frame. Every card's `alt` text was rewritten at the
+same time to describe what is actually in the frame rather than the topic the
+card is about.
+
+Still unresolved: `program-cyber.jpg` shows an operations floor with world maps
+and aircraft tracks, which reads as air-traffic or geospatial monitoring rather
+than a security operations centre. Nothing in the CC0 pool reachable from this
+environment is a better fit, so it stands for now.

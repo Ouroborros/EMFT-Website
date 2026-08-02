@@ -4,27 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact — EMFT</title>
-  <meta name="description" content="Get in touch with EMFT. Tell us about your training needs and we'll respond within one business day with a clear, honest next step.">
+  <meta name="description" content="Tell EMFT what you are trying to achieve — a team, a graduate journey, an assessment or an organization-wide transformation. Offices in London, Dubai, Abu Dhabi and Riyadh.">
+  <link rel="canonical" href="https://www.emergingmarketft.com/contact.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Emerging Market Financial Training">
+  <meta property="og:url" content="https://www.emergingmarketft.com/contact.html">
+  <meta property="og:title" content="Contact — EMFT">
+  <meta property="og:description" content="Tell EMFT what you are trying to achieve — a team, a graduate journey, an assessment or an organization-wide transformation.">
+  <meta property="og:image" content="https://www.emergingmarketft.com/assets/img/hero-towers.jpg">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <script>document.documentElement.classList.add('js');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Libre+Franklin:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
 
+  <!-- CHROME:HEADER -->
   <header class="site-header">
-    <div class="container header-inner">
-      <a class="logo" href="index.html" aria-label="EMFT — Home">
-        <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-          <rect width="32" height="32" rx="7" fill="#1C4E80"/>
-          <rect x="8" y="9" width="16" height="3" rx="1.5" fill="#FFFFFF"/>
-          <rect x="8" y="14.5" width="11" height="3" rx="1.5" fill="#3FA796"/>
-          <rect x="8" y="20" width="16" height="3" rx="1.5" fill="#FFFFFF"/>
-        </svg>
-        EMFT
+    <div class="header-inner">
+      <a class="logo" href="index.html" aria-label="EMFT — Emerging Market Financial Training, home">
+        <img src="assets/img/emft-logo.png" alt="Emerging Market Financial Training" width="230" height="68">
       </a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
         <span class="visually-hidden">Menu</span>
@@ -34,173 +38,271 @@
       </button>
       <nav id="primary-nav" class="primary-nav" aria-label="Primary">
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a class="btn btn-primary btn-sm nav-cta" href="contact.html" aria-current="page">Contact us</a></li>
+          <li class="nav-group">
+            <span class="nav-group-label" aria-hidden="true" data-i18n="navSolutions">Solutions</span>
+            <button type="button" class="nav-group-toggle" aria-expanded="false" aria-controls="solutions-menu">
+              <span data-i18n="navSolutions">Solutions</span>
+            </button>
+            <ul id="solutions-menu" class="nav-group-menu">
+              <li><a href="coaching.html" data-i18n="navCoaching">Coaching &amp; Technical Mentoring</a></li>
+              <li><a href="assessments.html" data-i18n="navAssessments">Assessments</a></li>
+              <li><a href="speakers.html" data-i18n="navSpeakers">Keynote Speakers</a></li>
+              <li><a href="elearning.html" data-i18n="navDigital">Digital Learning</a></li>
+              <li><a href="index.html#services" data-i18n="navServices">All Services</a></li>
+            </ul>
+          </li>
+          <li><a href="programs.html" data-i18n="navPrograms">Programs</a></li>
+          <li><a href="case-studies.html" data-i18n="navCases">Case Studies</a></li>
+          <li><a href="about.html" data-i18n="navAbout">About</a></li>
+          <li><a href="elearning.html#portal" data-i18n="navPortal">Learning Portal</a></li>
+          <li><button type="button" class="lang-toggle" id="lang-toggle">العربية</button></li>
+          <li><a class="nav-contact" href="contact.html" aria-current="page" data-i18n="navContact">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
+<!-- /CHROME:HEADER -->
 
   <main id="main" tabindex="-1">
 
-    <section class="page-hero" aria-labelledby="page-title">
+    <section class="section-pad page-hero" aria-labelledby="page-title">
       <div class="container">
         <span class="eyebrow">Contact</span>
-        <h1 id="page-title">Let's talk about your training needs</h1>
-        <p class="lede">Whether you need a full program for your institution or a single course for yourself, we'd like to hear about it. Send us a message and we'll respond within one business day — with a straight answer, not a sales pitch.</p>
+        <h1 id="page-title">Let&rsquo;s discuss your capability requirements.</h1>
+        <p class="lede">Whether you are developing a specific team, launching a graduate journey, assessing existing capability or designing an organization-wide transformation, tell us what you are trying to achieve.</p>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="contact-title">
+    <section class="section-pad" aria-labelledby="form-title">
+      <div class="container contact-layout">
+        <div>
+          <h2 id="form-title" class="display-lg" style="margin-bottom: 28px;">Send us an enquiry</h2>
+
+          <form id="enquiry-form" class="enquiry-form" novalidate>
+            <div class="field">
+              <label for="f-name">Name <span class="hint">Required</span></label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required>
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="f-title">Job title</label>
+              <input id="f-title" name="job_title" type="text" autocomplete="organization-title">
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="f-org">Organization <span class="hint">Required</span></label>
+              <input id="f-org" name="organization" type="text" autocomplete="organization" required>
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="f-email">Work email <span class="hint">Required</span></label>
+              <input id="f-email" name="work_email" type="email" autocomplete="email" required>
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="f-tel">Telephone</label>
+              <input id="f-tel" name="telephone" type="tel" autocomplete="tel">
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="f-country">Country</label>
+              <select id="f-country" name="country">
+                <option value="">Select&hellip;</option>
+                <option>Saudi Arabia</option>
+                <option>United Arab Emirates</option>
+                <option>Bahrain</option>
+                <option>Kuwait</option>
+                <option>Oman</option>
+                <option>Qatar</option>
+                <option>Egypt</option>
+                <option>United Kingdom</option>
+                <option>Other</option>
+              </select>
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="f-interest">Area of interest <span class="hint">Required</span></label>
+              <select id="f-interest" name="area_of_interest" required>
+                <option value="">Select&hellip;</option>
+                <option>Technical Training</option>
+                <option>Leadership and Professional Skills</option>
+                <option>Assessments</option>
+                <option>Graduate Development</option>
+                <option>Relationship Management</option>
+                <option>AI, Data and Cybersecurity</option>
+                <option>Professional Qualifications</option>
+                <option>Coaching and Mentoring</option>
+                <option>Keynote Speakers</option>
+                <option>Digital Learning</option>
+                <option>Other</option>
+              </select>
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="f-count">Number of participants</label>
+              <select id="f-count" name="participants">
+                <option value="">Select&hellip;</option>
+                <option>1&ndash;5</option>
+                <option>6&ndash;15</option>
+                <option>16&ndash;30</option>
+                <option>31&ndash;100</option>
+                <option>More than 100</option>
+                <option>Not yet known</option>
+              </select>
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+            <div class="field wide">
+              <label for="f-period">Preferred delivery period</label>
+              <select id="f-period" name="delivery_period">
+                <option value="">Select&hellip;</option>
+                <option>Within one month</option>
+                <option>One to three months</option>
+                <option>Three to six months</option>
+                <option>Six to twelve months</option>
+                <option>Not yet decided</option>
+              </select>
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+            <div class="field wide">
+              <label for="f-message">Message <span class="hint">What are you trying to achieve?</span></label>
+              <textarea id="f-message" name="message"></textarea>
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+
+            <div class="hp-field" aria-hidden="true">
+              <label for="f-hp">Company website</label>
+              <input id="f-hp" name="company_website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div class="form-foot">
+              <button type="submit">Send enquiry</button>
+              <p>We use what you send here only to answer your enquiry. See the <a href="privacy.html">Privacy Policy</a>.</p>
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+          </form>
+
+          <div class="form-success" id="form-success" role="status" hidden>
+            <h2>Thank you &mdash; your enquiry is on its way.</h2>
+            <p>A member of the EMFT team will come back to you within one working day, usually with a few questions about scope and audience before we put anything in writing.</p>
+            <p style="margin-top: 16px;">If it is urgent, call <a href="tel:+97142509783">+971 4 250 9783</a> or email <a href="mailto:info@emergingmarketft.com">info@emergingmarketft.com</a>.</p>
+          </div>
+        </div>
+
+        <aside class="contact-aside" aria-label="Contact details">
+          <div class="aside-block">
+            <h2>General enquiries</h2>
+            <a href="mailto:info@emergingmarketft.com">info@emergingmarketft.com</a>
+          </div>
+          <div class="aside-block">
+            <h2>Telephone</h2>
+            <a href="tel:+97142509783">+971 4 250 9783</a>
+          </div>
+          <div class="aside-block">
+            <h2>LinkedIn</h2>
+            <a href="https://www.linkedin.com/company/emergingmarketft" target="_blank" rel="noopener">EMFT company page</a>
+          </div>
+          <div class="aside-block">
+            <h2>Business development</h2>
+            <p style="margin-bottom: 8px;">Hussam El Dissouqi &mdash; for proposals, scoping and partnership conversations.</p>
+            <a href="mailto:hussam.eldissouqi@emergingmarketft.com">hussam.eldissouqi@emergingmarketft.com</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section-pad band" aria-labelledby="offices-title">
       <div class="container">
-        <h2 id="contact-title" class="visually-hidden">Get in touch</h2>
-        <div class="contact-split">
-
-          <div class="contact-details">
-            <div class="contact-item">
-              <span class="icon-chip" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-              </span>
-              <div>
-                <h3>Email</h3>
-                <p><a href="mailto:info@emft.com">info@emft.com</a></p>
-              </div>
-            </div>
-            <div class="contact-item">
-              <span class="icon-chip" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
-              </span>
-              <div>
-                <h3>Phone</h3>
-                <p><a href="tel:+10000000000">+1 (000) 000-0000</a></p>
-              </div>
-            </div>
-            <div class="contact-item">
-              <span class="icon-chip" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-              </span>
-              <div>
-                <h3>Office</h3>
-                <address>[Street Address],<br>[City], [State/Province] [Postal Code]</address>
-              </div>
-            </div>
-            <div class="contact-item">
-              <span class="icon-chip" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
-              </span>
-              <div>
-                <h3>Business hours</h3>
-                <p>Monday – Friday: 9:00 AM – 5:00 PM<br>Saturday – Sunday: Closed</p>
-                <p>Outside business hours? Send us a message and we'll respond the next business day.</p>
-              </div>
-            </div>
+        <span class="eyebrow">Where we are</span>
+        <h2 id="offices-title" class="display-lg" style="margin-bottom: 40px;">Four offices, one delivery standard.</h2>
+        <div class="office-grid">
+          <div class="office">
+            <h3>London</h3>
+            <span class="country">United Kingdom</span>
+            <p>110 Carlton Avenue East</p>
           </div>
-
-          <div>
-            <form id="contact-form" class="form-card" method="post">
-              <div class="field-row">
-                <div class="field">
-                  <label for="name">Full name</label>
-                  <input type="text" id="name" name="name" autocomplete="name" placeholder="Your name" required aria-describedby="name-error">
-                  <p class="field-error" id="name-error"></p>
-                </div>
-                <div class="field">
-                  <label for="email">Email address</label>
-                  <input type="email" id="email" name="email" autocomplete="email" placeholder="you@company.com" required aria-describedby="email-error">
-                  <p class="field-error" id="email-error"></p>
-                </div>
-              </div>
-              <div class="field">
-                <label for="phone">Phone (optional)</label>
-                <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="Your phone number">
-              </div>
-              <div class="field">
-                <label for="subject">Subject</label>
-                <select id="subject" name="subject" required aria-describedby="subject-error">
-                  <option value="">What is this regarding?</option>
-                  <option value="corporate-training">Corporate Training Programs</option>
-                  <option value="open-courses">Open Courses &amp; Workshops</option>
-                  <option value="advisory">Advisory &amp; Capability Building</option>
-                  <option value="e-learning">E-Learning &amp; Blended Programs</option>
-                  <option value="other">Something else</option>
-                </select>
-                <p class="field-error" id="subject-error"></p>
-              </div>
-              <div class="field">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" rows="5" placeholder="Tell us a little about your training needs or question…" required aria-describedby="message-error"></textarea>
-                <p class="field-error" id="message-error"></p>
-              </div>
-              <div class="honeypot" aria-hidden="true">
-                <label for="company_website">Leave this field empty</label>
-                <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
-              </div>
-              <button type="submit" class="btn btn-primary">Send message</button>
-              <p class="field-error form-error" id="form-error" role="alert"></p>
-            </form>
-
-            <div class="form-success" id="form-success" role="status" hidden tabindex="-1">
-              <h3>Message sent</h3>
-              <p>Thank you — your message has been received. We'll be in touch within one business day. Or email us directly at <a href="mailto:info@emft.com">info@emft.com</a>.</p>
-            </div>
+          <div class="office">
+            <h3>Dubai</h3>
+            <span class="country">United Arab Emirates</span>
+            <p>Dubai Silicon Oasis</p>
           </div>
-
+          <div class="office">
+            <h3>Abu Dhabi</h3>
+            <span class="country">United Arab Emirates</span>
+            <p>Enquiries via the Dubai office</p>
+          </div>
+          <div class="office">
+            <h3>Riyadh</h3>
+            <span class="country">Saudi Arabia</span>
+            <p>King Abdullah Financial District</p>
+          </div>
         </div>
       </div>
     </section>
 
   </main>
 
+  <!-- CHROME:FOOTER -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a class="logo" href="index.html" aria-label="EMFT — Home">
-            <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-              <rect width="32" height="32" rx="7" fill="#FFFFFF"/>
-              <rect x="8" y="9" width="16" height="3" rx="1.5" fill="#1C4E80"/>
-              <rect x="8" y="14.5" width="11" height="3" rx="1.5" fill="#3FA796"/>
-              <rect x="8" y="20" width="16" height="3" rx="1.5" fill="#1C4E80"/>
-            </svg>
-            EMFT
-          </a>
-          <p>EMFT — Emerging Market Financial Training — equips financial professionals and institutions across emerging markets with practical, world-class skills.</p>
+          <div class="footer-brand-name">Emerging Market Financial Training</div>
+          <p data-i18n="footBlurb">Practitioner-led training, assessment and coaching for financial institutions, government entities and corporates.</p>
         </div>
-        <nav aria-label="Footer">
-          <h2 class="footer-heading">Site</h2>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
+        <nav class="footer-col" aria-label="Footer — solutions">
+          <h2 class="footer-heading" data-i18n="navSolutions">Solutions</h2>
+          <a href="index.html#services" data-i18n="navServices">Services</a>
+          <a href="programs.html" data-i18n="navPrograms">Programs</a>
+          <a href="coaching.html" data-i18n="navCoaching">Coaching &amp; Mentoring</a>
+          <a href="assessments.html" data-i18n="navAssessments">Assessments</a>
+          <a href="speakers.html" data-i18n="navSpeakers">Keynote Speakers</a>
         </nav>
-        <div>
-          <h2 class="footer-heading">Services</h2>
-          <ul>
-            <li><a href="services.html#corporate-training">Corporate Training</a></li>
-            <li><a href="services.html#open-courses">Open Courses &amp; Workshops</a></li>
-            <li><a href="services.html#advisory-capability">Advisory &amp; Capability</a></li>
-            <li><a href="services.html#e-learning">E-Learning</a></li>
-          </ul>
-        </div>
-        <div>
-          <h2 class="footer-heading">Contact</h2>
-          <address>
-            <a href="mailto:info@emft.com">info@emft.com</a>
-            <a href="tel:+10000000000">+1 (000) 000-0000</a>
-            <span>[Street Address],<br>[City], [State] [Postal Code]</span>
-          </address>
+        <nav class="footer-col" aria-label="Footer — company">
+          <h2 class="footer-heading" data-i18n="footCompany">Company</h2>
+          <a href="about.html" data-i18n="navAbout">About</a>
+          <a href="case-studies.html" data-i18n="navCases">Case Studies</a>
+          <a href="contact.html" data-i18n="navContact">Contact</a>
+          <a href="elearning.html#portal" data-i18n="navPortal">Learning Portal</a>
+        </nav>
+        <nav class="footer-col" aria-label="Footer — contact">
+          <h2 class="footer-heading" data-i18n="navContact">Contact</h2>
+          <a href="mailto:info@emergingmarketft.com">info@emergingmarketft.com</a>
+          <a href="tel:+97142509783">+971 4 250 9783</a>
+          <a href="https://www.linkedin.com/company/emergingmarketft" target="_blank" rel="noopener">LinkedIn</a>
+        </nav>
+        <div class="footer-col">
+          <h2 class="footer-heading" data-i18n="footOffices">Offices</h2>
+          <span>London, United&nbsp;Kingdom</span>
+          <span>Dubai, United&nbsp;Arab&nbsp;Emirates</span>
+          <span>Abu&nbsp;Dhabi, United&nbsp;Arab&nbsp;Emirates</span>
+          <span>Riyadh, Saudi&nbsp;Arabia</span>
         </div>
       </div>
       <div class="footer-legal">
-        <p>&copy; <span id="year">2026</span> EMFT. All rights reserved.</p>
+        <span>EMFT &copy; <span id="year">2026</span>. <span data-i18n="footRights">All rights reserved.</span></span>
+        <span class="footer-legal-links">
+          <a href="privacy.html" data-i18n="footPrivacy">Privacy Policy</a>
+          <a href="terms.html" data-i18n="footTerms">Terms of Use</a>
+        </span>
       </div>
     </div>
   </footer>
 
-  <script src="js/main.js" defer></script>
+  <div class="cookie-banner" id="cookie-banner" role="region" aria-label="Privacy notice" hidden>
+    <div class="cookie-inner">
+      <!-- No data-i18n here: the string wraps a link, and the translator swaps
+           textContent, which would drop the anchor. -->
+      <p><span data-i18n="cookieText">This site stores your language choice and this notice's dismissal in your browser. Nothing is shared with advertisers.</span> <a href="privacy.html" data-i18n="footPrivacy">Privacy Policy</a></p>
+      <div class="cookie-actions">
+        <button type="button" id="cookie-accept" data-i18n="cookieOk">Got it</button>
+        <a class="ghost" href="privacy.html" role="button" data-i18n="cookieMore">Read more</a>
+      </div>
+    </div>
+  </div>
+<!-- /CHROME:FOOTER -->
+
+  <script src="js/i18n.js" defer></script>
+  <script src="js/home.js" defer></script>
+  <script src="js/site.js" defer></script>
 </body>
 </html>
