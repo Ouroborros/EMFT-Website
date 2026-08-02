@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Notion__notion-update-page",
+      "mcp__Notion__notion-create-pages",
+      "mcp__Notion__notion-fetch",
+      "mcp__Notion__notion-search",
+      "mcp__Notion__notion-query-data-sources",
+      "mcp__Zoho_CRM__executeCOQLQuery",
+      "mcp__Zoho_CRM__getRecords",
+      "mcp__Zoho_CRM__getRelatedRecords",
+      "mcp__Zoho_CRM__searchRecords",
+      "Bash(mv .claude/settings.local.json .claude/settings.json)",
+      "Bash(printf '.claude/settings.local.json\\\\n')"
+    ]
+  }
+}
