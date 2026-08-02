@@ -42,7 +42,8 @@ jobs:
       # This is a preview host, not the production domain. Keep it out of
       # search results so it cannot outrank emergingmarketft.com later.
       - name: Mark the preview as noindex
-        run: printf 'User-agent: *\nDisallow: /\n' > _site/robots.txt
+        run: |
+          printf 'User-agent: *\nDisallow: /\n' > _site/robots.txt
 
       - uses: actions/upload-pages-artifact@v3
         with:
