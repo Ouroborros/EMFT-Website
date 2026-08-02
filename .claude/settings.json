@@ -6,6 +6,7 @@
       "mcp__Notion__notion-fetch",
       "mcp__Notion__notion-search",
       "mcp__Notion__notion-query-data-sources",
+      "mcp__Zoho_CRM",
       "mcp__Zoho_CRM__executeCOQLQuery",
       "mcp__Zoho_CRM__getRecords",
       "mcp__Zoho_CRM__getRelatedRecords",
