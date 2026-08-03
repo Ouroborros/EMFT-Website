@@ -183,9 +183,16 @@ html[data-theme="dark"] .btn--primary { color: #06120e; }
   display: flex; align-items: center; gap: 20px;
   min-height: var(--header-h);
 }
-.brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.02em; }
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 800; letter-spacing: -.02em;
+  min-width: 0;   /* the lockup yields before the header overflows */
+}
 .brand-mark { width: 30px; height: 30px; flex: none; }
-.brand-name { font-family: var(--display); font-size: 1.32rem; font-weight: 700; }
+.brand-name {
+  font-family: var(--display); font-size: 1.32rem; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 .brand-name small {
   display: block; font-family: var(--ui); font-size: .58rem; font-weight: 700;
   letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-block-start: -4px;
@@ -202,7 +209,14 @@ html[lang="ar"] .brand-name small { letter-spacing: 0; font-size: .62rem; }
 .main-nav a:hover { color: var(--text); background: var(--bg-alt); }
 .main-nav a[aria-current="page"] { color: var(--brand); background: var(--brand-soft); }
 
-.header-tools { display: flex; align-items: center; gap: 8px; }
+.header-tools { display: flex; align-items: center; gap: 8px; flex: none; }
+
+/* Four controls plus the wordmark do not fit a 320px phone at full size. */
+@media (max-width: 400px) {
+  .header-tools { gap: 3px; }
+  .lang-switch { padding-inline: 10px; }
+  .icon-btn { width: 34px; height: 34px; }
+}
 
 .icon-btn {
   display: inline-grid; place-items: center;
@@ -308,7 +322,9 @@ html[lang="ar"] .hero-stat .n { font-size: 1.55rem; }
 /* --- Subject tiles -------------------------------------------------------- */
 .subject-grid {
   display: grid; gap: 12px;
-  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+  /* min() so the track floor collapses on screens narrower than the floor
+     itself — a bare minmax(232px, 1fr) overflows a 320px phone. */
+  grid-template-columns: repeat(auto-fill, minmax(min(232px, 100%), 1fr));
 }
 .subject-tile {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -323,7 +339,7 @@ html[lang="ar"] .hero-stat .n { font-size: 1.55rem; }
 /* --- Cards ---------------------------------------------------------------- */
 .card-grid {
   display: grid; gap: 18px;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(310px, 100%), 1fr));
 }
 
 .course-card {
@@ -555,17 +571,29 @@ html[lang="ar"] .booking-card .price { font-family: var(--ui); font-size: 1.7rem
 .drawer-backdrop[data-open] { opacity: 1; pointer-events: auto; }
 
 .drawer {
+  /* The off-screen direction differs per writing mode, but it is carried on a
+     custom property rather than a second transform rule: an
+     html[dir="rtl"] .drawer rule outscores .drawer[data-open] and would pin
+     the panel off-screen in Arabic no matter what the open state said. */
+  --drawer-closed: translateX(100%);
   position: fixed; z-index: 190;
   inset-block: 0; inset-inline-end: 0;
   width: min(420px, 100%);
   background: var(--surface); border-inline-start: 1px solid var(--line);
   box-shadow: var(--shadow-lg);
   display: flex; flex-direction: column;
-  transform: translateX(100%);
-  transition: transform .24s cubic-bezier(.32, .72, 0, 1);
+  transform: var(--drawer-closed);
+  visibility: hidden;
+  transition: transform .24s cubic-bezier(.32, .72, 0, 1), visibility 0s linear .24s;
 }
-html[dir="rtl"] .drawer { transform: translateX(-100%); }
-.drawer[data-open] { transform: translateX(0); }
+html[dir="rtl"] .drawer { --drawer-closed: translateX(-100%); }
+.drawer[data-open] {
+  transform: translateX(0);
+  /* visibility:hidden while closed keeps the panel's controls out of the tab
+     order; inert (set in app.js) does the same for browsers that have it. */
+  visibility: visible;
+  transition-delay: 0s;
+}
 .drawer__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px; border-block-end: 1px solid var(--line); }
 .drawer__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
 .drawer__foot { padding: 16px 20px; border-block-start: 1px solid var(--line); }
@@ -616,6 +644,11 @@ html[lang="ar"] .quote { font-size: 1.12rem; }
 /* --- Forms ---------------------------------------------------------------- */
 .form-grid { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
 @media (max-width: 700px) { .form-grid { grid-template-columns: 1fr; } }
+/* Grid and flex children default to min-width:auto, so one wide item — the
+   course <select>, whose longest option is ~700px — can force the whole page
+   wider than the viewport. Let them shrink. */
+.form-grid > *, .split > *, .catalogue > *, .field-block > * { min-width: 0; }
+.field-block select { max-width: 100%; text-overflow: ellipsis; }
 .field-block { display: flex; flex-direction: column; gap: 6px; }
 .field-block--wide { grid-column: 1 / -1; }
 .field-block label { font-size: .85rem; font-weight: 700; }

@@ -47,8 +47,16 @@
   const STORE_KEY = 'masar:shortlist';
   const Shortlist = {
     read() {
-      try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
-      catch (e) { return []; }
+      /* Anything at all can be sitting under this key — another app, an old
+         format, a half-written value. JSON.parse succeeding is not enough:
+         a parsed string or object would sail past the catch and then throw
+         on .filter() deep inside a render. */
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORE_KEY));
+        return Array.isArray(raw) ? raw.filter((id) => typeof id === 'string') : [];
+      } catch (e) {
+        return [];
+      }
     },
     write(ids) {
       try { localStorage.setItem(STORE_KEY, JSON.stringify(ids)); } catch (e) { /* private mode */ }
@@ -169,17 +177,37 @@
     const backdrop = document.querySelector('[data-drawer-backdrop]');
     const openBtns = document.querySelectorAll('[data-drawer-open]');
     if (drawer && backdrop) {
-      const open = () => {
+      let opener = null;
+
+      const open = (e) => {
+        opener = (e && e.currentTarget) || document.activeElement;
         drawer.setAttribute('data-open', ''); backdrop.setAttribute('data-open', '');
         drawer.removeAttribute('aria-hidden');
-        const close = drawer.querySelector('[data-drawer-close]');
-        if (close) close.focus();
+        drawer.removeAttribute('inert');
+        openBtns.forEach((b) => b.setAttribute('aria-expanded', 'true'));
+        const closeBtn = drawer.querySelector('[data-drawer-close]');
+        if (closeBtn) closeBtn.focus();
       };
+
       const close = () => {
+        if (!drawer.hasAttribute('data-open')) return;
         drawer.removeAttribute('data-open'); backdrop.removeAttribute('data-open');
+        openBtns.forEach((b) => b.setAttribute('aria-expanded', 'false'));
+        /* Focus has to leave before the panel is hidden — aria-hidden and
+           inert must never be applied to a subtree that still holds focus. */
+        if (drawer.contains(document.activeElement)) {
+          if (opener && document.contains(opener)) opener.focus();
+          else document.body.focus();
+        }
         drawer.setAttribute('aria-hidden', 'true');
+        drawer.setAttribute('inert', '');
+        opener = null;
       };
-      openBtns.forEach((b) => b.addEventListener('click', open));
+
+      openBtns.forEach((b) => {
+        b.setAttribute('aria-expanded', 'false');
+        b.addEventListener('click', open);
+      });
       backdrop.addEventListener('click', close);
       drawer.querySelectorAll('[data-drawer-close]').forEach((b) => b.addEventListener('click', close));
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
@@ -195,14 +223,21 @@
       Shortlist.toggle(btn.getAttribute('data-course'));
     });
 
-    /* Carry search/filter state across the language switch. */
-    const langLink = document.querySelector('[data-lang-switch]');
-    if (langLink && location.search) langLink.href = langLink.getAttribute('href') + location.search;
+    /* Carry search/filter state across the language switch. There are two of
+       these — the header pill and the footer link — and missing the second one
+       drops ?id= on detail pages, landing the reader on "not found". */
+    if (location.search) {
+      document.querySelectorAll('[data-lang-switch]').forEach(function (link) {
+        link.href = link.getAttribute('href') + location.search;
+      });
+    }
 
     const yr = document.querySelector('[data-year]');
     if (yr) yr.textContent = I.num(new Date().getFullYear());
 
-    Shortlist.sync();
+    /* The shortlist is a nicety; the catalogue is the site. Never let a
+       storage problem here abort boot() and leave every page empty. */
+    try { Shortlist.sync(); } catch (e) { /* badge and drawer only */ }
   }
 
   function renderDrawer() {
@@ -498,19 +533,36 @@
     }
     if (sortEl) sortEl.addEventListener('change', function () { state.sort = sortEl.value; update(); });
 
-    /* Mobile filter drawer */
+    /* Mobile filter sheet */
     const openFilters = document.querySelector('[data-filters-open]');
     if (openFilters && filtersEl) {
-      openFilters.addEventListener('click', function () {
+      const openSheet = function () {
         filtersEl.setAttribute('data-open', '');
         document.body.style.overflow = 'hidden';
-      });
+        openFilters.setAttribute('aria-expanded', 'true');
+      };
+      const closeSheet = function () {
+        filtersEl.removeAttribute('data-open');
+        document.body.style.overflow = '';
+        openFilters.setAttribute('aria-expanded', 'false');
+      };
+
+      openFilters.setAttribute('aria-expanded', 'false');
+      openFilters.addEventListener('click', openSheet);
       filtersEl.querySelectorAll('[data-filters-close]').forEach(function (b) {
-        b.addEventListener('click', function () {
-          filtersEl.removeAttribute('data-open');
-          document.body.style.overflow = '';
-        });
+        b.addEventListener('click', closeSheet);
       });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeSheet();
+      });
+
+      /* Above 900px the sheet becomes a static sidebar and every control that
+         could close it is display:none. Without this the scroll lock survives
+         the breakpoint and the page can only be freed by reloading. */
+      const desktop = window.matchMedia('(min-width: 901px)');
+      const onBreakpoint = function (ev) { if (ev.matches) closeSheet(); };
+      if (desktop.addEventListener) desktop.addEventListener('change', onBreakpoint);
+      else if (desktop.addListener) desktop.addListener(onBreakpoint);
     }
 
     update();
@@ -736,6 +788,13 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      /* The form carries novalidate so the timing is ours, but the required
+         fields still have to be honoured — reporting success on an empty
+         form and then disabling every control is a dead end for the reader. */
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
       const note = form.querySelector('[data-form-status]');
       if (note) {
         note.hidden = false;

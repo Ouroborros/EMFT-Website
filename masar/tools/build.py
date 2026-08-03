@@ -223,7 +223,8 @@ def shell(lang, page, title, description, body, extra_head=""):
   </footer>
 
   <div class="drawer-backdrop" data-drawer-backdrop></div>
-  <aside class="drawer" data-drawer aria-label="{shortlist_title}" aria-hidden="true">
+  <aside class="drawer" data-drawer role="dialog" aria-modal="true"
+         aria-label="{shortlist_title}" aria-hidden="true" inert>
     <div class="drawer__head">
       <h2 class="h3">{shortlist_title}</h2>
       <button class="icon-btn" type="button" data-drawer-close aria-label="{close}">
