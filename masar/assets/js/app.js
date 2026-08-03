@@ -746,8 +746,12 @@
   }
 
   /* --- Boot --------------------------------------------------------------- */
-  function boot() {
-    initChrome();
+
+  /* Page-level wiring. Split out from boot() because the header, the drawer
+     and the delegated save-button listener must only ever be bound once,
+     while the page body can be swapped and re-mounted (the single-file demo
+     build in tools/bundle.py does exactly that). */
+  function mount() {
     initHome();
     initCatalogue();
     initCourseDetail();
@@ -757,6 +761,13 @@
     initListDetail();
     initContact();
   }
+
+  function boot() {
+    initChrome();
+    mount();
+  }
+
+  window.MASAR_APP = { boot: boot, mount: mount };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();

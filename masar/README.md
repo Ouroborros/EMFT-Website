@@ -65,6 +65,25 @@ Editing **content** (courses, schools, collections) means editing
 static copy** means editing `tools/build.py` and re-running it. The generated
 `.html` files are committed so the site can be served straight from the repo.
 
+### The single-file demo
+
+For places that need one self-contained file with no external requests — a
+hosted preview, an artifact, an email attachment — there is a bundler:
+
+```bash
+python3 tools/fetch-fonts.py   # once; needs network, writes dist/fonts.css
+python3 tools/bundle.py        # writes dist/masar-demo.html
+```
+
+It does not fork the codebase. The CSS, JS and catalogue are the site's own,
+and the page bodies are lifted out of the files `build.py` generates, so the
+demo cannot drift from the real site. Three things differ, and only inside the
+bundle: navigation becomes hash routing (`#/courses.html?subject=finance`, so
+filtered views are still shareable links), `app.js` is handed a
+`location`/`history` pair that reads and writes those hashes instead of being
+edited, and the fonts are inlined as `@font-face` data URIs. `dist/` is
+gitignored — it is generated output.
+
 ## Deliberate choices
 
 - **No tracking.** No analytics, no third-party scripts. The only external
