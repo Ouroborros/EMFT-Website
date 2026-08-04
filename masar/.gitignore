@@ -2,3 +2,4 @@
 # rebuildable (fetch-fonts.py needs network once); the multi-page site in the
 # repo root is the source of truth.
 dist/
+masar/.scrape-cache/
