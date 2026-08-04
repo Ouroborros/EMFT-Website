@@ -117,9 +117,13 @@
           '<div class="course-card__price"><small>' + esc(t('card.from')) + '</small>' + esc(I.money(c.price)) + '</div>' +
           '<div class="course-card__date">' +
             esc(t('card.starts', { date: I.shortDate(c.start) })) +
-            '<br><span class="rating"><span class="stars" aria-hidden="true">' + stars(c.rating) + '</span>' +
-            '<span class="sr-only">' + c.rating + '/5</span>' +
-            '<span class="count">' + esc(I.num(c.reviews)) + '</span></span>' +
+            /* Imported listings carry no rating; the card simply omits the
+               line rather than showing an invented score. */
+            (c.rating != null
+              ? '<br><span class="rating"><span class="stars" aria-hidden="true">' + stars(c.rating) + '</span>' +
+                '<span class="sr-only">' + c.rating + '/5</span>' +
+                '<span class="count">' + esc(I.num(c.reviews)) + '</span></span>'
+              : '') +
           '</div>' +
         '</div>' +
       '</article>';
@@ -392,7 +396,8 @@
     const SORTERS = {
       date: (a, b) => a.start.localeCompare(b.start),
       popular: (a, b) => b.popularity - a.popularity,
-      rating: (a, b) => b.rating - a.rating || b.reviews - a.reviews,
+      /* Unrated (imported) listings sort after every rated one. */
+      rating: (a, b) => (b.rating || 0) - (a.rating || 0) || (b.reviews || 0) - (a.reviews || 0),
       priceAsc: (a, b) => a.price - b.price,
       priceDesc: (a, b) => b.price - a.price
     };
@@ -599,7 +604,9 @@
           '<span class="pill pill--brand">' + esc(formatLabel(c.format)) + '</span>' +
           '<span class="pill">' + esc(homeOf(c)) + '</span>' +
           '<span class="pill">' + esc(I.dayCount(c.days)) + '</span>' +
-          '<span class="pill pill--accent">★ ' + c.rating + ' · ' + esc(t('card.reviews', { n: I.num(c.reviews) })) + '</span>' +
+          (c.rating != null
+            ? '<span class="pill pill--accent">★ ' + c.rating + ' · ' + esc(t('card.reviews', { n: I.num(c.reviews) })) + '</span>'
+            : '') +
         '</div>' +
       '</div>' +
       '<div class="detail">' +

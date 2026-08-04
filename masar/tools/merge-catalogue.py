@@ -34,8 +34,11 @@ SUBJECTS = {"leadership", "finance", "strategy", "digital", "data", "marketing",
 WINDOW = (date(2026, 9, 1), date(2027, 8, 31))
 
 COURSE_FIELDS = ["id", "school", "subject", "format", "start", "days", "price",
-                 "langs", "rating", "reviews", "popularity",
-                 "title", "summary", "highlights", "audience"]
+                 "langs", "title", "summary", "highlights", "audience"]
+# Editorial metrics. Optional: a real imported listing has no rating and gets
+# none — the site renders those cards without a review line rather than
+# inventing one. popularity defaults to 50 (middle of the sort) when absent.
+OPTIONAL_FIELDS = ["rating", "reviews", "popularity"]
 SCHOOL_FIELDS = ["id", "name", "city", "country", "region", "founded",
                  "accreditation", "about"]
 
@@ -64,11 +67,18 @@ def arr_pair(obj, indent):
 
 
 def course_js(c):
+    metrics = []
+    if "rating" in c:
+        metrics.append("rating: {}".format(c["rating"]))
+        metrics.append("reviews: {}".format(c["reviews"]))
+    metrics.append("popularity: {}".format(c.get("popularity", 50)))
+    if c.get("source_url"):
+        metrics.append("sourceUrl: {}".format(q(c["source_url"])))
     return (
         "    {{\n"
         "      id: {id}, school: {school}, subject: {subject}, format: {format},\n"
         "      start: {start}, days: {days}, price: {price}, langs: [{langs}], "
-        "rating: {rating}, reviews: {reviews}, popularity: {popularity},\n"
+        "{metrics},\n"
         "      title: {title},\n"
         "      summary: {summary},\n"
         "      highlights: {highlights},\n"
@@ -78,7 +88,7 @@ def course_js(c):
         id=q(c["id"]), school=q(c["school"]), subject=q(c["subject"]), format=q(c["format"]),
         start=q(c["start"]), days=c["days"], price=c["price"],
         langs=", ".join(q(l) for l in c["langs"]),
-        rating=c["rating"], reviews=c["reviews"], popularity=c["popularity"],
+        metrics=", ".join(metrics),
         title=pair(c["title"], 6), summary=pair(c["summary"], 6),
         highlights=arr_pair(c["highlights"], 6), audience=pair(c["audience"], 6),
     )
@@ -166,11 +176,13 @@ def check_course(c, known_course_ids, school_ids, errs, where):
         if not 120 <= per_day <= 2500:
             errs.append("{} [{}]: {:.0f}/day is implausible ({} over {} days)".format(
                 where, cid, per_day, c["price"], c["days"]))
-    if not isinstance(c["rating"], (int, float)) or not 3.5 <= c["rating"] <= 5.0:
+    if "rating" in c and (not isinstance(c["rating"], (int, float)) or not 3.5 <= c["rating"] <= 5.0):
         errs.append("{} [{}]: rating {}".format(where, cid, c["rating"]))
-    if not isinstance(c["reviews"], int) or not 5 <= c["reviews"] <= 900:
+    if "reviews" in c and (not isinstance(c["reviews"], int) or not 5 <= c["reviews"] <= 900):
         errs.append("{} [{}]: reviews {}".format(where, cid, c["reviews"]))
-    if not isinstance(c["popularity"], int) or not 1 <= c["popularity"] <= 100:
+    if ("rating" in c) != ("reviews" in c):
+        errs.append("{} [{}]: rating and reviews must come together or not at all".format(where, cid))
+    if "popularity" in c and (not isinstance(c["popularity"], int) or not 1 <= c["popularity"] <= 100):
         errs.append("{} [{}]: popularity {}".format(where, cid, c["popularity"]))
     for f in ("title", "summary", "audience"):
         if not is_pair(c[f]):
