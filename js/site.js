@@ -74,6 +74,28 @@
   var ENDPOINT = null;
   var INBOX = 'info@emergingmarketft.com';
 
+  // Messages the form generates rather than renders from markup.
+  var MSG = {
+    en: {
+      required: 'This field is required.',
+      email: 'Enter a valid email address.',
+      sending: 'Sending…',
+      send: 'Send enquiry',
+      failed: 'That did not send. Please email ' + INBOX + ' instead.'
+    },
+    ar: {
+      required: 'هذا الحقل مطلوب.',
+      email: 'أدخل بريداً إلكترونياً صحيحاً.',
+      sending: 'جارٍ الإرسال…',
+      send: 'إرسال الاستفسار',
+      failed: 'تعذّر الإرسال. يُرجى مراسلتنا على ' + INBOX + ' بدلاً من ذلك.'
+    }
+  };
+  var t = function (key) {
+    var lang = (window.EMFT_I18N && window.EMFT_I18N.lang) || 'en';
+    return (MSG[lang] || MSG.en)[key];
+  };
+
   var form = document.getElementById('enquiry-form');
   if (!form) return;
 
@@ -96,9 +118,9 @@
       if (!input || input.type === 'hidden') return;
       var message = '';
       if (input.required && !input.value.trim()) {
-        message = 'This field is required.';
+        message = t('required');
       } else if (input.type === 'email' && input.value && !input.checkValidity()) {
-        message = 'Enter a valid email address.';
+        message = t('email');
       }
       setError(field, message);
       if (message && !firstBad) firstBad = input;
@@ -106,6 +128,10 @@
     if (firstBad) firstBad.focus();
     return !firstBad;
   };
+
+  document.addEventListener('emft:langchange', function () {
+    form.querySelectorAll('.field').forEach(function (field) { setError(field, ''); });
+  });
 
   form.addEventListener('submit', function (event) {
     event.preventDefault();
@@ -132,15 +158,15 @@
     };
 
     if (ENDPOINT) {
-      if (submit) { submit.disabled = true; submit.textContent = 'Sending…'; }
+      if (submit) { submit.disabled = true; submit.textContent = t('sending'); }
       fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       }).then(done).catch(function () {
-        if (submit) { submit.disabled = false; submit.textContent = 'Send enquiry'; }
+        if (submit) { submit.disabled = false; submit.textContent = t('send'); }
         var slot = form.querySelector('.form-foot .field-error');
-        if (slot) slot.textContent = 'That did not send. Please email ' + INBOX + ' instead.';
+        if (slot) slot.textContent = t('failed');
       });
       return;
     }

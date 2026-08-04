@@ -123,8 +123,10 @@ FOOTER = """  <footer class="site-footer">
         </nav>
         <nav class="footer-col" aria-label="Footer — contact">
           <h2 class="footer-heading" data-i18n="navContact">Contact</h2>
-          <a href="mailto:{email}">{email}</a>
-          <a href="tel:{tel_href}">{tel}</a>
+          <!-- dir="ltr": a Latin address or a phone number reverses visually
+               inside an RTL paragraph without it. -->
+          <a href="mailto:{email}" dir="ltr">{email}</a>
+          <a href="tel:{tel_href}" dir="ltr">{tel}</a>
           <a href="{linkedin}" target="_blank" rel="noopener">LinkedIn</a>
         </nav>
         <div class="footer-col">

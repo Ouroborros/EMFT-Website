@@ -49,7 +49,9 @@
   var lookup = function (key) {
     for (var i = dicts.length - 1; i >= 0; i--) {
       var v = dicts[i][lang] && dicts[i][lang][key];
-      if (v !== undefined) return v;
+      // An empty string means "not translated yet" — fall through so the
+      // element keeps its English rather than blanking out.
+      if (v) return v;
     }
     return undefined;
   };

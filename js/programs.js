@@ -22,6 +22,7 @@
       ctaTitle: "Don't see exactly what you need?",
       ctaSub: 'Most of our engagements are built to order. Tell us the capability you want to build.',
       footer: 'All rights reserved.', backHome: '← Back to Home',
+      ctaButton: 'Request the Program Outline',
       domains: { all: 'All', fin: 'Financial', tech: 'Emerging Tech', skills: 'Professional Skills' },
       groups: {
         leadership: 'Leadership & Management',
@@ -50,6 +51,7 @@
       ctaTitle: 'لم تجد ما تبحث عنه بالضبط؟',
       ctaSub: 'معظم برامجنا تُبنى حسب الطلب. أخبرنا عن القدرات التي تريد بناءها.',
       footer: 'جميع الحقوق محفوظة.', backHome: '→ العودة إلى الرئيسية',
+      ctaButton: 'اطلب المنهج التفصيلي',
       domains: { all: 'الكل', fin: 'مالي', tech: 'التقنيات الناشئة', skills: 'المهارات المهنية' },
       groups: {
         leadership: 'القيادة والإدارة',
