@@ -2,4 +2,10 @@
 # rebuildable (fetch-fonts.py needs network once); the multi-page site in the
 # repo root is the source of truth.
 dist/
-masar/.scrape-cache/
+
+# Response cache written by the scrapers; rebuildable, site-specific.
+.scrape-cache/
+
+# Python bytecode from running the tools.
+__pycache__/
+*.pyc
