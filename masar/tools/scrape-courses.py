@@ -246,11 +246,16 @@ def from_json_ld(nodes, url):
         instance = instance[0] if instance else {}
     src = instance if isinstance(instance, dict) and instance else node
 
-    start = text(first(src, "startDate", "courseSchedule"))
+    def pick(*keys):
+        # Sites split these fields between the Course node and its
+        # CourseInstance inconsistently; instance first, then the node.
+        return text(first(src, *keys) or first(node, *keys))
+
+    start = pick("startDate", "courseSchedule")
     row["start"] = start[:10] if re.match(r"^\d{4}-\d{2}-\d{2}", start) else start
-    row["format"] = text(first(src, "courseMode", "eventAttendanceMode"))
-    row["langs"] = text(first(src, "inLanguage", "availableLanguage"))
-    row["days"] = text(first(src, "timeRequired", "duration"))
+    row["format"] = pick("courseMode", "eventAttendanceMode")
+    row["langs"] = pick("inLanguage", "availableLanguage")
+    row["days"] = pick("timeRequired", "duration")
 
     rating = first(node, "aggregateRating") or {}
     if isinstance(rating, dict):
