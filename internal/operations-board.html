@@ -575,6 +575,103 @@ function applyAjbAssessmentUpdate(){
   return true;
 }
 
+/* ---------- Status update, 26 Jul 2026 ----------
+   BSF action reports out and the PO in hand, so August delivery is authorised.
+   Aljazira's Cyber programme is complete for the year and Data & AI closed at
+   end of July. AJB Tech has finished its assessments and the live workstream
+   is now trainer allocation. */
+
+function findEng(clientPart, programPart){
+  return state.engagements.find(e =>
+    e.client.toLowerCase().includes(clientPart) &&
+    e.program.toLowerCase().includes(programPart));
+}
+function markTaskDone(e, titleStart, note){
+  const t = e.items.find(i => i.title.startsWith(titleStart));
+  if(!t) return false;
+  t.state = 'done';
+  if(note) t.note = note;
+  return true;
+}
+function addTask(e, phase, title, owner, due, st, note){
+  if(e.items.some(i => i.title === title)) return;
+  e.items.push({id:uid(), phase, title, owner, due, state:st, note});
+}
+// Close out a delivered programme, leaving the genuine post-delivery steps open.
+function closeDelivered(e, keepOpen){
+  e.items.forEach(i=>{
+    if(i.state === 'done') return;
+    if(keepOpen.some(k => i.title.startsWith(k))) return;
+    i.state = 'done';
+  });
+}
+
+function applyStatusUpdate20260726(){
+  let touched = false;
+
+  const bsf = findEng('bsf', 'branch transformation');
+  if(bsf){
+    markTaskDone(bsf, 'Issue the progress / completion report',
+      'Action reports sent to BSF.');
+    addTask(bsf, 'Deliver', 'PO received — August delivery authorised to proceed',
+      'Hussam', '', 'done', 'PO in hand; the August cohorts are going ahead.');
+    addTask(bsf, 'Deliver', 'Run the August cohorts', 'Fatima', '2026-08-18', 'doing',
+      'Sales Skills 10, ML-WM 2 and UB-BP 2 are the confirmed August dates. '
+      + 'The 4–6 Aug Jeddah pair is still unresolved — see the Schedule tasks.');
+    touched = true;
+  }
+
+  const cyber = findEng('aljazira', 'cyber graduate');
+  if(cyber){
+    cyber.stage = 'Closed';
+    closeDelivered(cyber, ['Raise the invoice', 'Post-programme review']);
+    addTask(cyber, 'Report & close', 'Confirm the Cyber programme is fully closed out for the year',
+      'Hussam', '2026-08-07', 'todo',
+      'Delivery complete for 2026 — invoicing and the next-phase ask are the remainder.');
+    touched = true;
+  }
+
+  // Data & AI closed at the end of July and was not yet on the board.
+  if(!findEng('aljazira', 'data & ai')){
+    const dai = newEngagement('Aljazira Bank', 'Data & AI Programme', 'delivery');
+    dai.stage = 'Closed';
+    dai.value = 0;
+    closeDelivered(dai, ['Raise the invoice', 'Post-programme review']);
+    dai.items.forEach(i=>{
+      if(i.state === 'done' && !i.note) i.note = 'Completed by end of July 2026.';
+    });
+    state.engagements.push(dai);
+    touched = true;
+  }
+
+  const tech = findEng('aljazira', 'tech graduate');
+  if(tech){
+    if(tech.assessment){
+      tech.assessment.done = tech.assessment.total;
+      tech.assessment.note = 'Assessments complete. Rankings and the report to Badr are still outstanding.';
+    }
+    markTaskDone(tech, 'Chase the remaining assessment completions',
+      'Assessments closed out complete.');
+    markTaskDone(tech, 'Badr to confirm whether the assessment window',
+      'Moot — the assessments finished without needing an extension.');
+    markTaskDone(tech, 'Chase non-completions before the cut-off', 'Assessments complete.');
+    // Prerequisites that necessarily happened to get 201 assessments through.
+    ['Whitelist the assessment domains with client IT',
+     'Dry run the assessment with a real end user',
+     'Send participants the instructions and conditions']
+      .forEach(t => markTaskDone(tech, t, 'Superseded — the assessment round ran to completion.'));
+    const chase = tech.items.find(i => i.title.startsWith('Chase Murrad and Kadir'));
+    if(chase){
+      chase.state = 'doing';
+      chase.note = 'Trainer allocation is now the live workstream on this programme — '
+                 + 'four of eight teaching slots still unconfirmed.';
+    }
+    touched = true;
+  }
+
+  return touched;
+}
+
 /* The bank's name is Aljazira Bank, not Bank Al Jazira. */
 function renameAljazira(){
   state.engagements.forEach(e=>{
@@ -588,7 +685,8 @@ const PATCHES = {
   'ajb-tech-2026-07-26': applyAjbTech,
   'bsf-cohorts-2026-07-26': applyBsfCohorts,
   'aljazira-rename': renameAljazira,
-  'ajb-assessment-update-2026-07-26': applyAjbAssessmentUpdate
+  'ajb-assessment-update-2026-07-26': applyAjbAssessmentUpdate,
+  'status-update-2026-07-26': applyStatusUpdate20260726
 };
 
 function seed2026(){
