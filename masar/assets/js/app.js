@@ -268,7 +268,8 @@
     const featured = document.querySelector('[data-home-featured]');
     if (!featured) return;
 
-    featured.innerHTML = D.courses.filter((c) => c.featured).slice(0, 6).map(courseCard).join('');
+    /* Eight fills two clean rows of the four-column grid; six leaves a gap. */
+    featured.innerHTML = D.courses.filter((c) => c.featured).slice(0, 8).map(courseCard).join('');
 
     const upcoming = document.querySelector('[data-home-upcoming]');
     if (upcoming) {

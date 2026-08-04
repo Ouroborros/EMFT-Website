@@ -805,7 +805,7 @@ LISTS["en"] = """
       <div class="container">
         <span class="eyebrow">Collections</span>
         <h1 class="h2" style="margin-block:10px 12px">Editors' shortlists</h1>
-        <p class="lede">Six questions people arrive with, each answered with a handful of programmes.
+        <p class="lede">Nine questions people arrive with, each answered with a handful of programmes.
           These are editorial selections, not a ranking — nobody scored anything out of a hundred.</p>
       </div>
     </section>
@@ -822,7 +822,7 @@ LISTS["ar"] = """
       <div class="container">
         <span class="eyebrow">مجموعات</span>
         <h1 class="h2" style="margin-block:10px 12px">اختيارات فريق التحرير</h1>
-        <p class="lede">ستة أسئلة يأتي بها الزوّار عادةً، يجيب عن كلٍّ منها عدد محدود من البرامج.
+        <p class="lede">تسعة أسئلة يأتي بها الزوّار عادةً، يجيب عن كلٍّ منها عدد محدود من البرامج.
           هذه اختيارات تحريرية لا تصنيفات — لم يُمنح أي برنامج درجة من مئة.</p>
       </div>
     </section>

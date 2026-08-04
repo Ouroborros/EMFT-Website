@@ -159,8 +159,11 @@ def check_course(c, known_course_ids, school_ids, errs, where):
     if not isinstance(c["price"], int) or not 300 <= c["price"] <= 60000:
         errs.append("{} [{}]: price out of range ({})".format(where, cid, c["price"]))
     else:
+        # Board-level short programmes really do cost this much: the existing
+        # catalogue runs 2,042/day (c-agp) and 2,360/day (c-board-fin), so the
+        # ceiling has to sit above them or the validator rejects its own data.
         per_day = c["price"] / max(c["days"], 1)
-        if not 120 <= per_day <= 1800:
+        if not 120 <= per_day <= 2500:
             errs.append("{} [{}]: {:.0f}/day is implausible ({} over {} days)".format(
                 where, cid, per_day, c["price"], c["days"]))
     if not isinstance(c["rating"], (int, float)) or not 3.5 <= c["rating"] <= 5.0:
