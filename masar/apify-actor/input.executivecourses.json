@@ -1,0 +1,12 @@
+{
+    "startUrls": [
+        {"url": "https://executivecourses.com/"},
+        {"url": "https://executivecourses.com/upcoming-courses"},
+        {"url": "https://executivecourses.com/featured-courses"}
+    ],
+    "urlPattern": "/(course|program|upcoming|featured)",
+    "maxPages": 20,
+    "requestsPerMinute": 30,
+    "useSitemap": true,
+    "translate": false
+}
