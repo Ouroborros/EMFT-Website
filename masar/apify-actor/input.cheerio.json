@@ -1,0 +1,33 @@
+{
+  "startUrls": [
+    {
+      "url": "https://executivecourses.com/"
+    },
+    {
+      "url": "https://executivecourses.com/upcoming-courses"
+    },
+    {
+      "url": "https://executivecourses.com/featured-courses"
+    }
+  ],
+  "respectRobotsTxtFile": true,
+  "linkSelector": "a[href]",
+  "pseudoUrls": [
+    {
+      "purl": "[https?://(www\\.)?executivecourses\\.com/.*(course|program|upcoming|featured).*]"
+    }
+  ],
+  "excludes": [
+    {
+      "glob": "/**/*.{png,jpg,jpeg,gif,svg,pdf,css,js}"
+    }
+  ],
+  "pageFunction": "// Page function for Apify's stock `apify/cheerio-scraper` Actor.\n//\n// JS port of src/extract.py so the scrape can run on Apify WITHOUT deploying\n// our custom Actor — paste this into Cheerio Scraper's \"Page function\" field\n// (or generate the whole run input with make-cheerio-input.py). Keep in sync\n// with src/extract.py: the COLUMNS contract is what ties the dataset to\n// spreadsheet-to-batch.py → merge-catalogue.py.\nasync function pageFunction(context) {\n    const { $, request } = context;\n\n    const COLUMNS = [\n        'source_url', 'school', 'school_city', 'school_country',\n        'title', 'title_ar', 'summary', 'summary_ar',\n        'subject', 'format', 'start', 'days', 'price', 'currency', 'langs',\n        'audience', 'audience_ar', 'highlights', 'highlights_ar',\n        'rating', 'reviews', 'scraped_at',\n    ];\n    const COURSE_TYPES = ['course', 'courseinstance', 'event', 'educationevent', 'product'];\n\n    const text = (v) => {\n        if (v == null) return '';\n        if (Array.isArray(v)) return v.filter(Boolean).map(text).join(' | ');\n        if (typeof v === 'object') return text(v.name || v['@value'] || '');\n        return String(v).replace(/\\s+/g, ' ').trim();\n    };\n    const first = (node, ...keys) => {\n        for (const k of keys) {\n            if (node && typeof node === 'object' && node[k]) return node[k];\n        }\n        return null;\n    };\n    // JSON-LD freely wraps single values in lists; unwrap to the first.\n    const one = (v) => (Array.isArray(v) ? (v[0] || {}) : (v || {}));\n\n    const nodes = [];\n    $('script[type=\"application/ld+json\"]').each((i, el) => {\n        const raw = ($(el).html() || '').trim();\n        if (!raw) return;\n        let data;\n        try {\n            data = JSON.parse(raw);\n        } catch (e) {\n            try { // several objects back to back\n                data = JSON.parse('[' + raw.replace(/}\\s*{/g, '},{') + ']');\n            } catch (e2) { return; }\n        }\n        for (const n of Array.isArray(data) ? data : [data]) {\n            if (!n || typeof n !== 'object') continue;\n            if (Array.isArray(n['@graph'])) {\n                nodes.push(...n['@graph'].filter((x) => x && typeof x === 'object'));\n            } else {\n                nodes.push(n);\n            }\n        }\n    });\n\n    const isCourse = (n) => {\n        const t = n['@type'] || '';\n        return (Array.isArray(t) ? t : [t])\n            .some((x) => COURSE_TYPES.includes(String(x).toLowerCase()));\n    };\n\n    const row = {};\n    for (const c of COLUMNS) row[c] = '';\n    row.source_url = request.url;\n    row.scraped_at = new Date().toISOString();\n\n    const node = nodes.find(isCourse);\n    if (node) {\n        row.title = text(first(node, 'name', 'headline'));\n        row.summary = text(first(node, 'description', 'abstract'));\n\n        const provider = one(first(node, 'provider', 'organizer', 'brand', 'publisher'));\n        if (provider && typeof provider === 'object') {\n            row.school = text(provider.name);\n            const addr = provider.address || {};\n            if (addr && typeof addr === 'object') {\n                row.school_city = text(addr.addressLocality);\n                row.school_country = text(addr.addressCountry);\n            }\n        }\n\n        const offers = one(first(node, 'offers'));\n        if (offers && typeof offers === 'object') {\n            row.price = text(first(offers, 'price', 'lowPrice'));\n            row.currency = text(offers.priceCurrency);\n        }\n\n        const instance = one(first(node, 'hasCourseInstance'));\n        const source = (instance && typeof instance === 'object'\n            && Object.keys(instance).length) ? instance : node;\n        // Sites split these fields between the Course node and its\n        // CourseInstance inconsistently; check the instance first, then\n        // fall back to the node.\n        const pick = (...keys) => text(first(source, ...keys) || first(node, ...keys));\n\n        const start = pick('startDate', 'courseSchedule');\n        row.start = /^\\d{4}-\\d{2}-\\d{2}/.test(start) ? start.slice(0, 10) : start;\n        row.format = pick('courseMode', 'eventAttendanceMode');\n        row.langs = pick('inLanguage', 'availableLanguage');\n        row.days = pick('timeRequired', 'duration');\n\n        const rating = first(node, 'aggregateRating') || {};\n        if (rating && typeof rating === 'object') {\n            row.rating = text(rating.ratingValue);\n            row.reviews = text(first(rating, 'reviewCount', 'ratingCount'));\n        }\n\n        const location = one(first(source, 'location'));\n        if (location && typeof location === 'object' && !row.school_city) {\n            const addr = location.address || {};\n            if (addr && typeof addr === 'object') {\n                row.school_city = text(addr.addressLocality);\n                row.school_country = text(addr.addressCountry);\n            }\n        }\n\n        if (row.title) return { ...row, extraction: 'json-ld' };\n    }\n\n    // Metadata fallback — low confidence: a page whose only signal is\n    // og:title is probably not a course page; downstream filters on\n    // `extraction`, so keep the row but label it.\n    const meta = (...names) => {\n        for (const name of names) {\n            const v = $('meta[property=\"' + name + '\"]').attr('content')\n                || $('meta[name=\"' + name + '\"]').attr('content');\n            if (v && v.trim()) return v.trim();\n        }\n        return '';\n    };\n    const title = meta('og:title', 'twitter:title') || $('title').first().text().trim();\n    if (!title) return null;\n    row.title = title;\n    row.summary = meta('og:description', 'description');\n    row.school = meta('og:site_name');\n    return { ...row, extraction: 'meta' };\n}\n",
+  "proxyConfiguration": {
+    "useApifyProxy": true
+  },
+  "maxPagesPerCrawl": 20,
+  "maxConcurrency": 1,
+  "maxRequestRetries": 2,
+  "maxCrawlingDepth": 3
+}
