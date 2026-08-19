@@ -672,6 +672,72 @@ function applyStatusUpdate20260726(){
   return touched;
 }
 
+/* ---------- Trainer sourcing, 19 Aug 2026 ----------
+   Three topics Hussam is hiring trainers for, all KSA-preferred. Candidates
+   below came from a Lusha prospecting sweep (KSA, trainer/consultant titles)
+   cross-checked against LinkedIn. Contact details are NOT revealed yet — each
+   email reveal costs 1 Lusha credit and each phone 5, so pick candidates
+   first and enrich only those. */
+
+const TRAINER_SOURCING = {
+  grid: {
+    title: 'Trainer candidates — KSA',
+    rules: 'sourcing',
+    cols: [
+      {k:'topic',     l:'Topic',     min:170},
+      {k:'candidate', l:'Candidate', min:130},
+      {k:'org',       l:'Current org', min:150},
+      {k:'base',      l:'Base',      min:70},
+      {k:'linkedin',  l:'LinkedIn',  min:180},
+      {k:'status',    l:'Status',    min:104, pill:['Sourcing','Shortlisted','Confirmed','Declined']},
+      {k:'notes',     l:'Notes',     min:190}
+    ],
+    rows: [
+      ['Data Viz & Predictive Analytics','Mosaad Hendam','Riyadh Polytechnic Institute','Riyadh','linkedin.com/in/mosaadhendam','Shortlisted','Title is exactly "Power BI and AI Trainer".'],
+      ['Data Viz & Predictive Analytics','Rama Almarzuqi','Tuwaiq Academy','Riyadh','linkedin.com/in/rama-almarzuqi','Shortlisted','AI & Data technical trainer at Tuwaiq.'],
+      ['Data Viz & Predictive Analytics','Sajjad Syed','PreparationInfo','KSA','linkedin.com/in/sajjad-haider-syed-a041344','Shortlisted','Master Trainer: Power BI, Financial Modelling, Advanced Excel — covers two topics.'],
+      ['Digital banking transformation + AI','Mohamed Gomaa','LEORON Institute / Simplilearn','Riyadh','linkedin.com/in/mohammedgomaa','Shortlisted','International AI trainer at LEORON — corporate delivery experience.'],
+      ['Digital banking transformation + AI','Ahmed Al-Ghamdi','Vjal Institute','Riyadh','linkedin.com/in/ahmed560','Shortlisted','Certified AI trainer at an AI institute.'],
+      ['Digital banking transformation + AI','Ali Elkattan','ElKattan Consulting','KSA','linkedin.com/in/alielkattan','Sourcing','Founder-level digital transformation consultant; email + phone available in Lusha.'],
+      ['Digital banking transformation + AI','Wael Elsekaily','SIDF','KSA','linkedin.com/in/elsekaily','Sourcing','Digital transformation consultant inside a financial institution.'],
+      ['Financial Modeling (Excel / Power BI)','Sajjad Syed','PreparationInfo','KSA','linkedin.com/in/sajjad-haider-syed-a041344','Shortlisted','Same candidate as data-viz row — could carry both topics.'],
+      ['Financial Modeling (Excel / Power BI)','Ibrahim Omer','Asas Training','Riyadh','linkedin.com/in/ibraomer','Shortlisted','Advanced Excel trainer at a training house.'],
+      ['Financial Modeling (Excel / Power BI)','Taimour Khan','Enabling Qapital','KSA','linkedin.com/in/taimour-ali-khan-489684127','Sourcing','Head of Financial Modeling — practitioner, not a trainer; verify delivery experience.']
+    ]
+  },
+  tasks: [
+    ['Qualify','Review the trainer shortlist and pick who to approach per topic','Hussam','2026-08-24','todo',
+     'Ten candidates across the three topics. Sajjad Syed covers two of them.'],
+    ['Qualify','Enrich the chosen candidates in Lusha (1 credit/email, 5/phone — 251 left)','Hussam','2026-08-26','todo',''],
+    ['Qualify','Approach training institutes as a fallback — LEORON, Abadnet, NobleProg KSA','Fatima','2026-08-28','todo',
+     'Institutes can supply vetted trainers if the direct approaches stall.'],
+    ['Cost','Collect day rates and availability from the responding candidates','Fatima','2026-09-03','todo','']
+  ]
+};
+
+function applyTrainerSourcing(){
+  if(state.engagements.some(e => e.program.toLowerCase().includes('trainer sourcing'))) return true;
+  const e = newEngagement('EMFT (internal)', 'Trainer Sourcing — 2026 open topics', 'proposal');
+  e.stage = 'Scoping';
+  e.items = [];                       // no standard checklist — the grid is the work
+  const g = TRAINER_SOURCING.grid;
+  const keys = g.cols.map(c=>c.k);
+  e.grid = {
+    title: g.title, rules: g.rules,
+    cols: JSON.parse(JSON.stringify(g.cols)),
+    rows: g.rows.map(vals=>{
+      const row = {id: uid()};
+      keys.forEach((k, idx)=>{ row[k] = vals[idx]; });
+      return row;
+    })
+  };
+  TRAINER_SOURCING.tasks.forEach(([phase,title,owner,due,st,note])=>{
+    e.items.push({id:uid(), phase, title, owner, due, state:st, note});
+  });
+  state.engagements.push(e);
+  return true;
+}
+
 /* The bank's name is Aljazira Bank, not Bank Al Jazira. */
 function renameAljazira(){
   state.engagements.forEach(e=>{
@@ -686,7 +752,8 @@ const PATCHES = {
   'bsf-cohorts-2026-07-26': applyBsfCohorts,
   'aljazira-rename': renameAljazira,
   'ajb-assessment-update-2026-07-26': applyAjbAssessmentUpdate,
-  'status-update-2026-07-26': applyStatusUpdate20260726
+  'status-update-2026-07-26': applyStatusUpdate20260726,
+  'trainer-sourcing-2026-08-19': applyTrainerSourcing
 };
 
 function seed2026(){
@@ -797,6 +864,13 @@ const RULES = {
     if(r.confirmed !== 'Confirmed') return ['trainer not confirmed'];
     return [];
   },
+  sourcing: r => {
+    const has = v => String(v == null ? '' : v).trim() !== '';
+    if(r.status === 'Declined') return ['needs a new candidate'];
+    if(!has(r.candidate)) return ['no candidate yet'];
+    if(r.status !== 'Confirmed') return ['not confirmed'];
+    return [];
+  },
   cohorts: r => {
     const out = [];
     const has = v => String(v == null ? '' : v).trim() !== '';
@@ -812,8 +886,9 @@ const RULES = {
 
 const PILL_CLASS = {
   Confirmed:'yes', Completed:'yes',
-  Scheduled:'info', Pending:'no', Cancelled:'no',
-  Rescheduled:'warn', 'N/A':'na'
+  Scheduled:'info', Shortlisted:'info',
+  Pending:'no', Cancelled:'no', Declined:'no',
+  Rescheduled:'warn', Sourcing:'warn', 'N/A':'na'
 };
 
 function gridRows(e){ return (e.grid && e.grid.rows) || []; }
