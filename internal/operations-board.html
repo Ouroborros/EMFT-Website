@@ -753,7 +753,15 @@ const PATCHES = {
   'aljazira-rename': renameAljazira,
   'ajb-assessment-update-2026-07-26': applyAjbAssessmentUpdate,
   'status-update-2026-07-26': applyStatusUpdate20260726,
-  'trainer-sourcing-2026-08-19': applyTrainerSourcing
+  'trainer-sourcing-2026-08-19': applyTrainerSourcing,
+  // The three topics turned out to be a new Al Rajhi request, not internal.
+  'alrajhi-sourcing-rehome': () => {
+    const e = state.engagements.find(x => x.program.toLowerCase().includes('trainer sourcing'));
+    if(!e) return false;
+    e.client = 'Al Rajhi';
+    e.program = 'Analytics, Digital Banking & Financial Modeling — trainer sourcing';
+    return true;
+  }
 };
 
 function seed2026(){
