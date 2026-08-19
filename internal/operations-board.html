@@ -138,6 +138,7 @@
   .cf.na{background:var(--bg);color:var(--ink-soft);cursor:default;}
   .cf.info{background:var(--primary-soft);color:var(--primary);}
   .cf.warn{background:var(--blocked-soft);color:var(--blocked);}
+  .cf.sent{background:var(--accent-soft);color:var(--accent);}
 
   .sched td.flags{white-space:nowrap;}
   .flag{display:inline-block;font-size:9px;font-family:var(--mono);padding:2px 6px;border-radius:100px;background:var(--danger-soft);color:var(--danger);margin-right:3px;}
@@ -754,6 +755,41 @@ const PATCHES = {
   'ajb-assessment-update-2026-07-26': applyAjbAssessmentUpdate,
   'status-update-2026-07-26': applyStatusUpdate20260726,
   'trainer-sourcing-2026-08-19': applyTrainerSourcing,
+  // 19 Aug: Rama and Mosaad approached; second sourcing sweep added 8 names.
+  'alrajhi-sourcing-update-2026-08-19': () => {
+    const e = state.engagements.find(x => x.program.toLowerCase().includes('trainer sourcing'));
+    if(!e || !e.grid) return false;
+    if(!e.grid.cols.find(c=>c.k==='status').pill.includes('Approached')){
+      e.grid.cols.find(c=>c.k==='status').pill =
+        ['Sourcing','Shortlisted','Approached','Confirmed','Declined'];
+    }
+    e.grid.rows.forEach(r=>{
+      if(/hendam|almarzuqi/i.test(r.candidate||'')) r.status = 'Approached';
+    });
+    const add = [
+      ['Data Viz & Predictive Analytics','Abdullah Altaf','Microsoft','Riyadh','linkedin.com/in/abdullahbinaltaf','Sourcing','Microsoft Certified Trainer + community lead — MCT is the Power BI credential.'],
+      ['Data Viz & Predictive Analytics','Hamed Shawky','Microsoft','KSA','linkedin.com/in/hamed-shawky-40aba95b','Sourcing','Microsoft trainer, certifications on file.'],
+      ['Data Viz & Predictive Analytics','Ameerah Alotaibi','Microsoft','KSA','linkedin.com/in/ameerah-alotaibi-801752215','Sourcing','Microsoft Certified Trainer.'],
+      ['Digital banking transformation + AI','Dr Yazeed Alzahrani','atomcamp Arabia','Riyadh','linkedin.com/in/dr-yazeed-alzahrani-smieee-a1471829','Sourcing','AI trainer & consultant at an AI training consultancy; IEEE senior member.'],
+      ['Digital banking transformation + AI','Mohammad Medawar','LEORON / PwC Academy ME / e& Academy','Riyadh','linkedin.com/in/mohammadelmedawar','Sourcing','Freelance IT trainer delivering for multiple major institutes — proven corporate circuit.'],
+      ['Digital banking transformation + AI','Prof Ahmed Al Shathri','CIBAFI','KSA','linkedin.com/in/prof-ahmed-al-shathri','Sourcing','Certified trainer at the General Council for Islamic Banks — banking-domain authority.'],
+      ['Digital banking transformation + AI','Yazeed Alzaydi','Saudi National Bank','KSA','linkedin.com/in/eng-yazeed-alzaydi-phd-candidate-b2b1956','Sourcing','Internal certified trainer inside SNB; PhD candidate. Email + phone in Lusha.'],
+      ['Financial Modeling (Excel / Power BI)','Ramy Helmy','Saudi Exchange (freelance)','KSA','linkedin.com/in/ramy-helmy-900b7b21','Sourcing','Freelance investor/broker trainer — markets side of modeling. Email + phone in Lusha.']
+    ];
+    const keys = e.grid.cols.map(c=>c.k);
+    add.forEach(vals=>{
+      if(e.grid.rows.some(r => r.candidate === vals[1] && r.topic === vals[0])) return;
+      const row = {id: uid()};
+      keys.forEach((k, idx)=>{ row[k] = vals[idx]; });
+      e.grid.rows.push(row);
+    });
+    const review = e.items.find(i=>i.title.startsWith('Review the trainer shortlist'));
+    if(review){
+      review.state = 'doing';
+      review.note = 'Rama and Mosaad approached 19 Aug. Second sweep added 8 more names — undecided on the rest of round one.';
+    }
+    return true;
+  },
   // The three topics turned out to be a new Al Rajhi request, not internal.
   'alrajhi-sourcing-rehome': () => {
     const e = state.engagements.find(x => x.program.toLowerCase().includes('trainer sourcing'));
@@ -876,6 +912,7 @@ const RULES = {
     const has = v => String(v == null ? '' : v).trim() !== '';
     if(r.status === 'Declined') return ['needs a new candidate'];
     if(!has(r.candidate)) return ['no candidate yet'];
+    if(r.status === 'Approached') return ['awaiting reply'];
     if(r.status !== 'Confirmed') return ['not confirmed'];
     return [];
   },
@@ -896,7 +933,7 @@ const PILL_CLASS = {
   Confirmed:'yes', Completed:'yes',
   Scheduled:'info', Shortlisted:'info',
   Pending:'no', Cancelled:'no', Declined:'no',
-  Rescheduled:'warn', Sourcing:'warn', 'N/A':'na'
+  Rescheduled:'warn', Sourcing:'warn', Approached:'sent', 'N/A':'na'
 };
 
 function gridRows(e){ return (e.grid && e.grid.rows) || []; }
