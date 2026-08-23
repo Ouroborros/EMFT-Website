@@ -23,6 +23,16 @@
 
   --gutter: 64px;
   --header-h: 105px;
+
+  /* Corner radius and elevation. The original had neither — every edge was a
+     hard rectangle on a hairline, which is what made the page read as flat.
+     One scale, used consistently, does most of the work. */
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 22px;
+  --shadow-1: 0 1px 2px rgba(14, 42, 71, 0.04), 0 4px 14px rgba(14, 42, 71, 0.05);
+  --shadow-2: 0 2px 6px rgba(14, 42, 71, 0.06), 0 18px 44px rgba(14, 42, 71, 0.13);
+  --shadow-navy: 0 24px 60px rgba(9, 24, 41, 0.28);
 }
 
 /* Reset / base ------------------------------------------------------------ */
@@ -107,9 +117,16 @@ a:hover { color: var(--gold); }
   font-weight: 600;
   font-size: 15px;
   padding: 16px 36px;
-  transition: background-color 150ms ease-out, color 150ms ease-out;
+  border-radius: var(--r-sm);
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+              transform 150ms ease-out, box-shadow 150ms ease-out;
 }
-.btn-solid:hover { background: var(--gold); color: #fff; }
+.btn-solid:hover {
+  background: var(--gold);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-1);
+}
 
 .btn-gold {
   display: inline-block;
@@ -118,9 +135,16 @@ a:hover { color: var(--gold); }
   font-weight: 600;
   font-size: 15px;
   padding: 16px 40px;
-  transition: background-color 150ms ease-out, color 150ms ease-out;
+  border-radius: var(--r-sm);
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+              transform 150ms ease-out, box-shadow 150ms ease-out;
 }
-.btn-gold:hover { background: var(--gold-light); color: var(--navy); }
+.btn-gold:hover {
+  background: var(--gold-light);
+  color: var(--navy);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(184, 145, 46, 0.28);
+}
 
 .link-underline {
   font-weight: 600;
@@ -167,6 +191,7 @@ a:hover { color: var(--gold); }
 .primary-nav a { padding: 6px 0; }
 .primary-nav a.nav-contact {
   border: 1px solid var(--navy);
+  border-radius: var(--r-sm);
   padding: 11px 26px;
   font-weight: 600;
   transition: background-color 150ms ease-out, color 150ms ease-out;
@@ -244,7 +269,22 @@ a:hover { color: var(--gold); }
 }
 
 /* Hero -------------------------------------------------------------------- */
+/* Two columns from 1080px up. Stacked, the hero was a wall of type with a
+   photo parked underneath; side by side the image carries its share. */
 .hero-inner { padding-top: clamp(56px, 4vw + 32px, 96px); }
+@media (min-width: 1081px) {
+  .hero-inner {
+    /* The photo is taller than the copy column, so without this its lower
+       corner lands on the stats panel below. */
+    padding-bottom: clamp(56px, 6vw, 88px);
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: clamp(48px, 5vw, 80px);
+    align-items: center;
+  }
+  .hero-media { margin-top: 0; }
+  .hero-copy h1 { font-size: clamp(40px, 2rem + 2.2vw, 62px); }
+}
 .hero-copy { max-width: 960px; }
 .hero-copy .eyebrow { margin-bottom: 28px; }
 .hero-copy h1 { margin-bottom: 32px; }
@@ -260,22 +300,37 @@ a:hover { color: var(--gold); }
 .hero-media { margin-top: clamp(48px, 6vw, 80px); }
 .hero-media img {
   width: 100%;
-  height: clamp(280px, 38vw, 520px);
+  height: clamp(280px, 38vw, 560px);
   object-fit: cover;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-2);
 }
 
 /* Stats ------------------------------------------------------------------- */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-bottom: 1px solid var(--line);
+  background: var(--sand);
+  border: 1px solid var(--line-sand);
+  border-radius: var(--r-lg);
+  padding: 8px;
 }
 .stat {
-  padding: 48px 32px;
-  border-inline-end: 1px solid var(--line);
+  padding: 40px 32px;
+  border-inline-end: 1px solid var(--line-sand);
 }
-.stat:first-child { padding-inline-start: 0; }
-.stat:last-child { padding-inline-end: 0; border-inline-end: 0; }
+.stat:first-child { padding-inline-start: 32px; }
+.stat:last-child { padding-inline-end: 32px; border-inline-end: 0; }
+/* A gold tick above each figure: the numbers were the loudest thing on the
+   page and had nothing tying them to the palette. */
+.stat-value::before {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--gold);
+  margin-bottom: 18px;
+}
 .stat-value {
   font-family: var(--serif);
   font-size: clamp(36px, 2rem + 1.4vw, 52px);
@@ -287,10 +342,10 @@ a:hover { color: var(--gold); }
 
 @media (max-width: 980px) {
   .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .stat { padding: 32px 24px; }
-  .stat:nth-child(odd) { padding-inline-start: 0; }
-  .stat:nth-child(even) { border-inline-end: 0; padding-inline-end: 0; }
-  .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .stat { padding: 30px 24px; }
+  .stat:nth-child(odd) { padding-inline-start: 24px; }
+  .stat:nth-child(even) { border-inline-end: 0; padding-inline-end: 24px; }
+  .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line-sand); }
 }
 
 /* Services — editorial index with sticky intro ---------------------------- */
@@ -313,12 +368,17 @@ a:hover { color: var(--gold); }
   grid-template-columns: 64px 1fr auto;
   gap: 24px;
   align-items: baseline;
-  padding: 28px 8px;
+  padding: 28px 20px;
   border-top: 1px solid var(--line);
+  border-radius: var(--r-md);
   color: var(--navy);
-  transition: background-color 150ms ease-out;
+  transition: background-color 180ms ease-out, transform 180ms ease-out;
 }
-.service-row:hover { background: var(--sand); color: var(--navy); }
+.service-row:hover { background: var(--sand); color: var(--navy); transform: translateX(6px); }
+html[dir="rtl"] .service-row:hover { transform: translateX(-6px); }
+.service-row .service-arrow { transition: transform 180ms ease-out; }
+.service-row:hover .service-arrow { transform: translateX(4px); }
+html[dir="rtl"] .service-row:hover .service-arrow { transform: translateX(-4px); }
 .service-num { font-family: var(--serif); font-size: 18px; color: var(--gold); }
 .service-name {
   display: block;
@@ -337,7 +397,14 @@ a:hover { color: var(--gold); }
 }
 
 /* Case studies — dark editorial band -------------------------------------- */
-.cases-section { background: var(--navy); padding-block: clamp(72px, 8vw, 112px); }
+/* A soft off-centre wash keeps the navy bands from reading as one dead
+   rectangle of colour. */
+.cases-section {
+  background:
+    radial-gradient(120% 90% at 12% 0%, #16375a 0%, rgba(22, 55, 90, 0) 62%),
+    var(--navy);
+  padding-block: clamp(72px, 8vw, 112px);
+}
 .cases-head {
   display: flex;
   justify-content: space-between;
@@ -382,7 +449,11 @@ a:hover { color: var(--gold); }
 }
 /* Hairline frame set off the photo by a band of page — the picture reads as
    mounted rather than cropped hard against the copy. */
-.why-media { padding: 14px; border: 1px solid rgba(14, 42, 71, 0.14); }
+.why-media {
+  padding: 14px;
+  border: 1px solid rgba(14, 42, 71, 0.14);
+  border-radius: var(--r-lg);
+}
 .why-media .media-frame { height: clamp(360px, 50vw, 660px); }
 .why-copy .eyebrow { margin-bottom: 20px; display: block; }
 .why-copy h2 { margin-bottom: 40px; }
@@ -406,6 +477,7 @@ a:hover { color: var(--gold); }
   --assess-pad: clamp(40px, 6vw, 88px);
   background: var(--sand);
   padding: var(--assess-pad);
+  border-radius: var(--r-lg);
   display: grid;
   grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
   gap: clamp(40px, 4.5vw, 64px);
@@ -436,7 +508,12 @@ a:hover { color: var(--gold); }
   margin-block: calc(-1 * var(--assess-pad));
   margin-inline-end: calc(-1 * var(--assess-pad));
 }
-.assess-media .media-frame { height: 100%; min-height: clamp(340px, 38vw, 560px); }
+.assess-media .media-frame {
+  height: 100%;
+  min-height: clamp(340px, 38vw, 560px);
+  border-radius: 0 var(--r-lg) var(--r-lg) 0;
+}
+html[dir="rtl"] .assess-media .media-frame { border-radius: var(--r-lg) 0 0 var(--r-lg); }
 
 @media (max-width: 980px) {
   .assess-panel { grid-template-columns: 1fr; gap: 40px; align-items: start; }
@@ -445,13 +522,17 @@ a:hover { color: var(--gold); }
     margin-block: 0 calc(-1 * var(--assess-pad));
     margin-inline: calc(-1 * var(--assess-pad));
   }
-  .assess-media .media-frame { min-height: 0; height: clamp(240px, 46vw, 340px); }
+  .assess-media .media-frame {
+    min-height: 0;
+    height: clamp(240px, 46vw, 340px);
+    border-radius: 0 0 var(--r-lg) var(--r-lg);
+  }
 }
 
 /* Photo frames — the image is cut 10% taller than its frame so it can drift
    inside it on scroll without ever exposing an edge. Static without the
    animation, so no-JS and reduced-motion users just see a covered photo. */
-.media-frame { position: relative; overflow: hidden; }
+.media-frame { position: relative; overflow: hidden; border-radius: var(--r-md); }
 .media-frame img {
   position: absolute;
   top: -5%;
@@ -487,11 +568,14 @@ a:hover { color: var(--gold); }
   flex-direction: column;
   color: var(--navy);
   border-top: 2px solid var(--gold);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
   transition: box-shadow 250ms ease-out, transform 250ms ease-out;
 }
 .program-card:hover {
-  box-shadow: 0 16px 40px rgba(14, 42, 71, 0.12);
-  transform: translateY(-3px);
+  box-shadow: var(--shadow-2);
+  transform: translateY(-5px);
   color: var(--navy);
 }
 .program-card img {
@@ -590,11 +674,15 @@ a:hover { color: var(--gold); }
 .serve-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; list-style: none; padding: 0; }
 .serve-chips li {
   border: 1px solid var(--line);
-  padding: 14px 28px;
+  border-radius: 999px;
+  background: var(--paper);
+  padding: 13px 28px;
   font-family: var(--serif);
   font-size: 19px;
   color: var(--navy);
+  transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
 }
+.serve-chips li:hover { border-color: var(--gold); box-shadow: var(--shadow-1); }
 .serve-note {
   text-align: center;
   font-size: 14px;
@@ -606,7 +694,13 @@ a:hover { color: var(--gold); }
 }
 
 /* CTA --------------------------------------------------------------------- */
-.cta-section { background: var(--navy); padding-block: clamp(80px, 9vw, 120px); text-align: center; }
+.cta-section {
+  background:
+    radial-gradient(90% 120% at 50% 0%, #16375a 0%, rgba(22, 55, 90, 0) 65%),
+    var(--navy);
+  padding-block: clamp(80px, 9vw, 120px);
+  text-align: center;
+}
 .cta-section h2 {
   font-family: var(--serif);
   font-size: clamp(36px, 2rem + 1.6vw, 52px);
@@ -1034,3 +1128,14 @@ html[dir="rtl"] .case-link > [aria-hidden="true"] {
   display: inline-block;
   transform: scaleX(-1);
 }
+
+/* Interior-page shapes, kept on the same radius scale as the homepage. */
+.office { border-top-width: 3px; }
+.usecase, .process-step { border-radius: var(--r-md); }
+.form-success { border-radius: var(--r-lg); }
+.field input, .field select, .field textarea { border-radius: var(--r-sm); }
+.enquiry-form button[type="submit"] { border-radius: var(--r-sm); }
+.cookie-actions button, .cookie-actions .ghost { border-radius: var(--r-sm); }
+.legal-governing { border-radius: var(--r-sm); }
+.primary-nav .nav-group-menu { border-radius: var(--r-md); }
+@media (max-width: 1120px) { .primary-nav .nav-group-menu { border-radius: 0; } }
