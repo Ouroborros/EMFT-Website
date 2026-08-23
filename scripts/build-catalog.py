@@ -68,7 +68,9 @@ def write_rows(programs):
                    % (e(title), len(items)))
         for p in items:
             en = p['en']
-            out.append('          <a class="program-row" href="index.html#contact">')
+            # Flagships link to their detail page; everything else to the form.
+            out.append('          <a class="program-row" href="%s">'
+                       % p.get('url', 'contact.html'))
             out.append('            <span class="tag">%s</span>' % e(en['tag']))
             out.append('            <span class="name">%s</span>' % e(en['name']))
             out.append('            <span class="outcome">%s</span>' % e(en['outcome']))

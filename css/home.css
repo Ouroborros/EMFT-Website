@@ -821,7 +821,10 @@ a:hover { color: var(--gold); }
   .nav-group-toggle { display: none; }
   .primary-nav .nav-group-menu {
     position: static;
-    visibility: visible;
+    /* inherit, not visible: a visible child re-enables hit-testing inside the
+       closed nav (visibility:hidden parent), so the submenu's links sat
+       invisibly over the hero and could steal taps. */
+    visibility: inherit;
     opacity: 1;
     transform: none;
     min-width: 0;

@@ -99,6 +99,14 @@
   var form = document.getElementById('enquiry-form');
   if (!form) return;
 
+  // Program detail pages link here as contact.html?interest=<option value>,
+  // so the form opens with the right area of interest already chosen.
+  try {
+    var wanted = new URLSearchParams(window.location.search).get('interest');
+    var interest = document.getElementById('f-interest');
+    if (wanted && interest) interest.value = wanted;
+  } catch (e) { /* very old browser — the visitor just picks it manually */ }
+
   var success = document.getElementById('form-success');
   var submit = form.querySelector('button[type="submit"]');
 

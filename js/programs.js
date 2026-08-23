@@ -125,7 +125,8 @@
         var item = p[state.lang];
         var row = document.createElement('a');
         row.className = 'program-row';
-        row.href = 'index.html#contact';
+        // Flagship programs have their own detail page; the rest go to the form.
+        row.href = p.url || 'contact.html';
 
         var tag = document.createElement('span');
         tag.className = 'tag';

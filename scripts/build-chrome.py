@@ -40,6 +40,12 @@ PAGES = [
     ("terms.html", None),
 ]
 
+# The generated flagship detail pages all live under the Programs nav item.
+PAGES += [
+    (path.name, "programs")
+    for path in sorted(ROOT.glob("program-*.html"))
+]
+
 SOLUTIONS = [
     ("coaching.html", "Coaching &amp; Technical Mentoring", "navCoaching"),
     ("assessments.html", "Assessments", "navAssessments"),
