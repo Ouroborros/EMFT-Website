@@ -370,7 +370,6 @@ a:hover { color: var(--gold); }
   align-items: baseline;
   padding: 28px 20px;
   border-top: 1px solid var(--line);
-  border-radius: var(--r-md);
   color: var(--navy);
   transition: background-color 180ms ease-out, transform 180ms ease-out;
 }
@@ -1131,7 +1130,6 @@ html[dir="rtl"] .case-link > [aria-hidden="true"] {
 
 /* Interior-page shapes, kept on the same radius scale as the homepage. */
 .office { border-top-width: 3px; }
-.usecase, .process-step { border-radius: var(--r-md); }
 .form-success { border-radius: var(--r-lg); }
 .field input, .field select, .field textarea { border-radius: var(--r-sm); }
 .enquiry-form button[type="submit"] { border-radius: var(--r-sm); }
