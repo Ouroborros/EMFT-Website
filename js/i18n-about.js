@@ -70,6 +70,12 @@
       ab62: 'Bring us the capability gap, the audience and the constraint — we will come back with a shape for the program.',
       ab63: 'Contact Us',
       ab64: 'See the results',
+      ab65: 'The EMFT model',
+      ab66: 'Three disciplines. One outcome.',
+      ab67: 'Training',
+      ab68: 'Assessment',
+      ab69: 'Coaching',
+      ab70: 'Capability',
     },
     ar: {
       ab1: 'عن EMFT',
@@ -136,6 +142,12 @@
       ab62: 'اعرض علينا فجوة القدرات والجمهور والقيد — وسنعود إليك بتصور للبرنامج.',
       ab63: 'تواصل معنا',
       ab64: 'شاهد النتائج',
+      ab65: 'نموذج EMFT',
+      ab66: 'ثلاثة تخصصات. نتيجة واحدة.',
+      ab67: 'التدريب',
+      ab68: 'التقييم',
+      ab69: 'الإرشاد',
+      ab70: 'القدرة',
     }
   });
 })();

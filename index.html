@@ -144,6 +144,35 @@
           <img src="assets/img/hero-towers.jpg" alt="Financial district towers — the institutional world EMFT trains in" loading="eager">
         </div>
       </div>
+      <!-- EMFT line-art kit · hero market line. Decorative (aria-hidden); the
+           grammar (.la-*) is shared with the About model and the quote mark.
+           pathLength="1" makes the CSS draw-on unit-free. Dash-drawn paths
+           (.la-signal) carry no vector-effect: dash + non-scaling-stroke
+           resolves in inconsistent coordinate spaces across engines. -->
+      <div class="container">
+        <div class="emft-lineart hero-lineart" aria-hidden="true">
+          <svg viewBox="0 0 1200 170" preserveAspectRatio="xMidYMax meet" focusable="false">
+            <defs>
+              <pattern id="emft-grid-dot" width="60" height="34" patternUnits="userSpaceOnUse">
+                <circle class="la-dot" cx="1.5" cy="1.5" r="1.5"></circle>
+              </pattern>
+            </defs>
+            <rect class="la-grid" x="0" y="6" width="1200" height="136" fill="url(#emft-grid-dot)"></rect>
+            <line class="la-axis" x1="0" y1="142" x2="1200" y2="142" vector-effect="non-scaling-stroke"></line>
+            <path class="la-tick" vector-effect="non-scaling-stroke"
+                  d="M60 142v8 M180 142v8 M300 142v8 M420 142v8 M540 142v8 M660 142v8 M780 142v8 M900 142v8 M1020 142v8 M1140 142v8"></path>
+            <path class="la-signal la-signal--ghost" pathLength="1" fill="none"
+                  d="M0 132 L130 128 L230 130 L330 118 L470 112 L590 116 L710 100 L830 96 L950 84 L1070 80 L1150 70"></path>
+            <path class="la-signal la-signal--gold" pathLength="1" fill="none"
+                  d="M0 126 L110 122 L190 124 L290 104 L380 108 L480 88 L560 92 L670 68 L760 72 L870 48 L960 52 L1060 30 L1150 24"></path>
+            <g class="la-node-group">
+              <circle class="la-node" cx="480" cy="88" r="4" vector-effect="non-scaling-stroke"></circle>
+              <circle class="la-node" cx="870" cy="48" r="4" vector-effect="non-scaling-stroke"></circle>
+              <circle class="la-node la-node--end" cx="1150" cy="24" r="5" vector-effect="non-scaling-stroke"></circle>
+            </g>
+          </svg>
+        </div>
+      </div>
     </section>
 
     <!-- Stats -->
@@ -271,7 +300,7 @@
         </div>
         <div class="why-copy">
           <span class="eyebrow" data-i18n="ix35">Why EMFT</span>
-          <h2 id="why-title" class="display-lg" data-i18n="ix36">Global expertise. Local insight. Practitioners, not presenters.</h2>
+          <h2 id="why-title" class="display-lg" data-i18n="ix36">Global expertise. Local insight.</h2>
           <div class="why-points">
             <div class="why-point">
               <div class="why-point-num" aria-hidden="true">01</div>
@@ -395,6 +424,24 @@
               <span class="program-more" aria-hidden="true" data-i18n="ix71">View the program &rarr;</span>
             </div>
           </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quote chapter — the teaching principle, promoted from the Why heading.
+         The chapter mark reuses the kit's node grammar (hairline — node —
+         hairline) and is symmetric, so it needs no RTL mirroring. -->
+    <section class="section-pad quote-section" aria-labelledby="quote-title">
+      <div class="container">
+        <div class="quote-panel">
+          <svg class="quote-mark" viewBox="0 0 120 12" aria-hidden="true" focusable="false">
+            <line class="la-axis la-axis--light" x1="0" y1="6" x2="54" y2="6" vector-effect="non-scaling-stroke"></line>
+            <circle class="la-node la-node--dark" cx="60" cy="6" r="4" vector-effect="non-scaling-stroke"></circle>
+            <line class="la-axis la-axis--light" x1="66" y1="6" x2="120" y2="6" vector-effect="non-scaling-stroke"></line>
+          </svg>
+          <p id="quote-title" class="quote-statement" data-i18n="ix108">Practitioners, not presenters.</p>
+          <div class="quote-rule" aria-hidden="true"></div>
+          <p class="quote-attrib" data-i18n="ix109">The EMFT teaching principle</p>
         </div>
       </div>
     </section>

@@ -41,7 +41,7 @@
       ix33: '2 Programs',
       ix34: 'Phased Bank Inspector and Financial Analysis programs built for a Gulf central bank\'s supervision teams.',
       ix35: 'Why EMFT',
-      ix36: 'Global expertise. Local insight. Practitioners, not presenters.',
+      ix36: 'Global expertise. Local insight.',
       ix37: 'Glocal Trainer Facility',
       ix38: 'Programs delivered across three continents — London, Hong Kong, Singapore, Dubai, Abu Dhabi, Riyadh, Jeddah, Al Khobar, Kuwait City, Manama, Doha, Muscat and Cairo.',
       ix39: 'Trending Programs',
@@ -113,6 +113,8 @@
       ix105: 'All case studies',
       ix106: 'Explore our assessments',
       ix107: 'Request a syllabus',
+      ix108: 'Practitioners, not presenters.',
+      ix109: 'The EMFT teaching principle',
     },
     ar: {
       ix1: 'التدريب المالي للأسواق الناشئة',
@@ -150,7 +152,7 @@
       ix33: 'برنامجان',
       ix34: 'برنامجا المفتش المصرفي والتحليل المالي على مراحل، مبنيان لفرق الرقابة في أحد البنوك المركزية الخليجية.',
       ix35: 'لماذا EMFT',
-      ix36: 'خبرة عالمية. فهم محلي. ممارسون، لا مُلقّنون.',
+      ix36: 'خبرة عالمية. فهم محلي.',
       ix37: 'شبكة مدربين عالمية بحسّ محلي',
       ix38: 'برامج قُدِّمت عبر ثلاث قارات — لندن وهونغ كونغ وسنغافورة ودبي وأبوظبي والرياض وجدة والخبر ومدينة الكويت والمنامة والدوحة ومسقط والقاهرة.',
       ix39: 'البرامج الرائجة',
@@ -222,6 +224,8 @@
       ix105: 'جميع دراسات الحالة',
       ix106: 'استكشف تقييماتنا',
       ix107: 'اطلب المنهج التفصيلي',
+      ix108: 'ممارسون، لا مُلقّنون.',
+      ix109: 'مبدأ التدريس في EMFT',
     }
   });
 })();
