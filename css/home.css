@@ -1328,8 +1328,10 @@ html[dir="rtl"] .model-label--training,
 html[dir="rtl"] .model-label--core { transform: translate(50%, -50%); }
 
 .model-label--training   { inset-inline-start: 50%; top: 23%; }
-.model-label--assessment { top: 76%; inset-inline-start: 10%; width: 44%; text-align: center; }
-.model-label--coaching   { top: 76%; inset-inline-end: 10%;   width: 44%; text-align: center; }
+/* 10% + 40% each: the two boxes meet at the centre line without overlapping,
+   so a wrapped translation can never collide with its neighbour. */
+.model-label--assessment { top: 76%; inset-inline-start: 10%; width: 40%; text-align: center; }
+.model-label--coaching   { top: 76%; inset-inline-end: 10%;   width: 40%; text-align: center; }
 .model-label--core {
   inset-inline-start: 50%;
   top: 60%;
@@ -1360,7 +1362,10 @@ html[dir="rtl"] .model-label--core { transform: translate(50%, -50%); }
     }
     .model-venn .venn-rings .la-ring:nth-of-type(2) { animation-range: entry 15% entry 80%; }
     .model-venn .venn-rings .la-ring:nth-of-type(3) { animation-range: entry 25% entry 90%; }
-    .model-venn .la-ring--core { animation-range: cover 30% cover 56%; }
+    /* Ends at cover 46%: a figure smaller than the viewport is centred at
+       exactly cover 50%, so the ring is closed before a reader can rest on
+       it — a range past 50% leaves a visible gap at the natural stop. */
+    .model-venn .la-ring--core { animation-range: cover 26% cover 46%; }
     .model-label,
     .la-node--core {
       animation: la-fade 0.9s linear both;
