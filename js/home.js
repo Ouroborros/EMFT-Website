@@ -74,6 +74,29 @@
     stats.forEach(function (el) { observer.observe(el); });
   }
 
+  /* Draw-on when seen ---------------------------------------------------- */
+  // The hero line-art band and, in browsers without scroll-driven animations,
+  // the other reveals are flagged as they enter the viewport; the CSS runs a
+  // time-based animation from that moment. Without JS nothing is hidden.
+  var seen = document.querySelectorAll(
+    '.hero-lineart, section h2, section h3, .service-row, .case-card, .program-card, ' +
+    '.stat, .usecase, .model-figure, .quote-panel'
+  );
+  if (seen.length) {
+    if (motionOK && 'IntersectionObserver' in window) {
+      var seer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          seer.unobserve(entry.target);
+          entry.target.classList.add('is-seen');
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
+      seen.forEach(function (el) { seer.observe(el); });
+    } else {
+      seen.forEach(function (el) { el.classList.add('is-seen'); });
+    }
+  }
+
   /* Footer year ---------------------------------------------------------- */
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();

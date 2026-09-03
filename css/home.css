@@ -857,6 +857,56 @@ html[dir="rtl"] .assess-media .media-frame { border-radius: var(--r-lg) 0 0 var(
     }
   }
 }
+/* Fallback for engines without scroll-driven animations (older Safari and
+   iOS above all): the same rise, ring draw and quote entrance, run as
+   time-based animations the moment js/home.js flags the element as seen.
+   Everything hidden here is hidden only under html.js, so no-JS visitors
+   see the finished page. Keyframes are re-declared because the originals
+   live inside the @supports block above and do not exist here. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports not (animation-timeline: view()) {
+    @keyframes emft-rise-seen {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes la-draw-seen { to { stroke-dashoffset: 0; } }
+    @keyframes la-fade-seen { to { opacity: 1; } }
+    @keyframes quote-rule-seen { to { transform: scaleX(1); } }
+
+    html.js section h2, html.js section h3, html.js .service-row, html.js .case-card,
+    html.js .program-card, html.js .stat, html.js .usecase { opacity: 0; }
+    html.js .usecase h3 { opacity: 1; }
+    section h2.is-seen, section h3.is-seen, .service-row.is-seen, .case-card.is-seen,
+    .program-card.is-seen, .stat.is-seen, .usecase.is-seen {
+      animation: emft-rise-seen 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    /* Same column cascade as the scroll-driven version, as delays. */
+    .case-card:nth-child(2).is-seen, .program-card:nth-child(3n+2).is-seen, .goals-grid .usecase:nth-child(3n+2).is-seen,
+    .stat:nth-child(2).is-seen, .usecases-grid .usecase:nth-child(2).is-seen { animation-delay: 90ms; }
+    .case-card:nth-child(3).is-seen, .program-card:nth-child(3n+3).is-seen, .goals-grid .usecase:nth-child(3n+3).is-seen,
+    .stat:nth-child(3).is-seen, .usecases-grid .usecase:nth-child(3).is-seen { animation-delay: 180ms; }
+    .stat:nth-child(4).is-seen, .usecases-grid .usecase:nth-child(4).is-seen { animation-delay: 270ms; }
+
+    html.js .model-venn .la-ring { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    html.js .model-label, html.js .la-node--core { opacity: 0; }
+    .model-figure.is-seen .la-ring { animation: la-draw-seen 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .model-figure.is-seen .venn-rings .la-ring:nth-of-type(2) { animation-delay: 0.25s; }
+    .model-figure.is-seen .venn-rings .la-ring:nth-of-type(3) { animation-delay: 0.5s; }
+    .model-figure.is-seen .la-ring--core { animation-delay: 1s; }
+    .model-figure.is-seen .model-label,
+    .model-figure.is-seen .la-node--core { animation: la-fade-seen 0.8s ease-out 0.9s forwards; }
+
+    html.js .quote-mark, html.js .quote-statement, html.js .quote-attrib { opacity: 0; }
+    html.js .quote-rule { transform: scaleX(0); transform-origin: center; }
+    .quote-panel.is-seen .quote-mark,
+    .quote-panel.is-seen .quote-statement,
+    .quote-panel.is-seen .quote-attrib { animation: emft-rise-seen 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .quote-panel.is-seen .quote-statement { animation-delay: 120ms; }
+    .quote-panel.is-seen .quote-attrib { animation-delay: 360ms; }
+    .quote-panel.is-seen .quote-rule { animation: quote-rule-seen 0.7s cubic-bezier(0.22, 1, 0.36, 1) 240ms forwards; }
+  }
+}
+
 /* Page transitions — one cross-fade between documents, header held still.
    Kept to 240ms: long enough to read as deliberate, short enough that it
    never feels like waiting. Browsers without support just navigate. */
@@ -1261,9 +1311,11 @@ html[dir="rtl"] .case-link > [aria-hidden="true"] {
    the line still rises away from the copy and the end node meets the stats. */
 html[dir="rtl"] .hero-lineart svg { transform: scaleX(-1); }
 
-/* Motion — draw-on. The hero is above the fold, so this is a load-time CSS
-   animation (no JS, no scroll timeline needed). The dasharray that hides the
-   line exists ONLY inside this media block: reduced-motion and legacy
+/* Motion — draw-on when seen. The band sits just below the fold on most
+   laptops and phones, so a load-time draw finished before anyone scrolled to
+   it. js/home.js adds .is-seen as the band enters the viewport and the
+   time-based draw runs from there. The hiding dasharray exists only under
+   html.js inside this media block: no-JS, reduced-motion and legacy
    browsers simply see the finished drawing. */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes la-draw { to { stroke-dashoffset: 0; } }
@@ -1271,21 +1323,14 @@ html[dir="rtl"] .hero-lineart svg { transform: scaleX(-1); }
     from { opacity: 0; transform: scale(0.6); }
     to   { opacity: 1; transform: scale(1); }
   }
-  .hero-lineart .la-signal {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: la-draw 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
-  }
-  .hero-lineart .la-signal--ghost { animation-duration: 1.8s; animation-delay: 0.2s; }
-  .hero-lineart .la-node {
-    opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: la-node-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-  .hero-lineart .la-node:nth-of-type(1) { animation-delay: 0.9s; }
-  .hero-lineart .la-node:nth-of-type(2) { animation-delay: 1.25s; }
-  .hero-lineart .la-node:nth-of-type(3) { animation-delay: 1.7s; }
+  html.js .hero-lineart .la-signal { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  html.js .hero-lineart .la-node { opacity: 0; transform-box: fill-box; transform-origin: center; }
+  .hero-lineart.is-seen .la-signal { animation: la-draw 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards; }
+  .hero-lineart.is-seen .la-signal--ghost { animation-duration: 1.8s; animation-delay: 0s; }
+  .hero-lineart.is-seen .la-node { animation: la-node-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  .hero-lineart.is-seen .la-node:nth-of-type(1) { animation-delay: 0.7s; }
+  .hero-lineart.is-seen .la-node:nth-of-type(2) { animation-delay: 1.05s; }
+  .hero-lineart.is-seen .la-node:nth-of-type(3) { animation-delay: 1.5s; }
 }
 
 /* About — the EMFT model. Three interlocking hairline rings; the gold core
