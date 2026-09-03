@@ -1253,6 +1253,9 @@ html[dir="rtl"] .case-link > [aria-hidden="true"] {
   .hero-lineart .la-node { r: 8; }
   .hero-lineart .la-node--end { r: 10; }
 }
+@media (max-width: 400px) {
+  .hero-lineart .la-signal { stroke-width: 3.6; }
+}
 
 /* The chart reads toward the reading direction; mirror it wholesale in RTL so
    the line still rises away from the copy and the end node meets the stats. */
@@ -1296,11 +1299,13 @@ html[dir="rtl"] .hero-lineart svg { transform: scaleX(-1); }
   margin-inline: auto;
 }
 .model-venn { width: 100%; height: auto; }
-/* User-unit widths sized so the rendered stroke stays ~1.0–1.35px at every
-   figure width (viewBox 560 wide, rendered 280–560px). */
+/* User-unit widths stepped where the figure's scale actually drops (viewBox
+   560 wide, rendered 280–560px), so the stroke stays ~1.0–1.5px on screen:
+   1.35 above 600px, 1.6 down to 420px, 2.0 below. */
 .la-ring { fill: none; stroke: var(--navy); stroke-width: 1.35; opacity: 0.45; }
 .la-ring--core { stroke: var(--gold); opacity: 0.9; }
-@media (max-width: 600px) { .la-ring { stroke-width: 2.4; } }
+@media (max-width: 600px) { .la-ring { stroke-width: 1.6; } }
+@media (max-width: 420px) { .la-ring { stroke-width: 2.0; } }
 
 /* HTML overlay labels: real, translatable text positioned with logical
    properties. The rings are mirror-symmetric, so when inset-inline-start
@@ -1403,7 +1408,9 @@ html[dir="rtl"] .quote-panel {
 }
 .quote-statement {
   font-family: var(--serif);
-  font-size: clamp(40px, 2rem + 4.2vw, 92px);
+  /* Floor chosen so the longest word, "Practitioners,", fits the 216px
+     content box a 320px viewport leaves after gutters and panel padding. */
+  font-size: clamp(36px, 1.25rem + 5vw, 92px);
   line-height: 1.04;
   font-weight: 600;
   letter-spacing: -0.015em;
