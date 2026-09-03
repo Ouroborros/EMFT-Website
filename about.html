@@ -96,13 +96,7 @@
       </div>
     </section>
 
-    <!-- EMFT line-art kit · the EMFT model. Direction-neutral SVG (three
-         symmetric rings + gold core ring + centre node); the labels are an
-         HTML overlay, not SVG text, so they translate, wrap and keep the
-         page's type scale. Dash-drawn circles (.la-ring) carry no
-         vector-effect: dash + non-scaling-stroke resolves in inconsistent
-         coordinate spaces across engines. rotate() only moves each ring's
-         dash start point. -->
+    <!-- EMFT model — line-art rings; the labels are an HTML overlay so they translate and wrap -->
     <section class="section-pad band-tight model-section" aria-labelledby="model-title">
       <div class="container">
         <div class="model-head">
@@ -122,9 +116,7 @@
               <circle class="la-ring" cx="210.7" cy="290" r="140" pathLength="1" transform="rotate(150 210.7 290)"></circle>
               <circle class="la-ring" cx="349.3" cy="290" r="140" pathLength="1" transform="rotate(30 349.3 290)"></circle>
             </g>
-            <!-- the payoff: a gold ring inside the triple overlap (inscribed
-                 radius ~60 around the centroid, so r=47 provably fits),
-                 drawn after the three navy rings -->
+            <!-- gold core ring: the triple overlap's inscribed radius is ~60 around the centroid, so r=47 fits -->
             <circle class="la-ring la-ring--core" cx="280" cy="250" r="47" pathLength="1"></circle>
             <circle class="la-node la-node--core" cx="280" cy="250" r="4.5" vector-effect="non-scaling-stroke"></circle>
           </svg>

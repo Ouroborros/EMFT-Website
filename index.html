@@ -144,11 +144,7 @@
           <img src="assets/img/hero-towers.jpg" alt="Financial district towers — the institutional world EMFT trains in" loading="eager">
         </div>
       </div>
-      <!-- EMFT line-art kit · hero market line. Decorative (aria-hidden); the
-           grammar (.la-*) is shared with the About model and the quote mark.
-           pathLength="1" makes the CSS draw-on unit-free. Dash-drawn paths
-           (.la-signal) carry no vector-effect: dash + non-scaling-stroke
-           resolves in inconsistent coordinate spaces across engines. -->
+      <!-- Hero line-art — market line; the kit and its constraints live in css/home.css -->
       <div class="container">
         <div class="emft-lineart hero-lineart" aria-hidden="true">
           <svg viewBox="0 0 1200 170" preserveAspectRatio="xMidYMax meet" focusable="false">
@@ -161,9 +157,9 @@
             <line class="la-axis" x1="0" y1="142" x2="1200" y2="142" vector-effect="non-scaling-stroke"></line>
             <path class="la-tick" vector-effect="non-scaling-stroke"
                   d="M60 142v8 M180 142v8 M300 142v8 M420 142v8 M540 142v8 M660 142v8 M780 142v8 M900 142v8 M1020 142v8 M1140 142v8"></path>
-            <path class="la-signal la-signal--ghost" pathLength="1" fill="none"
+            <path class="la-signal la-signal--ghost" pathLength="1"
                   d="M0 132 L130 128 L230 130 L330 118 L470 112 L590 116 L710 100 L830 96 L950 84 L1070 80 L1150 70"></path>
-            <path class="la-signal la-signal--gold" pathLength="1" fill="none"
+            <path class="la-signal la-signal--gold" pathLength="1"
                   d="M0 126 L110 122 L190 124 L290 104 L380 108 L480 88 L560 92 L670 68 L760 72 L870 48 L960 52 L1060 30 L1150 24"></path>
             <g class="la-node-group">
               <circle class="la-node" cx="480" cy="88" r="4" vector-effect="non-scaling-stroke"></circle>
@@ -428,9 +424,7 @@
       </div>
     </section>
 
-    <!-- Quote chapter — the teaching principle, promoted from the Why heading.
-         The chapter mark reuses the kit's node grammar (hairline — node —
-         hairline) and is symmetric, so it needs no RTL mirroring. -->
+    <!-- Quote chapter — the teaching principle, promoted from the Why heading -->
     <section class="section-pad quote-section" aria-labelledby="quote-title">
       <div class="container">
         <div class="quote-panel">
