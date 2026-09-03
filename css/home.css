@@ -1219,7 +1219,7 @@ html[dir="rtl"] .case-link > [aria-hidden="true"] {
 
 .la-dot  { fill: var(--navy); opacity: 0.10; }
 .la-axis { stroke: var(--navy); stroke-width: 1px; opacity: 0.18; }
-.la-axis--light { stroke: var(--blue-mist); opacity: 0.35; }
+.la-axis--light { stroke: var(--blue-mist); opacity: 0.45; }
 .la-tick { stroke: var(--navy); stroke-width: 1px; opacity: 0.28; fill: none; }
 .la-signal { stroke-linejoin: round; stroke-linecap: round; fill: none; }
 .la-signal--gold  { stroke: var(--gold); }
@@ -1321,6 +1321,10 @@ html[dir="rtl"] .hero-lineart svg { transform: scaleX(-1); }
   text-transform: uppercase;
   color: var(--navy);
 }
+/* A paper knockout behind each word: on narrow figures a label is wider
+   than the lens of its ring, so the neighbouring arc would otherwise run
+   through the letters. Interrupted by the word, it reads as a labelled line. */
+.model-label span { background: var(--paper); padding-inline: 0.3em; }
 /* Arabic has no capitals, and tracking breaks letter joining. */
 html[lang="ar"] .model-label { letter-spacing: 0; text-transform: none; }
 
@@ -1340,13 +1344,20 @@ html[dir="rtl"] .model-label--core { transform: translate(50%, -50%); }
 .model-label--coaching   { top: 76%; inset-inline-end: 10%;   width: 40%; text-align: center; }
 .model-label--core {
   inset-inline-start: 50%;
-  top: 60%;
+  top: 54.35%;
   font-family: var(--serif);
   font-size: clamp(17px, 2vw, 21px);
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: none;
   color: var(--gold);
+}
+/* Below 600px the figure is at half scale but the labels are not, so they
+   step down with it. Restated for the core label because the shared rule
+   above would otherwise win on order. */
+@media (max-width: 600px) {
+  .model-label { font-size: 11px; letter-spacing: 0.06em; }
+  .model-label--core { font-size: 15px; letter-spacing: 0.02em; }
 }
 
 /* Motion — rings draw as the figure scrolls into view, one after another,
