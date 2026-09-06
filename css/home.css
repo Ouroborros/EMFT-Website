@@ -1332,6 +1332,14 @@ html[dir="rtl"] .hero-lineart svg { transform: scaleX(-1); }
   .hero-lineart.is-seen .la-node:nth-of-type(1) { animation-delay: 0.7s; }
   .hero-lineart.is-seen .la-node:nth-of-type(2) { animation-delay: 1.05s; }
   .hero-lineart.is-seen .la-node:nth-of-type(3) { animation-delay: 1.5s; }
+  /* Safety: if the seen signal never arrives (a stale cached script, an
+     observer that never fires), the line still draws itself eight seconds
+     after load rather than staying hidden. */
+  html.js .hero-lineart:not(.is-seen) .la-signal { animation: la-draw 1.4s cubic-bezier(0.22, 1, 0.36, 1) 8s forwards; }
+  html.js .hero-lineart:not(.is-seen) .la-signal--ghost { animation-duration: 1.8s; }
+  html.js .hero-lineart:not(.is-seen) .la-node { animation: la-node-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 8.7s forwards; }
+  html.js .hero-lineart:not(.is-seen) .la-node:nth-of-type(2) { animation-delay: 9.05s; }
+  html.js .hero-lineart:not(.is-seen) .la-node:nth-of-type(3) { animation-delay: 9.5s; }
 }
 
 /* About — the EMFT model. Three interlocking hairline rings; the gold core

@@ -36,6 +36,16 @@ jobs:
             ./ _site/
           touch _site/.nojekyll
 
+      # Stamp every stylesheet and script URL with the commit, so a browser
+      # that cached one file from an earlier deploy cannot pair it with a
+      # fresh copy of the other. The CSS hidden states and the script that
+      # releases them ship together or not at all.
+      - name: Version the assets
+        run: |
+          v="${GITHUB_SHA::8}"
+          find _site -name '*.html' -exec sed -i -E "s#((css|js)/[A-Za-z0-9._-]+\.(css|js))\"#\1?v=${v}\"#g" {} +
+          grep -c "home.css?v=${v}" _site/index.html
+
       # This is a preview host, not the production domain. Keep it out of
       # search results so it cannot outrank emergingmarketft.com later.
       - name: Mark the preview as noindex
