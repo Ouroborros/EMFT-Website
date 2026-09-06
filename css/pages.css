@@ -5,13 +5,17 @@
 
 /* Active nav item (gold underline, per the design) ------------------------ */
 .primary-nav a[aria-current="page"] {
-  color: var(--gold);
+  color: var(--navy); /* the gold underline marks it; gold text was 2.9:1 */
   border-bottom: 2px solid var(--gold);
   padding-bottom: 2px;
 }
 @media (max-width: 1400px) {
   .primary-nav a[aria-current="page"] { border-bottom: 2px solid var(--gold); }
 }
+/* On a Solutions page the sub-link carries aria-current; its group label
+   shows the same marker so the open section is visible before the menu is. */
+.nav-group:has(a[aria-current="page"]) > .nav-group-toggle,
+.nav-group:has(a[aria-current="page"]) > .nav-group-label { color: var(--navy); border-bottom: 2px solid var(--gold); padding-bottom: 2px; }
 
 /* Dark page-title band ----------------------------------------------------- */
 .page-title-band { background: var(--navy); padding-block: clamp(48px, 5vw, 72px); }
@@ -48,7 +52,7 @@
 .case-section--alt { background: #fff; }
 .case-tags { display: flex; gap: 8px; flex-wrap: wrap; font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px; }
 .case-tags .tag-navy { background: var(--navy); color: #fff; padding: 5px 12px; }
-.case-tags .tag-sand { background: #f2efe8; color: #8a6d1e; padding: 5px 12px; }
+.case-tags .tag-sand { background: #f2efe8; color: #7a5f16; padding: 5px 12px; }
 
 .case-grid { display: grid; grid-template-columns: 5fr 4fr; gap: 56px; align-items: start; }
 .case-grid--flip { grid-template-columns: 4fr 5fr; }

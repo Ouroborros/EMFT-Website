@@ -33,9 +33,9 @@ PAGES = [
     ("about.html", "about"),
     ("contact.html", "contact"),
     ("elearning.html", "portal"),
-    ("coaching.html", "solutions"),
-    ("assessments.html", "solutions"),
-    ("speakers.html", "solutions"),
+    ("coaching.html", "coaching"),
+    ("assessments.html", "assessments"),
+    ("speakers.html", "speakers"),
     ("privacy.html", None),
     ("terms.html", None),
 ]
@@ -59,13 +59,16 @@ def header(current):
     def cur(key):
         return ' aria-current="page"' if current == key else ""
 
+    # A Solutions page marks its own sub-link; CSS lifts the marker onto the
+    # group label with :has(), so the open section shows before the menu does.
     items = "\n".join(
-        '              <li><a href="%s" data-i18n="%s">%s</a></li>' % (href, key, label)
+        '              <li><a href="%s"%s data-i18n="%s">%s</a></li>'
+        % (href, cur(href.split(".")[0]), key, label)
         for href, label, key in SOLUTIONS
     )
     return """  <header class="site-header">
     <div class="header-inner">
-      <a class="logo" href="index.html" aria-label="EMFT — Emerging Market Financial Training, home">
+      <a class="logo" href="index.html" aria-label="EMFT — Emerging Market Financial Training, home" data-i18n-aria="logoHome">
         <img src="assets/img/emft-logo.png" alt="Emerging Market Financial Training" width="230" height="68">
       </a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
@@ -74,7 +77,7 @@ def header(current):
         <span class="nav-toggle-bar" aria-hidden="true"></span>
         <span class="nav-toggle-bar" aria-hidden="true"></span>
       </button>
-      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary" data-i18n-aria="navPrimary">
         <ul>
           <li class="nav-group">
             <span class="nav-group-label" aria-hidden="true" data-i18n="navSolutions">Solutions</span>
@@ -95,7 +98,7 @@ def header(current):
       </nav>
     </div>
   </header>""" % (
-        ' data-current="true"' if current == "solutions" else "",
+        "",
         items,
         cur("programs"),
         cur("cases"),
@@ -112,7 +115,7 @@ FOOTER = """  <footer class="site-footer">
           <div class="footer-brand-name">Emerging Market Financial Training</div>
           <p data-i18n="footBlurb">Practitioner-led training, assessment and coaching for financial institutions, government entities and corporates.</p>
         </div>
-        <nav class="footer-col" aria-label="Footer — solutions">
+        <nav class="footer-col" aria-label="Footer — solutions" data-i18n-aria="footNavSolutions">
           <h2 class="footer-heading" data-i18n="navSolutions">Solutions</h2>
           <a href="index.html#services" data-i18n="navServices">Services</a>
           <a href="programs.html" data-i18n="navPrograms">Programs</a>
@@ -120,14 +123,14 @@ FOOTER = """  <footer class="site-footer">
           <a href="assessments.html" data-i18n="navAssessments">Assessments</a>
           <a href="speakers.html" data-i18n="navSpeakers">Keynote Speakers</a>
         </nav>
-        <nav class="footer-col" aria-label="Footer — company">
+        <nav class="footer-col" aria-label="Footer — company" data-i18n-aria="footNavCompany">
           <h2 class="footer-heading" data-i18n="footCompany">Company</h2>
           <a href="about.html" data-i18n="navAbout">About</a>
           <a href="case-studies.html" data-i18n="navCases">Case Studies</a>
           <a href="contact.html" data-i18n="navContact">Contact</a>
           <a href="elearning.html#portal" data-i18n="navPortal">Learning Portal</a>
         </nav>
-        <nav class="footer-col" aria-label="Footer — contact">
+        <nav class="footer-col" aria-label="Footer — contact" data-i18n-aria="footNavContact">
           <h2 class="footer-heading" data-i18n="navContact">Contact</h2>
           <!-- dir="ltr": a Latin address or a phone number reverses visually
                inside an RTL paragraph without it. -->
@@ -154,7 +157,7 @@ FOOTER = """  <footer class="site-footer">
     </div>
   </footer>
 
-  <div class="cookie-banner" id="cookie-banner" role="region" aria-label="Privacy notice" hidden>
+  <div class="cookie-banner" id="cookie-banner" role="region" aria-label="Privacy notice" data-i18n-aria="cookieRegion" hidden>
     <div class="cookie-inner">
       <!-- No data-i18n here: the string wraps a link, and the translator swaps
            textContent, which would drop the anchor. -->

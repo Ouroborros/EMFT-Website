@@ -26,6 +26,15 @@
       if (!event.target.closest('.nav-group')) closeGroup();
     });
 
+    // Keyboard: the menu must not stay open once focus has moved past it.
+    var group = groupToggle.closest('.nav-group');
+    group.addEventListener('focusout', function (event) {
+      if (!event.relatedTarget || !group.contains(event.relatedTarget)) closeGroup();
+    });
+    // Pointer: CSS opens the menu on hover; keep the attribute in step.
+    group.addEventListener('mouseenter', function () { if (!stacked()) groupToggle.setAttribute('aria-expanded', 'true'); });
+    group.addEventListener('mouseleave', function () { if (!stacked()) closeGroup(); });
+
     document.addEventListener('keydown', function (event) {
       if (event.key !== 'Escape') return;
       if (groupToggle.getAttribute('aria-expanded') !== 'true') return;

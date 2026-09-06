@@ -31,9 +31,6 @@ jobs:
             --exclude '.claude' \
             --exclude 'scripts' \
             --exclude 'README.md' \
-            --exclude 'about.html' \
-            --exclude 'contact.html' \
-            --exclude 'services.html' \
             --exclude 'css/styles.css' \
             --exclude 'js/main.js' \
             ./ _site/

@@ -85,12 +85,12 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to main content</a>
+  <a class="skip-link" href="#main" data-i18n="skipLink">Skip to main content</a>
 
 <!-- CHROME:HEADER -->
   <header class="site-header">
     <div class="header-inner">
-      <a class="logo" href="index.html" aria-label="EMFT — Emerging Market Financial Training, home">
+      <a class="logo" href="index.html" aria-label="EMFT — Emerging Market Financial Training, home" data-i18n-aria="logoHome">
         <img src="assets/img/emft-logo.png" alt="Emerging Market Financial Training" width="230" height="68">
       </a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
@@ -99,7 +99,7 @@
         <span class="nav-toggle-bar" aria-hidden="true"></span>
         <span class="nav-toggle-bar" aria-hidden="true"></span>
       </button>
-      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary" data-i18n-aria="navPrimary">
         <ul>
           <li class="nav-group">
             <span class="nav-group-label" aria-hidden="true" data-i18n="navSolutions">Solutions</span>
@@ -152,7 +152,7 @@
           </div>
         </div>
         <div class="hero-media">
-          <img src="assets/img/hero-towers.jpg" alt="Financial district towers — the institutional world EMFT trains in" loading="eager">
+          <img src="assets/img/hero-towers.jpg" alt="Financial district towers — the institutional world EMFT trains in" width="1800" height="720" loading="eager" fetchpriority="high">
         </div>
       </div>
       <!-- Hero line-art — market line; the kit and its constraints live in css/home.css -->
@@ -189,19 +189,19 @@
       <div class="container">
         <div class="stats-grid">
           <div class="stat">
-            <div class="stat-value" data-countup="10000" data-suffix="+">10,000+</div>
+            <div class="stat-value" data-countup>10,000+</div>
             <div class="stat-label" data-i18n="ix5">Professionals Trained</div>
           </div>
           <div class="stat">
-            <div class="stat-value" data-countup="80" data-suffix="+">80+</div>
+            <div class="stat-value" data-countup>80+</div>
             <div class="stat-label" data-i18n="ix6">Global Practitioners</div>
           </div>
           <div class="stat">
-            <div class="stat-value" data-countup="13">13</div>
+            <div class="stat-value" data-countup>13</div>
             <div class="stat-label" data-i18n="ix7">Cities Delivered In, Worldwide</div>
           </div>
           <div class="stat">
-            <div class="stat-value" data-countup="2400" data-suffix="+">2,400+</div>
+            <div class="stat-value" data-countup>2,400+</div>
             <div class="stat-label" data-i18n="ix8">Training Days Delivered</div>
           </div>
         </div>
@@ -473,6 +473,7 @@
           <li data-i18n="ix79">Telecommunications</li>
           <li data-i18n="ix80">Logistics</li>
         </ul>
+        <button type="button" class="marquee-toggle" aria-pressed="false" hidden><span data-i18n="ix118">Pause</span><span data-i18n="ix119" hidden>Play</span></button>
         <p class="serve-note" data-i18n="ix81">We keep our clients' names confidential — the case studies speak instead.</p>
       </div>
     </section>
@@ -530,7 +531,7 @@
           <div class="footer-brand-name">Emerging Market Financial Training</div>
           <p data-i18n="footBlurb">Practitioner-led training, assessment and coaching for financial institutions, government entities and corporates.</p>
         </div>
-        <nav class="footer-col" aria-label="Footer — solutions">
+        <nav class="footer-col" aria-label="Footer — solutions" data-i18n-aria="footNavSolutions">
           <h2 class="footer-heading" data-i18n="navSolutions">Solutions</h2>
           <a href="index.html#services" data-i18n="navServices">Services</a>
           <a href="programs.html" data-i18n="navPrograms">Programs</a>
@@ -538,14 +539,14 @@
           <a href="assessments.html" data-i18n="navAssessments">Assessments</a>
           <a href="speakers.html" data-i18n="navSpeakers">Keynote Speakers</a>
         </nav>
-        <nav class="footer-col" aria-label="Footer — company">
+        <nav class="footer-col" aria-label="Footer — company" data-i18n-aria="footNavCompany">
           <h2 class="footer-heading" data-i18n="footCompany">Company</h2>
           <a href="about.html" data-i18n="navAbout">About</a>
           <a href="case-studies.html" data-i18n="navCases">Case Studies</a>
           <a href="contact.html" data-i18n="navContact">Contact</a>
           <a href="elearning.html#portal" data-i18n="navPortal">Learning Portal</a>
         </nav>
-        <nav class="footer-col" aria-label="Footer — contact">
+        <nav class="footer-col" aria-label="Footer — contact" data-i18n-aria="footNavContact">
           <h2 class="footer-heading" data-i18n="navContact">Contact</h2>
           <!-- dir="ltr": a Latin address or a phone number reverses visually
                inside an RTL paragraph without it. -->
@@ -572,7 +573,7 @@
     </div>
   </footer>
 
-  <div class="cookie-banner" id="cookie-banner" role="region" aria-label="Privacy notice" hidden>
+  <div class="cookie-banner" id="cookie-banner" role="region" aria-label="Privacy notice" data-i18n-aria="cookieRegion" hidden>
     <div class="cookie-inner">
       <!-- No data-i18n here: the string wraps a link, and the translator swaps
            textContent, which would drop the anchor. -->

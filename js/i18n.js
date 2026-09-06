@@ -19,7 +19,8 @@
       navCoaching: 'Coaching &amp; Technical Mentoring', navAssessments: 'Assessments',
       navSpeakers: 'Keynote Speakers', navDigital: 'Digital Learning', navServices: 'Services',
       footCompany: 'Company', footOffices: 'Offices', footSoon: 'Opening soon',
-      footLondon: 'London, United Kingdom', footDubai: 'Dubai, United Arab Emirates', footAbuDhabi: 'Abu Dhabi, United Arab Emirates', footRiyadh: 'Riyadh, Saudi Arabia', footSingapore: 'Singapore', footRights: 'All rights reserved.',
+      footLondon: 'London, United Kingdom', footDubai: 'Dubai, United Arab Emirates', footAbuDhabi: 'Abu Dhabi, United Arab Emirates', footRiyadh: 'Riyadh, Saudi Arabia', footSingapore: 'Singapore',
+      skipLink: 'Skip to main content', navPrimary: 'Primary', footNavSolutions: 'Footer — solutions', footNavCompany: 'Footer — company', footNavContact: 'Footer — contact', logoHome: 'EMFT — Emerging Market Financial Training, home', cookieRegion: 'Privacy notice', footRights: 'All rights reserved.',
       footPrivacy: 'Privacy Policy', footTerms: 'Terms of Use',
       footBlurb: 'Practitioner-led training, assessment and coaching for financial institutions, government entities and corporates.',
       cookieText: "This site stores your language choice and this notice's dismissal in your browser. Nothing is shared with advertisers.",
@@ -32,7 +33,8 @@
       navCoaching: 'الإرشاد والتوجيه الفني', navAssessments: 'التقييمات',
       navSpeakers: 'المتحدثون الرئيسيون', navDigital: 'التعلّم الرقمي', navServices: 'الخدمات',
       footCompany: 'الشركة', footOffices: 'المكاتب', footSoon: 'يُفتتح قريباً',
-      footLondon: 'لندن، المملكة المتحدة', footDubai: 'دبي، الإمارات العربية المتحدة', footAbuDhabi: 'أبوظبي، الإمارات العربية المتحدة', footRiyadh: 'الرياض، المملكة العربية السعودية', footSingapore: 'سنغافورة', footRights: 'جميع الحقوق محفوظة.',
+      footLondon: 'لندن، المملكة المتحدة', footDubai: 'دبي، الإمارات العربية المتحدة', footAbuDhabi: 'أبوظبي، الإمارات العربية المتحدة', footRiyadh: 'الرياض، المملكة العربية السعودية', footSingapore: 'سنغافورة',
+      skipLink: 'انتقل إلى المحتوى الرئيسي', navPrimary: 'التنقل الرئيسي', footNavSolutions: 'تذييل الصفحة — الحلول', footNavCompany: 'تذييل الصفحة — الشركة', footNavContact: 'تذييل الصفحة — التواصل', logoHome: 'EMFT — التدريب المالي للأسواق الناشئة، الصفحة الرئيسية', cookieRegion: 'إشعار الخصوصية', footRights: 'جميع الحقوق محفوظة.',
       footPrivacy: 'سياسة الخصوصية', footTerms: 'شروط الاستخدام',
       footBlurb: 'تدريب وتقييم وإرشاد يقدّمه ممارسون للمؤسسات المالية والجهات الحكومية والشركات.',
       cookieText: 'يحفظ هذا الموقع اختيارك للغة وإغلاقك لهذا الإشعار في متصفحك. لا تتم مشاركة أي بيانات مع المعلنين.',
@@ -68,6 +70,11 @@
       // Entities are written in the dictionary the way they appear in the
       // markup, so decode the handful that show up before assigning text.
       if (value !== undefined) el.textContent = value.replace(/&amp;/g, '&');
+    });
+    // Landmark and control labels that only exist as attributes.
+    document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+      var value = lookup(el.getAttribute('data-i18n-aria'));
+      if (value !== undefined) el.setAttribute('aria-label', value);
     });
 
     var toggle = document.getElementById('lang-toggle');

@@ -102,7 +102,7 @@ PROGRAMS = [
   "interest": "AI, Data and Cybersecurity",
   "tag": ("Two tracks", "مساران"),
   "title": ("Cybersecurity — Defensive & Offensive Tracks", "الأمن السيبراني — المساران الدفاعي والهجومي"),
-  "meta": "Cybersecurity training for financial institutions: blue-team defense to Security+, ISO 27001 and CCD, and penetration testing to eCPPT. Lab-based, practitioner-led.",
+  "meta": "Cybersecurity training for financial institutions: blue-team defense to Security+, ISO 27001 and CCD, and penetration testing to eCPPT. Lab-based.",
   "lede": ("Two lab-based tracks that build job-ready security capability: a defensive track running from security fundamentals to Security+, ISO 27001 and Certified CyberDefender, and an offensive track taking penetration testers to eCPPT.",
            "مساران قائمان على المختبرات يبنيان قدرات أمنية جاهزة للعمل: مسار دفاعي يمتد من أساسيات الأمن إلى شهادات Security+ وISO 27001 وCCD، ومسار هجومي يقود مختبري الاختراق إلى شهادة eCPPT."),
   "duration": ("3–12 months per track, cohort-based", "من ثلاثة إلى اثني عشر شهراً لكل مسار، على شكل دفعات"),
@@ -217,7 +217,7 @@ PROGRAMS = [
   "interest": "AI, Data and Cybersecurity",
   "tag": ("Technical", "فني"),
   "title": ("Data Science, Machine Learning & Analytics", "علم البيانات وتعلّم الآلة والتحليلات"),
-  "meta": "Data science and machine learning training for financial institutions — from analytics foundations to models in production, taught by practitioners on banking data.",
+  "meta": "Data science and machine learning training for financial institutions — from analytics foundations to models in production, on banking data.",
   "lede": ("Turn raw data into decisions your management acts on. A practitioner-led pathway from analytics foundations through machine learning to models your institution can actually govern and deploy.",
            "حوّل البيانات الخام إلى قرارات تتحرك بها إدارتك. مسار بقيادة ممارسين يمتد من أسس التحليلات إلى تعلّم الآلة، وصولاً إلى نماذج تستطيع مؤسستك حوكمتها ونشرها فعلاً."),
   "duration": ("5 days to 6 months, by depth", "من خمسة أيام إلى ستة أشهر، حسب العمق"),
@@ -478,7 +478,6 @@ def build(p):
         "hasCourseInstance": [{
             "@type": "CourseInstance",
             "courseMode": ["Onsite", "Online", "Blended"],
-            "courseWorkload": "P%s" % ("5D" if "day" in p["duration"][0] else "6M"),
             "location": {"@type": "Place", "name": "Gulf region and worldwide"},
         }],
     }
@@ -512,7 +511,7 @@ def build(p):
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to main content</a>
+  <a class="skip-link" href="#main" data-i18n="skipLink">Skip to main content</a>
 
   <!-- CHROME:HEADER -->
   <!-- /CHROME:HEADER -->
@@ -533,7 +532,7 @@ def build(p):
 
     <section class="section-pad band-tight" aria-labelledby="glance-title">
       <div class="container">
-        <span class="eyebrow" data-i18n="pdAtGlance" id="glance-title">At a glance</span>
+        <h2 class="eyebrow" data-i18n="pdAtGlance" id="glance-title">At a glance</h2>
         <div class="office-grid" style="margin-top: 28px;">
 {glance}
         </div>
