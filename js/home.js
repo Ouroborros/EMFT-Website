@@ -178,6 +178,13 @@
   };
   var heads = motionOK ? Array.prototype.slice.call(document.querySelectorAll(SPLIT)) : [];
   heads.forEach(splitWords);
+  // Anything already in the first viewport starts its reveal on the next
+  // frames instead of waiting for the observer's first callback.
+  heads.forEach(function (el) {
+    if (el.getBoundingClientRect().top < window.innerHeight) {
+      requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-seen'); }); });
+    }
+  });
   if (heads.length) {
     document.addEventListener('emft:langchange', function () {
       heads.forEach(function (el) {

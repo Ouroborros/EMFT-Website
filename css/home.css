@@ -659,7 +659,7 @@ html[dir="rtl"] .assess-media .media-frame { border-radius: var(--r-lg) 0 0 var(
   margin-top: clamp(48px, 5vw, 72px);
   padding-top: clamp(36px, 4vw, 48px);
   border-top: 1px solid rgba(201, 213, 226, 0.22);
-  text-align: left;
+  text-align: start;
   max-width: 880px;
   margin-inline: auto;
 }
@@ -671,7 +671,9 @@ html[dir="rtl"] .assess-media .media-frame { border-radius: var(--r-lg) 0 0 var(
   color: var(--gold-light);
   margin-bottom: 12px;
 }
-.contact-block p { font-size: 14.5px; line-height: 1.6; color: var(--blue-mist); margin-bottom: 6px; }
+/* Written with the section in the selector: the CTA's own lede rule comes
+   later at the same specificity and would otherwise restyle these. */
+.cta-section .contact-block p { font-size: 14.5px; line-height: 1.6; color: var(--blue-mist); margin: 0 0 6px; max-width: none; }
 .contact-block a { font-size: 15px; font-weight: 600; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.35); padding-bottom: 2px; }
 .contact-block a:hover { color: var(--gold-light); border-bottom-color: var(--gold-light); }
 @media (max-width: 560px) {
@@ -679,7 +681,7 @@ html[dir="rtl"] .assess-media .media-frame { border-radius: var(--r-lg) 0 0 var(
 }
 /* Laid out as flex items rather than a run of inline text, so the phone number
    can never be split across two lines by the centred wrap. */
-.contact-general {
+.cta-section .contact-general {
   font-size: 15px;
   color: var(--blue-mist);
   margin-top: 28px;
@@ -1550,6 +1552,14 @@ html[lang="ar"] .quote-attrib { letter-spacing: 0; }
   .service-icon { margin-block-start: 3px; }
   .place-icon { width: 18px; height: 18px; }
 }
+/* Phones: the four columns left the title ~245px, so the number and icon
+   take a line of their own and the text spans the row beneath. */
+@media (max-width: 560px) {
+  .service-row { grid-template-columns: 52px 22px 1fr; row-gap: 10px; align-items: center; }
+  .service-row > :nth-child(3) { grid-row: 2; grid-column: 1 / -1; }
+  .service-row .service-arrow { grid-row: 1; grid-column: 3; justify-self: end; }
+  .service-icon { margin-block-start: 0; }
+}
 
 /* Nav underline: grows from the reading start on hover and keyboard focus.
    The Contact pill and the dropdown items are excluded; the current page
@@ -1638,12 +1648,13 @@ html[dir="rtl"] .primary-nav > ul > li > a:not(.nav-contact):not([aria-current="
    finished page.
    ========================================================================== */
 /* Odometer: each digit is a window one line tall over a strip of 0–9. */
-.stat-value.is-odo { line-height: 1.1; }
-.odo-roll { white-space: nowrap; }
-.odo-roll > span { display: inline-block; height: 1.1em; line-height: 1.1em; vertical-align: top; }
+/* The window keeps the value's own 1.6 line box, so building the odometer
+   changes nothing in the layout; numbers read left-to-right in Arabic too. */
+.odo-roll { white-space: nowrap; direction: ltr; unicode-bidi: isolate; }
+.odo-roll > span { display: inline-block; height: 1.6em; line-height: 1.6em; vertical-align: top; }
 .odo { overflow: hidden; }
 .odo-strip { display: flex; flex-direction: column; transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; }
-.odo-strip > span { display: block; height: 1.1em; line-height: 1.1em; }
+.odo-strip > span { display: block; height: 1.6em; line-height: 1.6em; }
 
 /* Words: each rises a little and fades in, staggered by --d from the script.
    The heading itself is hidden from first paint (motion on, JS present)
@@ -1658,7 +1669,7 @@ html[dir="rtl"] .primary-nav > ul > li > a:not(.nav-contact):not([aria-current="
 
 /* Hero audience line: the items share one grid cell, so the line is as wide
    as its longest item and never reflows as the words change. */
-.hero-for { margin-top: 22px; font-size: 15px; color: var(--muted); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.hero-for { margin-block: 22px 20px; font-size: 15px; color: var(--muted); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 .rotator { display: inline-grid; color: var(--navy); font-weight: 600; }
 .rotator-item { grid-area: 1 / 1; white-space: nowrap; opacity: 0; visibility: hidden; transform: translateY(0.5em); transition: opacity 0.45s ease-out, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.45s; }
 .rotator-item.is-active { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
@@ -1669,7 +1680,7 @@ html:not(.js) .rotator-item:not(:first-child) { display: none; }
 .soon-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); border: 1px solid currentColor; border-radius: 999px; padding: 3px 10px; margin-top: 8px; line-height: 1.4; }
 html[lang="ar"] .soon-tag { letter-spacing: 0; }
 .site-footer .soon-tag { margin-top: 0; margin-inline-start: 6px; padding: 1px 8px; font-size: 10px; vertical-align: middle; color: var(--gold-light); }
-.contact-block p.soon-tag, .office p.soon-tag { font-size: 11px; line-height: 1.4; margin: 8px 0 0; white-space: nowrap; } /* outranks the blocks' paragraph size */
+.cta-section .contact-block p.soon-tag, .office p.soon-tag { font-size: 11px; line-height: 1.4; margin: 8px 0 8px; white-space: nowrap; } /* outranks the blocks' paragraph size */
 .contact-block .soon-tag { color: var(--gold-light); }
 @media (max-width: 560px) { .contact-block .place-icon { margin-inline: auto; } }
 .contact-grid, .office-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
@@ -1690,6 +1701,9 @@ html[lang="ar"] .marquee-toggle { letter-spacing: 0; }
 /* Scroll progress: a hairline along the header's bottom edge. */
 .scroll-progress { position: absolute; inset-inline-start: 0; bottom: -1px; width: 100%; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: 0 50%; pointer-events: none; }
 html[dir="rtl"] .scroll-progress { transform-origin: 100% 50%; }
+/* Email and phone keep dir="ltr" for the glyph run but line up with the
+   Arabic column they sit in. */
+html[dir="rtl"] .footer-col [dir="ltr"] { text-align: right; }
 
 @media (prefers-reduced-motion: no-preference) {
   @keyframes marquee-ltr { to { transform: translateX(-50%); } }
