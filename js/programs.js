@@ -11,9 +11,6 @@
   var T = {
     en: {
       dir: 'ltr', lang: 'en', langLabel: 'العربية',
-      navServices: 'Services', navCases: 'Case Studies', navAssessments: 'Assessments',
-      navPrograms: 'Programs', navCoaching: 'Coaching', navSpeakers: 'Keynote Speakers', navElearning: 'Learning Portal',
-      navAbout: 'About', navContact: 'Contact Us',
       eyebrow: 'Program Catalog',
       title: 'Every program. One standard.',
       subtitle: 'Filter by domain, or browse the eleven groups below. Every program is customized to your institution before delivery — this catalog is the starting point, not the limit.',
@@ -21,7 +18,6 @@
       programsWord: 'programs',
       ctaTitle: "Don't see exactly what you need?",
       ctaSub: 'Most of our engagements are built to order. Tell us the capability you want to build.',
-      footer: 'All rights reserved.', backHome: '← Back to Home',
       ctaButton: 'Request the Program Outline',
       domains: { all: 'All', fin: 'Financial', tech: 'Emerging Tech', skills: 'Professional Skills' },
       groups: {
@@ -40,9 +36,6 @@
     },
     ar: {
       dir: 'rtl', lang: 'ar', langLabel: 'English',
-      navServices: 'الخدمات', navCases: 'دراسات الحالة', navAssessments: 'التقييمات',
-      navPrograms: 'البرامج', navCoaching: 'التدريب الفردي', navSpeakers: 'المتحدثون الرئيسيون', navElearning: 'بوابة التعلم',
-      navAbout: 'من نحن', navContact: 'اتصل بنا',
       eyebrow: 'دليل البرامج',
       title: 'كل البرامج. معيار واحد.',
       subtitle: 'صفِّ البرامج حسب المجال، أو تصفح المجموعات الإحدى عشرة أدناه. كل برنامج يُصمَّم خصيصاً لمؤسستك قبل التنفيذ — هذا الدليل نقطة البداية، وليس الحد.',
@@ -50,7 +43,6 @@
       programsWord: 'برنامجاً',
       ctaTitle: 'لم تجد ما تبحث عنه بالضبط؟',
       ctaSub: 'معظم برامجنا تُبنى حسب الطلب. أخبرنا عن القدرات التي تريد بناءها.',
-      footer: 'جميع الحقوق محفوظة.', backHome: '→ العودة إلى الرئيسية',
       ctaButton: 'اطلب المنهج التفصيلي',
       domains: { all: 'الكل', fin: 'مالي', tech: 'التقنيات الناشئة', skills: 'المهارات المهنية' },
       groups: {

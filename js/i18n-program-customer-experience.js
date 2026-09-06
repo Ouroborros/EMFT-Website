@@ -32,7 +32,7 @@
       pd5: 'All levels — mixed teams work best',
       pd6: 'CX, service quality and complaints teams',
       pd7: 'Product owners and digital teams redesigning journeys',
-      pd8: 'Branch and contact-centre leadership',
+      pd8: 'Branch and contact-center leadership',
       pd9: 'Any corporate serving customers at scale — not just banks',
       pd10: 'Map a real customer journey with its moments of truth and pain points',
       pd11: 'Use voice-of-customer data instead of internal assumptions',

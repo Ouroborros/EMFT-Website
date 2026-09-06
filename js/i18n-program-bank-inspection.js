@@ -46,10 +46,10 @@
       pd19: 'On-site examination',
       pd20: 'Planning, sampling, interviews and evidence — the fieldwork discipline.',
       pd21: 'Credit and asset quality review',
-      pd22: 'File reviews, classification and provisioning judgement.',
+      pd22: 'File reviews, classification and provisioning judgment.',
       pd23: 'Findings and reporting',
       pd24: 'Writing, defending and following up examination reports.',
-      pd25: 'Supervisory judgement cases',
+      pd25: 'Supervisory judgment cases',
       pd26: 'Senior practitioners walk through real dilemmas phase by phase.',
     },
     ar: {
