@@ -135,6 +135,17 @@
           <p class="eyebrow" data-i18n="ix1">Emerging Market Financial Training</p>
           <h1 id="hero-title" class="display-xl" data-i18n="ix2">Capability that compounds.</h1>
           <p class="lede" data-i18n="ix3">Financial training for banks, central banks, sovereign wealth funds, regulators and corporates — with emerging-tech programs and technical assessments across both domains. Practitioner-led, built around your goals.</p>
+          <!-- Rotator items are separate translated spans; js/home.js only toggles
+               which one is active, so the translator never fights it. -->
+          <p class="hero-for"><span data-i18n="ix112">Built for</span>
+            <span class="rotator">
+              <span class="rotator-item" data-i18n="ix113">central banks</span>
+              <span class="rotator-item" data-i18n="ix114">sovereign wealth funds</span>
+              <span class="rotator-item" data-i18n="ix115">financial regulators</span>
+              <span class="rotator-item" data-i18n="ix116">commercial banks</span>
+              <span class="rotator-item" data-i18n="ix117">government and corporates</span>
+            </span>
+          </p>
           <div class="hero-actions">
             <a class="btn-solid" href="#services" data-i18n="ix4">Explore our services</a>
             <a class="link-underline" href="case-studies.html"><span data-i18n="ix104">See the results</span> <span aria-hidden="true">&rarr;</span></a>
@@ -499,6 +510,11 @@
             <p data-i18n="ix95">Saudi Arabia</p>
             <p data-i18n="ix96">King Abdullah Financial District</p>
           </div>
+          <div class="contact-block">
+            <svg class="la-icon place-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" pathLength="1"/><circle cx="12" cy="10" r="3" pathLength="1"/></svg>
+            <h3 data-i18n="ix110">Singapore</h3>
+            <p class="soon-tag" data-i18n="ix111">Opening soon</p>
+          </div>
         </div>
         <p class="contact-general"><span data-i18n="ix97">General enquiries:</span> <a href="mailto:info@emergingmarketft.com" dir="ltr">info@emergingmarketft.com</a> <a href="tel:+97142509783" dir="ltr">+971 4 250 9783</a></p>
       </div>
@@ -539,10 +555,11 @@
         </nav>
         <div class="footer-col">
           <h2 class="footer-heading" data-i18n="footOffices">Offices</h2>
-          <span>London, United&nbsp;Kingdom</span>
-          <span>Dubai, United&nbsp;Arab&nbsp;Emirates</span>
-          <span>Abu&nbsp;Dhabi, United&nbsp;Arab&nbsp;Emirates</span>
-          <span>Riyadh, Saudi&nbsp;Arabia</span>
+          <span data-i18n="footLondon">London, United Kingdom</span>
+          <span data-i18n="footDubai">Dubai, United Arab Emirates</span>
+          <span data-i18n="footAbuDhabi">Abu Dhabi, United Arab Emirates</span>
+          <span data-i18n="footRiyadh">Riyadh, Saudi Arabia</span>
+          <span><span data-i18n="footSingapore">Singapore</span> <span class="soon-tag" data-i18n="footSoon">Opening soon</span></span>
         </div>
       </div>
       <div class="footer-legal">

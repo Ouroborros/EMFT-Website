@@ -76,6 +76,8 @@
       ab68: 'Assessment',
       ab69: 'Coaching',
       ab70: 'Capability',
+      ab71: 'Singapore',
+      ab72: 'Opening soon',
     },
     ar: {
       ab1: 'عن EMFT',
@@ -148,6 +150,8 @@
       ab68: 'التقييم',
       ab69: 'الإرشاد',
       ab70: 'القدرة',
+      ab71: 'سنغافورة',
+      ab72: 'يُفتتح قريباً',
     }
   });
 })();

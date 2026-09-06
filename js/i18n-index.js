@@ -115,6 +115,14 @@
       ix107: 'Request a syllabus',
       ix108: 'Practitioners, not presenters.',
       ix109: 'The EMFT teaching principle',
+      ix110: 'Singapore',
+      ix111: 'Opening soon',
+      ix112: 'Built for',
+      ix113: 'central banks',
+      ix114: 'sovereign wealth funds',
+      ix115: 'financial regulators',
+      ix116: 'commercial banks',
+      ix117: 'government and corporates',
     },
     ar: {
       ix1: 'التدريب المالي للأسواق الناشئة',
@@ -226,6 +234,14 @@
       ix107: 'اطلب المنهج التفصيلي',
       ix108: 'ممارسون، لا مُلقّنون.',
       ix109: 'مبدأ التدريس في EMFT',
+      ix110: 'سنغافورة',
+      ix111: 'يُفتتح قريباً',
+      ix112: 'مصمَّم من أجل',
+      ix113: 'البنوك المركزية',
+      ix114: 'صناديق الثروة السيادية',
+      ix115: 'الجهات الرقابية المالية',
+      ix116: 'البنوك التجارية',
+      ix117: 'الجهات الحكومية والشركات',
     }
   });
 })();

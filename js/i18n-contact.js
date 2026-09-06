@@ -84,6 +84,8 @@
       co76: 'or email',
       co77: 'Area of interest',
       co78: 'We use what you send here only to answer your enquiry. See the',
+      co79: 'Singapore',
+      co80: 'Opening soon',
     },
     ar: {
       co1: 'تواصل معنا',
@@ -164,6 +166,8 @@
       co76: 'أو راسلنا على',
       co77: 'مجال الاهتمام',
       co78: 'نستخدم ما ترسله هنا للرد على استفسارك فقط. راجع',
+      co79: 'سنغافورة',
+      co80: 'يُفتتح قريباً',
     }
   });
 })();
