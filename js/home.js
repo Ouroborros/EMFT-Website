@@ -80,7 +80,7 @@
   // time-based animation from that moment. Without JS nothing is hidden.
   var seen = document.querySelectorAll(
     '.hero-lineart, section h2, section h3, .service-row, .case-card, .program-card, ' +
-    '.stat, .usecase, .model-figure, .quote-panel'
+    '.stat, .usecase, .model-figure, .quote-panel, .process-step, .office, .contact-block'
   );
   if (seen.length) {
     if (motionOK && 'IntersectionObserver' in window) {

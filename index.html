@@ -152,8 +152,10 @@
               <pattern id="emft-grid-dot" width="60" height="34" patternUnits="userSpaceOnUse">
                 <circle class="la-dot" cx="1.5" cy="1.5" r="1.5"></circle>
               </pattern>
+              <clipPath id="emft-grid-clip"><rect x="0" y="6" width="1200" height="136"></rect></clipPath>
             </defs>
-            <rect class="la-grid" x="0" y="6" width="1200" height="136" fill="url(#emft-grid-dot)"></rect>
+            <!-- one pattern period wider than its clip, so the drift loops seamlessly -->
+            <g clip-path="url(#emft-grid-clip)"><rect class="la-grid" x="-60" y="6" width="1260" height="136" fill="url(#emft-grid-dot)"></rect></g>
             <line class="la-axis" x1="0" y1="142" x2="1200" y2="142" vector-effect="non-scaling-stroke"></line>
             <path class="la-tick" vector-effect="non-scaling-stroke"
                   d="M60 142v8 M180 142v8 M300 142v8 M420 142v8 M540 142v8 M660 142v8 M780 142v8 M900 142v8 M1020 142v8 M1140 142v8"></path>
@@ -206,6 +208,7 @@
         <div class="services-index">
           <a class="service-row" href="programs.html#leadership">
             <span class="service-num" aria-hidden="true">01</span>
+            <svg class="la-icon service-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" pathLength="1"/><circle cx="9" cy="7" r="4" pathLength="1"/><path d="M22 21v-2a4 4 0 0 0-3-3.87" pathLength="1"/><path d="M16 3.13a4 4 0 0 1 0 7.75" pathLength="1"/></svg>
             <span>
               <span class="service-name" data-i18n="ix12">Professional Skills &amp; Leadership Programs</span>
               <span class="service-desc" data-i18n="ix13">From first-time managers to executive teams — leadership that sticks.</span>
@@ -214,6 +217,7 @@
           </a>
           <a class="service-row" href="programs.html">
             <span class="service-num" aria-hidden="true">02</span>
+            <svg class="la-icon service-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" pathLength="1"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" pathLength="1"/></svg>
             <span>
               <span class="service-name" data-i18n="ix14">Technical Training Programs</span>
               <span class="service-desc" data-i18n="ix15">Deep financial and technical curricula, taught by practitioners.</span>
@@ -222,6 +226,7 @@
           </a>
           <a class="service-row" href="coaching.html">
             <span class="service-num" aria-hidden="true">03</span>
+            <svg class="la-icon service-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" pathLength="1"/><circle cx="9" cy="7" r="4" pathLength="1"/><polyline points="16 11 18 13 22 9" pathLength="1"/></svg>
             <span>
               <span class="service-name" data-i18n="ix16">Coaching</span>
               <span class="service-desc" data-i18n="ix17">One-to-one coaching for leaders, practitioner mentoring for specialists.</span>
@@ -230,6 +235,7 @@
           </a>
           <a class="service-row" href="programs.html#qualifications">
             <span class="service-num" aria-hidden="true">04</span>
+            <svg class="la-icon service-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="6" pathLength="1"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" pathLength="1"/></svg>
             <span>
               <span class="service-name" data-i18n="ix18">Professional Qualifications</span>
               <span class="service-desc" data-i18n="ix19">CISI, CFA and other exam pathways with proven pass rates.</span>
@@ -238,6 +244,7 @@
           </a>
           <a class="service-row" href="assessments.html">
             <span class="service-num" aria-hidden="true">05</span>
+            <svg class="la-icon service-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="8" height="4" x="8" y="2" rx="1" pathLength="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" pathLength="1"/><path d="m9 14 2 2 4-4" pathLength="1"/></svg>
             <span>
               <span class="service-name" data-i18n="ix20">Assessments</span>
               <span class="service-desc" data-i18n="ix21">Objective screening, benchmarking and capability assessments — a core EMFT strength.</span>
@@ -246,6 +253,7 @@
           </a>
           <a class="service-row" href="speakers.html">
             <span class="service-num" aria-hidden="true">06</span>
+            <svg class="la-icon service-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" pathLength="1"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" pathLength="1"/><line x1="12" x2="12" y1="19" y2="22" pathLength="1"/></svg>
             <span>
               <span class="service-name" data-i18n="ix22">Keynote Speakers</span>
               <span class="service-desc" data-i18n="ix23">Industry voices for your conferences and leadership events.</span>
@@ -468,21 +476,25 @@
         </div>
         <div class="contact-grid">
           <div class="contact-block">
+            <svg class="la-icon place-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" pathLength="1"/><circle cx="12" cy="10" r="3" pathLength="1"/></svg>
             <h3 data-i18n="ix85">London</h3>
             <p data-i18n="ix86">United Kingdom</p>
             <p data-i18n="ix87">110 Carlton Avenue East</p>
           </div>
           <div class="contact-block">
+            <svg class="la-icon place-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" pathLength="1"/><circle cx="12" cy="10" r="3" pathLength="1"/></svg>
             <h3 data-i18n="ix88">Dubai</h3>
             <p data-i18n="ix89">United Arab Emirates</p>
             <p data-i18n="ix90">Dubai Silicon Oasis</p>
           </div>
           <div class="contact-block">
+            <svg class="la-icon place-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" pathLength="1"/><circle cx="12" cy="10" r="3" pathLength="1"/></svg>
             <h3 data-i18n="ix91">Abu Dhabi</h3>
             <p data-i18n="ix92">United Arab Emirates</p>
             <p data-i18n="ix93">Enquiries via the Dubai office</p>
           </div>
           <div class="contact-block">
+            <svg class="la-icon place-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" pathLength="1"/><circle cx="12" cy="10" r="3" pathLength="1"/></svg>
             <h3 data-i18n="ix94">Riyadh</h3>
             <p data-i18n="ix95">Saudi Arabia</p>
             <p data-i18n="ix96">King Abdullah Financial District</p>

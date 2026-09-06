@@ -1519,3 +1519,110 @@ html[lang="ar"] .quote-attrib { letter-spacing: 0; }
     }
   }
 }
+
+/* ==========================================================================
+   Micro-motion — the small things: icons that draw themselves as their row
+   arrives, a nav underline that grows from the reading start, a light sweep
+   across the quote panel as it passes, and a slow drift on the hero's dot
+   grid. All decorative: aria-hidden SVGs, transform/opacity/dashoffset only,
+   gated like the rest of the site's motion.
+   ========================================================================== */
+.la-icon {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
+/* The icons sit outside every data-i18n element on purpose: the translator
+   swaps textContent, which would drop an SVG nested inside a heading. */
+.service-row { grid-template-columns: 88px 26px 1fr auto; }
+.service-icon { color: var(--navy); align-self: start; margin-block-start: 5px; transition: color 180ms ease-out, transform 180ms ease-out; }
+.service-row:hover .service-icon { color: var(--gold); transform: translateY(-2px); }
+.step-icon { color: var(--gold); margin-block-end: 12px; }
+.place-icon { width: 20px; height: 20px; color: var(--gold); margin-block-end: 10px; }
+.contact-block .place-icon { color: var(--gold-light); }
+@media (max-width: 980px) {
+  .service-row { grid-template-columns: 52px 22px 1fr auto; }
+  .la-icon { width: 22px; height: 22px; }
+  .service-icon { margin-block-start: 3px; }
+  .place-icon { width: 18px; height: 18px; }
+}
+
+/* Nav underline: grows from the reading start on hover and keyboard focus.
+   The Contact pill and the dropdown items are excluded; the current page
+   keeps its existing marker. */
+.primary-nav > ul > li > a:not(.nav-contact) { position: relative; }
+.primary-nav > ul > li > a:not(.nav-contact)::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+html[dir="rtl"] .primary-nav > ul > li > a:not(.nav-contact)::after { transform-origin: 100% 50%; }
+.primary-nav > ul > li > a:not(.nav-contact):hover::after,
+.primary-nav > ul > li > a:not(.nav-contact):focus-visible::after { transform: scaleX(1); }
+
+/* Quote sweep: a soft gold light crossing the ink panel. The band lives in a
+   pseudo-element that starts off-panel, so with motion off it is never seen. */
+.quote-panel { position: relative; overflow: hidden; }
+.quote-panel::before {
+  content: "";
+  position: absolute;
+  inset: -20% -40%;
+  background: linear-gradient(105deg, transparent 42%, rgba(217, 185, 92, 0.11) 50%, transparent 58%);
+  transform: translateX(-60%);
+  pointer-events: none;
+}
+.quote-panel > * { position: relative; }
+
+/* Scroll-driven versions, under the site's double gate. Each icon host names
+   a view timeline, so the shapes inside its SVG draw as the host arrives —
+   the same pattern the model figure uses. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    @keyframes la-icon-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+    @keyframes quote-sweep { from { transform: translateX(-60%); } to { transform: translateX(60%); } }
+    .service-row, .process-step, .office, .contact-block { view-timeline-name: --emft-item; view-timeline-axis: block; }
+    .la-icon > * {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: la-icon-draw 1s linear both;
+      animation-timeline: --emft-item;
+      animation-range: entry 0% entry 70%;
+    }
+    .la-icon > :nth-child(2) { animation-range: entry 12% entry 82%; }
+    .la-icon > :nth-child(3) { animation-range: entry 24% entry 94%; }
+    .la-icon > :nth-child(4) { animation-range: entry 36% entry 100%; }
+    .quote-panel::before {
+      animation: quote-sweep linear both;
+      animation-timeline: --emft-quote;
+      animation-range: cover 0% cover 100%;
+    }
+  }
+  /* Time-based versions for engines without scroll-driven animations, run
+     when js/home.js flags the host as seen. Hidden only under html.js. */
+  @supports not (animation-timeline: view()) {
+    @keyframes la-icon-draw-seen { to { stroke-dashoffset: 0; } }
+    @keyframes quote-sweep-seen { to { transform: translateX(60%); } }
+    html.js .la-icon > * { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    .is-seen .la-icon > * { animation: la-icon-draw-seen 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .is-seen .la-icon > :nth-child(2) { animation-delay: 120ms; }
+    .is-seen .la-icon > :nth-child(3) { animation-delay: 240ms; }
+    .is-seen .la-icon > :nth-child(4) { animation-delay: 360ms; }
+    .quote-panel.is-seen::before { animation: quote-sweep-seen 2.4s ease-in-out 0.4s forwards; }
+  }
+  /* The dot grid drifts one pattern period and loops; the rect is one period
+     wider than its clip so no edge ever shows. Hidden below 640px with the
+     rest of the grid. */
+  @keyframes la-grid-drift { to { transform: translateX(60px); } }
+  .hero-lineart .la-grid { animation: la-grid-drift 18s linear infinite; }
+}
