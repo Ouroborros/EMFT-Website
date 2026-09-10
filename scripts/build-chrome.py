@@ -32,7 +32,7 @@ PAGES = [
     ("case-studies.html", "cases"),
     ("about.html", "about"),
     ("contact.html", "contact"),
-    ("elearning.html", "portal"),
+    ("elearning.html", "elearning"),
     ("coaching.html", "coaching"),
     ("assessments.html", "assessments"),
     ("speakers.html", "speakers"),
@@ -91,7 +91,7 @@ def header(current):
           <li><a href="programs.html"%s data-i18n="navPrograms">Programs</a></li>
           <li><a href="case-studies.html"%s data-i18n="navCases">Case Studies</a></li>
           <li><a href="about.html"%s data-i18n="navAbout">About</a></li>
-          <li><a href="elearning.html#portal"%s data-i18n="navPortal">Learning Portal</a></li>
+          <li><a href="https://emergingmarketft.com/elearning/" target="_blank" rel="noopener" class="nav-external"%s data-i18n="navPortal">Learning Portal</a></li>
           <li><button type="button" class="lang-toggle" id="lang-toggle">العربية</button></li>
           <li><a class="nav-contact" href="contact.html"%s data-i18n="navContact">Contact</a></li>
         </ul>
@@ -128,7 +128,7 @@ FOOTER = """  <footer class="site-footer">
           <a href="about.html" data-i18n="navAbout">About</a>
           <a href="case-studies.html" data-i18n="navCases">Case Studies</a>
           <a href="contact.html" data-i18n="navContact">Contact</a>
-          <a href="elearning.html#portal" data-i18n="navPortal">Learning Portal</a>
+          <a href="https://emergingmarketft.com/elearning/" target="_blank" rel="noopener" class="nav-external" data-i18n="navPortal">Learning Portal</a>
         </nav>
         <nav class="footer-col" aria-label="Footer — contact" data-i18n-aria="footNavContact">
           <h2 class="footer-heading" data-i18n="navContact">Contact</h2>
