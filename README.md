@@ -57,11 +57,13 @@ the site falls back to the system font stack.
   time zone.
 - **Response-time promise**: "within one business day" appears on the Contact
   page — confirm it can be honored, or soften it.
-- **Contact form backend**: until an endpoint is configured the form
-  transmits nothing — it validates client-side and shows a success message
-  that points visitors to the direct email address. To make it actually send,
-  set the `FORM_ENDPOINT` constant in `js/main.js` to a Formspree/Netlify
-  Forms/Basin URL or your own API.
+- **Contact form backend**: `contact-form.php` on the production host emails
+  each submission to info@emergingmarketft.com (POST only, same-site origin,
+  honeypot, per-address rate limit, header-injection stripping). It sends
+  from `website@emergingmarketft.com`, which must exist as a mailbox or
+  alias so SPF/DKIM align; if mail lands in spam, switch the `mail()` call to
+  authenticated SMTP. Where the handler is absent (the GitHub Pages preview)
+  the form falls back to opening a pre-filled email.
 - **Service lineup**: corporate training, open courses, advisory & capability
   building, and e-learning are a reasonable inference for a financial
   training firm — confirm the lineup and the listed course topics (credit,

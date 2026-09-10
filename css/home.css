@@ -1128,6 +1128,7 @@ html[dir="rtl"] .assess-media .media-frame { border-radius: var(--r-lg) 0 0 var(
 @media (max-width: 1080px) { .contact-layout { grid-template-columns: 1fr; gap: 56px; } }
 
 .enquiry-form { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 24px; }
+.enquiry-form[hidden] { display: none; }
 @media (max-width: 620px) { .enquiry-form { grid-template-columns: 1fr; } }
 .field { display: flex; flex-direction: column; gap: 7px; }
 .field.wide { grid-column: 1 / -1; }

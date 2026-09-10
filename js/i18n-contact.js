@@ -86,6 +86,8 @@
       co78: 'We use what you send here only to answer your enquiry. See the',
       co79: 'Singapore',
       co80: 'Opening soon',
+      co81: 'Thank you — your enquiry has been sent.',
+      co82: 'It has gone to the EMFT team at info@emergingmarketft.com. A member of the team will come back to you within one working day, usually with a few questions about scope and audience before we put anything in writing.',
     },
     ar: {
       co1: 'تواصل معنا',
@@ -168,6 +170,8 @@
       co78: 'نستخدم ما ترسله هنا للرد على استفسارك فقط. راجع',
       co79: 'سنغافورة',
       co80: 'يُفتتح قريباً',
+      co81: 'شكراً لك — تم إرسال استفسارك.',
+      co82: 'وصل استفسارك إلى فريق EMFT على info@emergingmarketft.com. وسيعود إليك أحد أعضاء الفريق خلال يوم عمل واحد، وغالباً ببضعة أسئلة عن النطاق والجمهور قبل أن نضع أي شيء كتابةً.',
     }
   });
 })();

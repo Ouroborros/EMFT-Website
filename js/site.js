@@ -75,12 +75,11 @@
   }
 
   /* Enquiry form ----------------------------------------------------------- */
-  // No backend ships with this static site. Point ENDPOINT at a form service
-  // (Formspree, Netlify Forms, a Zoho webhook) and the submission is POSTed as
-  // JSON; leave it null and the form falls back to opening a pre-filled mail
-  // to the general inbox. Either way the success panel is what the visitor
-  // sees, so the flow does not dead-end.
-  var ENDPOINT = null;
+  // contact-form.php on the production host emails the submission to the
+  // general inbox. Where it is absent (the GitHub Pages preview) or fails,
+  // the form falls back to opening a pre-filled mail to that inbox, so the
+  // flow never dead-ends. The success panel says which of the two happened.
+  var ENDPOINT = 'contact-form.php';
   var INBOX = 'info@emergingmarketft.com';
 
   // Messages the form generates rather than renders from markup.
@@ -164,9 +163,13 @@
       if (key !== 'company_website') data[key] = value;
     });
 
-    var done = function () {
+    var done = function (how) {
       form.hidden = true;
       if (success) {
+        var sent = document.getElementById('success-sent');
+        var mail = document.getElementById('success-mail');
+        if (sent) sent.hidden = how !== 'sent';
+        if (mail) mail.hidden = how === 'sent';
         success.hidden = false;
         success.setAttribute('tabindex', '-1');
         success.focus();
@@ -174,27 +177,34 @@
       }
     };
 
-    if (ENDPOINT) {
-      if (submit) { submit.disabled = true; submit.textContent = t('sending'); }
-      fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      }).then(done).catch(function () {
-        if (submit) { submit.disabled = false; submit.textContent = t('send'); }
-        var slot = form.querySelector('.form-foot .field-error');
-        if (slot) slot.textContent = t('failed');
+    var byMail = function () {
+      var lines = Object.keys(data).map(function (key) {
+        return key.replace(/_/g, ' ') + ': ' + data[key];
       });
-      return;
-    }
+      window.location.href =
+        'mailto:' + INBOX +
+        '?subject=' + encodeURIComponent('Enquiry — ' + (data.organization || data.name || 'EMFT website')) +
+        '&body=' + encodeURIComponent(lines.join('\n'));
+      done('mail');
+    };
 
-    var lines = Object.keys(data).map(function (key) {
-      return key.replace(/_/g, ' ') + ': ' + data[key];
+    if (!ENDPOINT || typeof window.fetch !== 'function') { byMail(); return; }
+
+    if (submit) { submit.disabled = true; submit.textContent = t('sending'); }
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data),
+      credentials: 'same-origin'
+    }).then(function (res) {
+      if (!res.ok) throw new Error('status ' + res.status);
+      return res.json();
+    }).then(function (body) {
+      if (!body || body.ok !== true) throw new Error('not accepted');
+      done('sent');
+    }).catch(function () {
+      if (submit) { submit.disabled = false; submit.textContent = t('send'); }
+      byMail();
     });
-    window.location.href =
-      'mailto:' + INBOX +
-      '?subject=' + encodeURIComponent('Enquiry — ' + (data.organization || data.name || 'EMFT website')) +
-      '&body=' + encodeURIComponent(lines.join('\n'));
-    done();
   });
 })();
