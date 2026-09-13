@@ -60,10 +60,11 @@ the site falls back to the system font stack.
 - **Contact form backend**: `contact-form.php` on the production host emails
   each submission to info@emergingmarketft.com (POST only, same-site origin,
   honeypot, per-address rate limit, header-injection stripping). It sends
-  from `website@emergingmarketft.com`, which must exist as a mailbox or
-  alias so SPF/DKIM align; if mail lands in spam, switch the `mail()` call to
-  authenticated SMTP. Where the handler is absent (the GitHub Pages preview)
-  the form falls back to opening a pre-filled email.
+  from that same address, shown as "EMFT website", with the visitor's address
+  in `Reply-To` so Reply reaches them. Sending from a real mailbox on the
+  domain keeps SPF and DKIM aligned. If mail ever lands in spam, switch the
+  `mail()` call to authenticated SMTP. Where the handler is absent (the GitHub
+  Pages preview) the form falls back to opening a pre-filled email.
 - **Service lineup**: corporate training, open courses, advisory & capability
   building, and e-learning are a reasonable inference for a financial
   training firm — confirm the lineup and the listed course topics (credit,

@@ -15,7 +15,11 @@
 declare(strict_types=1);
 
 const INBOX      = 'info@emergingmarketft.com';
-const SENDER     = 'website@emergingmarketft.com'; // must be a mailbox or alias on the domain so SPF/DKIM align
+// The envelope and From address. It must be a real mailbox on the domain so
+// SPF and DKIM line up and the mail is not treated as a forgery; info@ is one,
+// so the enquiry arrives from the inbox it lands in. Reply-To carries the
+// visitor's address, so Reply goes to them and not back to ourselves.
+const SENDER     = 'info@emergingmarketft.com';
 const SITE_HOSTS = ['www.emergingmarketft.com', 'emergingmarketft.com'];
 const MAX_BODY   = 16384;   // bytes
 const RATE_MAX   = 5;       // submissions ...
