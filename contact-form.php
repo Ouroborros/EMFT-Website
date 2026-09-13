@@ -7,9 +7,10 @@
  * (the GitHub Pages preview excludes it, and the form falls back to a
  * pre-filled mail there).
  *
- * Safeguards, in order: POST only; same-site origin; honeypot; per-address
- * rate limit; size and field caps; header-injection stripping; the visitor's
- * text is sent as plain text, never as HTML or as the envelope sender.
+ * Safeguards, in order: POST only; same-site origin; honeypot; a per-address
+ * limit on mail actually sent; size and field caps; header-injection stripping;
+ * the visitor's text is sent as plain text, never as HTML or as the envelope
+ * sender. The visitor's IP address is never written into the mail.
  */
 
 declare(strict_types=1);
@@ -22,7 +23,7 @@ const INBOX      = 'info@emergingmarketft.com';
 const SENDER     = 'info@emergingmarketft.com';
 const SITE_HOSTS = ['www.emergingmarketft.com', 'emergingmarketft.com'];
 const MAX_BODY   = 16384;   // bytes
-const RATE_MAX   = 5;       // submissions ...
+const RATE_MAX   = 5;       // enquiries delivered ...
 const RATE_WIN   = 600;     // ... per this many seconds, per address
 
 const FIELDS = [
@@ -61,27 +62,39 @@ function same_site(): bool
     return false; // browsers always send one of the two on a fetch POST
 }
 
-function rate_limited(): bool
+/**
+ * The rate limit counts mail we actually sent, not attempts. A visitor who
+ * mistypes their address several times must not lock themselves out of the
+ * form, and a bot posting rubbish sends nothing to count. Only the one-way
+ * fingerprint of the address is written, and only recent sends are kept.
+ */
+function rate_file(): string
 {
     $addr = $_SERVER['REMOTE_ADDR'] ?? '';
-    if ($addr === '') {
-        return false;
+    return $addr === '' ? '' : sys_get_temp_dir() . '/emft-enquiry-' . hash('sha256', $addr);
+}
+
+/** @return int[] recent sends from this address, expired entries dropped */
+function rate_hits(string $file): array
+{
+    if ($file === '' || !is_file($file)) {
+        return [];
     }
-    $file = sys_get_temp_dir() . '/emft-enquiry-' . hash('sha256', $addr);
-    $now  = time();
-    $hits = [];
-    if (is_file($file)) {
-        $hits = array_filter(
-            array_map('intval', file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: []),
-            static fn (int $t): bool => $t > $now - RATE_WIN
-        );
+    $now = time();
+    return array_values(array_filter(
+        array_map('intval', file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: []),
+        static fn (int $t): bool => $t > $now - RATE_WIN
+    ));
+}
+
+/** @param int[] $hits */
+function rate_record(string $file, array $hits): void
+{
+    if ($file === '') {
+        return;
     }
-    if (count($hits) >= RATE_MAX) {
-        return true;
-    }
-    $hits[] = $now;
+    $hits[] = time();
     @file_put_contents($file, implode("\n", $hits) . "\n", LOCK_EX);
-    return false;
 }
 
 /** One line of header-safe text: no CR/LF, no control characters, trimmed. */
@@ -123,7 +136,9 @@ if (!is_array($data)) {
 if (!empty($data['company_website'])) {
     reply(200, true); // tell the bot it worked, send nothing
 }
-if (rate_limited()) {
+$rateFile = rate_file();
+$rateHits = rate_hits($rateFile);
+if (count($rateHits) >= RATE_MAX) {
     reply(429, false, 'rate');
 }
 
@@ -165,7 +180,7 @@ $lines[] = "";
 $lines[] = "Message:";
 $lines[] = $clean['message'] !== '' ? $clean['message'] : '(none)';
 $lines[] = "";
-$lines[] = "Sent " . gmdate('Y-m-d H:i') . " UTC from " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown');
+$lines[] = "Sent " . gmdate('Y-m-d H:i') . " UTC from the website contact form.";
 
 $subject = 'Enquiry — ' . ($clean['organization'] !== '' ? $clean['organization'] : $clean['name']);
 $subject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
@@ -185,4 +200,5 @@ if (!$sent) {
     error_log('EMFT enquiry: mail() failed for ' . $replyTo);
     reply(502, false, 'mail');
 }
+rate_record($rateFile, $rateHits);
 reply(200, true);
