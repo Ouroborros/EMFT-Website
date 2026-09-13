@@ -83,27 +83,27 @@
           <form id="enquiry-form" class="enquiry-form" novalidate>
             <div class="field">
               <label for="f-name"><span data-i18n="co71">Name</span> <span class="hint" data-i18n="co5">Required</span></label>
-              <input id="f-name" name="name" type="text" autocomplete="name" required>
+              <input id="f-name" name="name" type="text" autocomplete="name" maxlength="120" required>
               <span class="field-error" aria-live="polite"></span>
             </div>
             <div class="field">
               <label for="f-title" data-i18n="co6">Job title</label>
-              <input id="f-title" name="job_title" type="text" autocomplete="organization-title">
+              <input id="f-title" name="job_title" type="text" autocomplete="organization-title" maxlength="120">
               <span class="field-error" aria-live="polite"></span>
             </div>
             <div class="field">
               <label for="f-org"><span data-i18n="co72">Organization</span> <span class="hint" data-i18n="co7">Required</span></label>
-              <input id="f-org" name="organization" type="text" autocomplete="organization" required>
+              <input id="f-org" name="organization" type="text" autocomplete="organization" maxlength="160" required>
               <span class="field-error" aria-live="polite"></span>
             </div>
             <div class="field">
               <label for="f-email"><span data-i18n="co73">Work email</span> <span class="hint" data-i18n="co8">Required</span></label>
-              <input id="f-email" name="work_email" type="email" autocomplete="email" required>
+              <input id="f-email" name="work_email" type="email" autocomplete="email" maxlength="254" required>
               <span class="field-error" aria-live="polite"></span>
             </div>
             <div class="field">
               <label for="f-tel" data-i18n="co9">Telephone</label>
-              <input id="f-tel" name="telephone" type="tel" autocomplete="tel">
+              <input id="f-tel" name="telephone" type="tel" autocomplete="tel" maxlength="40">
               <span class="field-error" aria-live="polite"></span>
             </div>
             <div class="field">
@@ -167,7 +167,7 @@
             </div>
             <div class="field wide">
               <label for="f-message"><span data-i18n="co74">Message</span> <span class="hint" data-i18n="co45">What are you trying to achieve?</span></label>
-              <textarea id="f-message" name="message"></textarea>
+              <textarea id="f-message" name="message" maxlength="4000"></textarea>
               <span class="field-error" aria-live="polite"></span>
             </div>
 

@@ -152,9 +152,14 @@
   form.addEventListener('submit', function (event) {
     event.preventDefault();
 
-    // Honeypot: a real person never fills a field they cannot see.
+    // Honeypot. The field is clipped out of sight rather than removed from the
+    // layout, so the one way a person can end up with a value in it is their
+    // browser autofilling it. Refusing to submit would leave them pressing Send
+    // with nothing happening and no explanation, so clear it and carry on: the
+    // matching check in contact-form.php still catches the direct posts that
+    // bots actually make, and this field is never sent from here anyway.
     var trap = form.querySelector('input[name="company_website"]');
-    if (trap && trap.value) return;
+    if (trap) trap.value = '';
 
     if (!validate()) return;
 
@@ -191,18 +196,29 @@
     if (!ENDPOINT || typeof window.fetch !== 'function') { byMail(); return; }
 
     if (submit) { submit.disabled = true; submit.textContent = t('sending'); }
+
+    // A handler that never answers would otherwise leave the button reading
+    // "Sending…" for as long as the visitor is willing to wait. Give up after
+    // fifteen seconds and hand them the mail client instead.
+    var abort = typeof window.AbortController === 'function' ? new window.AbortController() : null;
+    var timer = abort ? window.setTimeout(function () { abort.abort(); }, 15000) : null;
+    var settle = function () { if (timer) { window.clearTimeout(timer); timer = null; } };
+
     fetch(ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(data),
-      credentials: 'same-origin'
+      credentials: 'same-origin',
+      signal: abort ? abort.signal : undefined
     }).then(function (res) {
       if (!res.ok) throw new Error('status ' + res.status);
       return res.json();
     }).then(function (body) {
       if (!body || body.ok !== true) throw new Error('not accepted');
+      settle();
       done('sent');
     }).catch(function () {
+      settle();
       if (submit) { submit.disabled = false; submit.textContent = t('send'); }
       byMail();
     });

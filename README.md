@@ -65,6 +65,12 @@ the site falls back to the system font stack.
   domain keeps SPF and DKIM aligned. If mail ever lands in spam, switch the
   `mail()` call to authenticated SMTP. Where the handler is absent (the GitHub
   Pages preview) the form falls back to opening a pre-filled email.
+- **Rate limit and a proxy**: the five-sends-per-ten-minutes limit keys on
+  `REMOTE_ADDR`. Behind a CDN that terminates connections (Cloudflare and the
+  like) every visitor arrives from the same handful of addresses, so the limit
+  would apply to the site as a whole. If the site is put behind one, read the
+  real address from the proxy's own header instead, and only when the request
+  came from the proxy.
 - **Service lineup**: corporate training, open courses, advisory & capability
   building, and e-learning are a reasonable inference for a financial
   training firm — confirm the lineup and the listed course topics (credit,

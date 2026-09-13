@@ -13,6 +13,12 @@ RewriteRule ^ https://www.emergingmarketft.com%{REQUEST_URI} [L,R=301]
 RewriteCond %{HTTP_HOST} ^emergingmarketft\.com$ [NC]
 RewriteRule ^ https://www.emergingmarketft.com%{REQUEST_URI} [L,R=301]
 
+# A dot-directory such as /.git/ is not covered by FilesMatch below, because
+# that only ever sees the last path segment. Block any request whose path
+# contains a dot-segment, with .well-known excluded so security.txt stays
+# reachable.
+RewriteRule (^|/)\.(?!well-known(/|$))[^/]* - [F,L]
+
 # --- Security headers ---------------------------------------------------------
 <IfModule mod_headers.c>
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
@@ -30,18 +36,24 @@ ServerSignature Off
 
 # --- No directory listings, no dotfiles, no editor or backup leftovers --------
 Options -Indexes
-<FilesMatch "^\.|~$|\.(bak|old|orig|sql|zip|tar|gz|log|ini|env)$">
+# error_log has no extension: PHP drops it beside the script on many shared
+# hosts, and it can carry a visitor's email address from a failed send.
+<FilesMatch "^\.|^error_log$|~$|\.(bak|old|orig|sql|zip|tar|gz|log|ini|env)$">
   Require all denied
 </FilesMatch>
 
-# --- Caching: assets are stamped per deploy, HTML is not ----------------------
+# --- Caching: images are immutable, markup and code are not ----------------------
 # mod_expires never overrides an Expires header an application already set,
 # so Moodle under /elearning/ keeps its own no-cache behaviour.
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/html "access plus 10 minutes"
-  ExpiresByType text/css "access plus 1 year"
-  ExpiresByType application/javascript "access plus 1 year"
+  # Stylesheet and script URLs are version-stamped on the GitHub Pages preview
+  # but not by a plain upload here, so a year-long max-age would pin visitors
+  # to the previous deploy's CSS. An hour still spares repeat views the round
+  # trip without outlasting an update.
+  ExpiresByType text/css "access plus 1 hour"
+  ExpiresByType application/javascript "access plus 1 hour"
   ExpiresByType image/jpeg "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"

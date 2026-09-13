@@ -15,6 +15,12 @@
 
 declare(strict_types=1);
 
+// The answer must be JSON and nothing else. A notice printed ahead of it would
+// make the browser fall back to the mail client for an enquiry we had already
+// sent, so warnings go to the log instead of the response body.
+ini_set('display_errors', '0');
+ini_set('html_errors', '0');
+
 const INBOX      = 'info@emergingmarketft.com';
 // The envelope and From address. It must be a real mailbox on the domain so
 // SPF and DKIM line up and the mail is not treated as a forgery; info@ is one,
@@ -80,11 +86,15 @@ function rate_hits(string $file): array
     if ($file === '' || !is_file($file)) {
         return [];
     }
-    $now = time();
-    return array_values(array_filter(
+    $now  = time();
+    $hits = array_values(array_filter(
         array_map('intval', file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: []),
         static fn (int $t): bool => $t > $now - RATE_WIN
     ));
+    if (!$hits) {
+        @unlink($file); // nothing recent left, so keep nothing
+    }
+    return $hits;
 }
 
 /** @param int[] $hits */
@@ -95,6 +105,38 @@ function rate_record(string $file, array $hits): void
     }
     $hits[] = time();
     @file_put_contents($file, implode("\n", $hits) . "\n", LOCK_EX);
+}
+
+/**
+ * An RFC 2047 encoded-word may not exceed 75 characters, so a long subject has
+ * to be split across several of them folded onto continuation lines. Chunks are
+ * cut on character boundaries, so no multibyte sequence is broken in half and
+ * no Arabic letter arrives as mojibake.
+ */
+function encode_header(string $text): string
+{
+    $chars = preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+    $chunks = [];
+    $current = '';
+    foreach ($chars as $char) {
+        // 45 octets encode to 60 base64 characters, which leaves room for the
+        // =?UTF-8?B? prefix and the ?= suffix inside the 75-character limit.
+        if (strlen($current) + strlen($char) > 45) {
+            $chunks[] = $current;
+            $current = '';
+        }
+        $current .= $char;
+    }
+    if ($current !== '') {
+        $chunks[] = $current;
+    }
+    if (!$chunks) {
+        $chunks = [''];
+    }
+    return implode("\r\n ", array_map(
+        static fn (string $c): string => '=?UTF-8?B?' . base64_encode($c) . '?=',
+        $chunks
+    ));
 }
 
 /** One line of header-safe text: no CR/LF, no control characters, trimmed. */
@@ -178,13 +220,14 @@ foreach ($labels as $key => $label) {
 }
 $lines[] = "";
 $lines[] = "Message:";
-$lines[] = $clean['message'] !== '' ? $clean['message'] : '(none)';
+// A pasted paragraph can run to thousands of characters without a newline,
+// and a body line over 998 octets is beyond what SMTP guarantees to carry.
+$lines[] = $clean['message'] !== '' ? wordwrap($clean['message'], 76, "\n", true) : '(none)';
 $lines[] = "";
 $lines[] = "Sent " . gmdate('Y-m-d H:i') . " UTC from the website contact form.";
 
-$subject = 'Enquiry — ' . ($clean['organization'] !== '' ? $clean['organization'] : $clean['name']);
-$subject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
-$fromName = '=?UTF-8?B?' . base64_encode('EMFT website') . '?=';
+$subject  = encode_header('Enquiry — ' . ($clean['organization'] !== '' ? $clean['organization'] : $clean['name']));
+$fromName = encode_header('EMFT website');
 
 $headers = [
     'From: ' . $fromName . ' <' . SENDER . '>',
