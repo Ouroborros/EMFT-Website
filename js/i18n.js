@@ -18,6 +18,7 @@
       navAbout: 'About', navPortal: 'Learning Portal', navContact: 'Contact',
       navCoaching: 'Coaching &amp; Technical Mentoring', navAssessments: 'Assessments',
       navSpeakers: 'Keynote Speakers', navDigital: 'Digital Learning', navServices: 'Services',
+      navVirtual: 'Virtual Courses',
       footCompany: 'Company', footOffices: 'Offices', footSoon: 'Opening soon',
       footLondon: 'London, United Kingdom', footDubai: 'Dubai, United Arab Emirates', footAbuDhabi: 'Abu Dhabi, United Arab Emirates', footRiyadh: 'Riyadh, Saudi Arabia', footSingapore: 'Singapore',
       skipLink: 'Skip to main content', navPrimary: 'Primary', footNavSolutions: 'Footer — solutions', footNavCompany: 'Footer — company', footNavContact: 'Footer — contact', logoHome: 'EMFT — Emerging Market Financial Training, home', cookieRegion: 'Privacy notice', footRights: 'All rights reserved.',
@@ -32,6 +33,7 @@
       navAbout: 'عن الشركة', navPortal: 'منصة التعلّم', navContact: 'تواصل معنا',
       navCoaching: 'الإرشاد والتوجيه الفني', navAssessments: 'التقييمات',
       navSpeakers: 'المتحدثون الرئيسيون', navDigital: 'التعلّم الرقمي', navServices: 'الخدمات',
+      navVirtual: 'الدورات الافتراضية',
       footCompany: 'الشركة', footOffices: 'المكاتب', footSoon: 'يُفتتح قريباً',
       footLondon: 'لندن، المملكة المتحدة', footDubai: 'دبي، الإمارات العربية المتحدة', footAbuDhabi: 'أبوظبي، الإمارات العربية المتحدة', footRiyadh: 'الرياض، المملكة العربية السعودية', footSingapore: 'سنغافورة',
       skipLink: 'انتقل إلى المحتوى الرئيسي', navPrimary: 'التنقل الرئيسي', footNavSolutions: 'تذييل الصفحة — الحلول', footNavCompany: 'تذييل الصفحة — الشركة', footNavContact: 'تذييل الصفحة — التواصل', logoHome: 'EMFT — التدريب المالي للأسواق الناشئة، الصفحة الرئيسية', cookieRegion: 'إشعار الخصوصية', footRights: 'جميع الحقوق محفوظة.',
@@ -91,6 +93,9 @@
     get lang() { return lang; },
     register: function (dict) { dicts.push(dict); apply(); },
     apply: apply,
+    // For page scripts that build elements from data rather than from markup,
+    // so a label they insert is translated the same way a [data-i18n] one is.
+    lookup: lookup,
     set: function (next) {
       if (next !== 'en' && next !== 'ar') return;
       lang = next;

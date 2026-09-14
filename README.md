@@ -65,6 +65,21 @@ the site falls back to the system font stack.
   domain keeps SPF and DKIM aligned. If mail ever lands in spam, switch the
   `mail()` call to authenticated SMTP. Where the handler is absent (the GitHub
   Pages preview) the form falls back to opening a pre-filled email.
+- **Virtual course schedule**: `virtual-courses.html` lists the open sessions
+  in `js/virtual-courses-data.js`. Add a session by copying the shape written
+  out at the top of that file, then run `python3
+  scripts/build-virtual-courses.py` followed by `python3
+  scripts/build-chrome.py`. The list ships empty, which the page renders as an
+  invitation to ask what is running next; nothing false is published until real
+  dates go in. Dates, fees and seat counts are commercial facts, so confirm
+  each one before it goes live.
+- **Taking payment**: a session with a `pay` link offers Register and pay,
+  which opens a Stripe Payment Link in a new tab; one without it offers
+  Request a place, which opens the contact form. Payment Links keep card
+  handling entirely on Stripe's own pages, so no card data touches this site
+  and the strict Content-Security-Policy needs no exception. Stripe's embedded
+  checkout would need `https://js.stripe.com` added to `script-src` and
+  `frame-src`, and `https://api.stripe.com` to `connect-src`, on every page.
 - **Rate limit and a proxy**: the five-sends-per-ten-minutes limit keys on
   `REMOTE_ADDR`. Behind a CDN that terminates connections (Cloudflare and the
   like) every visitor arrives from the same handful of addresses, so the limit

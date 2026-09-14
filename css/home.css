@@ -148,6 +148,29 @@ a:hover { color: var(--gold); }
   box-shadow: 0 12px 28px rgba(184, 145, 46, 0.28);
 }
 
+/* The quieter pill. It stands beside a solid button without competing with it,
+   which is what the hero and the session rows need: one thing to do first, one
+   thing to do instead. The border is the full-strength navy rather than a tint,
+   so the outline holds up against the paper background. */
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: var(--navy);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px 32px;
+  border: 2px solid var(--navy);
+  border-radius: 999px;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+              transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+.btn-outline:hover {
+  background: var(--navy);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-1);
+}
+
 .link-underline {
   font-weight: 600;
   font-size: 15px;

@@ -245,8 +245,15 @@ html[dir="rtl"] .page-hero h1,
 html[dir="rtl"] .cta-page h2,
 html[dir="rtl"] .program-row .name,
 html[dir="rtl"] .quote-statement,
+html[dir="rtl"] .session-name,
+html[dir="rtl"] .no-sessions h3,
 html[dir="rtl"] .model-label--core { font-family: 'Source Serif 4', 'Noto Naskh Arabic', Georgia, serif; }
 html[dir="rtl"] .eyebrow { letter-spacing: 0; }
+/* Arabic has no case, so the uppercasing that gives these labels their rhythm
+   in English does nothing but widen the letter spacing. */
+html[dir="rtl"] .session-tag,
+html[dir="rtl"] .session-fact dt,
+html[dir="rtl"] .session-seats { letter-spacing: 0; text-transform: none; }
 
 .lang-toggle {
   border: 1px solid var(--line);
@@ -311,4 +318,146 @@ html[dir="rtl"] .eyebrow { letter-spacing: 0; }
   font-weight: 600;
   letter-spacing: 0.08em;
   color: var(--muted);
+}
+
+/* Virtual courses ---------------------------------------------------------- */
+.schedule-section { padding-block: clamp(72px, 8vw, 112px); }
+.schedule-head { max-width: 720px; margin-bottom: clamp(32px, 4vw, 48px); }
+.schedule-head .eyebrow { margin-bottom: 20px; display: block; }
+.schedule-head h2 { margin: 0 0 18px; }
+.schedule-head p { font-size: 16.5px; line-height: 1.7; color: var(--muted); text-wrap: pretty; }
+
+.session-list { display: grid; gap: 20px; }
+
+/* One session. Three bands on a wide screen — what it is, when and what it
+   costs, and what to do about it — stacking to one column on a phone. The
+   middle band is a definition list so a screen reader hears "Dates: ..." and
+   not two unlabelled runs of text. */
+.session {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) auto;
+  gap: 28px 36px;
+  align-items: start;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--gold);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-1);
+  padding: clamp(22px, 2.4vw, 30px);
+  transition: box-shadow 250ms ease-out, transform 250ms ease-out;
+}
+.session:hover { box-shadow: var(--shadow-2); transform: translateY(-2px); }
+
+.session-tag {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.session-name {
+  font-family: var(--serif);
+  font-size: clamp(19px, 1.05rem + 0.4vw, 23px);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 0 0 10px;
+}
+.session-summary { font-size: 14.5px; line-height: 1.65; color: var(--muted); margin: 0; text-wrap: pretty; }
+
+.session-facts { display: grid; gap: 14px; margin: 0; }
+.session-fact { margin: 0; }
+.session-fact dt {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.session-fact dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--navy);
+  /* A date range or a time window is read left to right in both languages. */
+  unicode-bidi: isolate;
+}
+.session-per {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.session-act { display: grid; gap: 14px; justify-items: start; }
+.session-seats {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: var(--r-sm);
+  white-space: nowrap;
+}
+.seats-open { background: #eaf1ea; color: #2f5d3a; }
+.seats-filling { background: #f6f0e2; color: #7a5f16; }
+.seats-waitlist { background: #f1eef7; color: #4c3d75; }
+.seats-full { background: #f2f2f2; color: #4a5a6d; }
+
+.session-act .btn-solid, .session-act .btn-outline { font-size: 14px; padding-inline: 26px; }
+.session-act .btn-solid { padding-block: 13px; }
+
+.schedule-note {
+  margin-top: 28px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+/* Nothing scheduled. This is the state the page ships in, so it has to read as
+   an invitation rather than as an error. */
+.no-sessions {
+  background: var(--sand);
+  border: 1px solid var(--line-sand);
+  border-radius: var(--r-md);
+  padding: clamp(32px, 4vw, 52px);
+  text-align: center;
+}
+.no-sessions h3 {
+  font-family: var(--serif);
+  font-size: clamp(21px, 1.15rem + 0.5vw, 26px);
+  font-weight: 600;
+  color: var(--navy);
+  margin: 0 0 14px;
+}
+.no-sessions p {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 56ch;
+  margin: 0 auto 28px;
+  text-wrap: pretty;
+}
+
+.private-block { max-width: 760px; }
+.private-block .eyebrow { display: block; margin-bottom: 20px; }
+.private-block h2 { margin: 0 0 18px; }
+.private-block p { font-size: 16.5px; line-height: 1.7; color: var(--muted); margin-bottom: 32px; text-wrap: pretty; }
+.private-block .cta-actions { justify-content: flex-start; }
+
+@media (max-width: 1000px) {
+  .session { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .session-act { grid-column: 1 / -1; grid-auto-flow: column; justify-content: flex-start; align-items: center; gap: 18px; }
+}
+@media (max-width: 620px) {
+  .session { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .session-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; }
+  .session-act { grid-auto-flow: row; justify-items: stretch; gap: 14px; }
+  .session-act .btn-solid, .session-act .btn-outline { text-align: center; }
+  .session-seats { justify-self: start; }
 }

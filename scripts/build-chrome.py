@@ -33,6 +33,7 @@ PAGES = [
     ("about.html", "about"),
     ("contact.html", "contact"),
     ("elearning.html", "elearning"),
+    ("virtual-courses.html", "virtual-courses"),
     ("coaching.html", "coaching"),
     ("assessments.html", "assessments"),
     ("speakers.html", "speakers"),
@@ -47,6 +48,7 @@ PAGES += [
 ]
 
 SOLUTIONS = [
+    ("virtual-courses.html", "Virtual Courses", "navVirtual"),
     ("coaching.html", "Coaching &amp; Technical Mentoring", "navCoaching"),
     ("assessments.html", "Assessments", "navAssessments"),
     ("speakers.html", "Keynote Speakers", "navSpeakers"),
@@ -119,6 +121,7 @@ FOOTER = """  <footer class="site-footer">
           <h2 class="footer-heading" data-i18n="navSolutions">Solutions</h2>
           <a href="index.html#services" data-i18n="navServices">Services</a>
           <a href="programs.html" data-i18n="navPrograms">Programs</a>
+          <a href="virtual-courses.html" data-i18n="navVirtual">Virtual Courses</a>
           <a href="coaching.html" data-i18n="navCoaching">Coaching &amp; Mentoring</a>
           <a href="assessments.html" data-i18n="navAssessments">Assessments</a>
           <a href="speakers.html" data-i18n="navSpeakers">Keynote Speakers</a>
