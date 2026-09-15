@@ -54,7 +54,7 @@
     window.addEventListener('resize', function () {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function () {
-        if (window.innerWidth > 1120) closeNav(false); // the header stacks at 1120px
+        if (window.innerWidth > 1200) closeNav(false); // the header stacks at 1200px
       }, 150);
     });
   }

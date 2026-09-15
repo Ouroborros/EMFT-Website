@@ -268,8 +268,11 @@ html[dir="rtl"] .btn-solid:hover::after, html[dir="rtl"] .btn-gold:hover::after 
 /* Header collapses well before the layout grids. The nine flat nav items that
    forced a 1385px viewport are now six, with Coaching, Assessments, Keynote
    Speakers and Digital Learning folded into the Solutions menu, so the row
-   holds much further down. Keep this in step with the .nav-group rules. */
-@media (max-width: 1120px) {
+   holds much further down. Virtual Courses then came back out as its own tab,
+   which is why this is 1200 and not 1120: below that the row reached the window
+   edge with the side gutter squeezed from 64px to 16px. Keep this in step with
+   the .nav-group rules and with the resize guard in js/home.js. */
+@media (max-width: 1200px) {
   :root { --header-h: 84px; }
   .logo { width: 170px; height: 50px; }
   html.js .nav-toggle { display: flex; }
@@ -1045,7 +1048,7 @@ html[dir="rtl"] .assess-media .media-frame { border-radius: var(--r-lg) 0 0 var(
 
 /* Six nav items and the language button measure far less than the old nine, so
    the header holds its row down to a much narrower viewport. */
-@media (max-width: 1120px) {
+@media (max-width: 1200px) {
   .nav-group-toggle { display: none; }
   .primary-nav .nav-group-menu {
     position: static;
@@ -1084,7 +1087,10 @@ html[dir="rtl"] .assess-media .media-frame { border-radius: var(--r-lg) 0 0 var(
   }
   .lang-toggle { width: 100%; margin-top: 16px; }
 }
-@media (min-width: 1121px) { .nav-group-label { display: none; } }
+/* The stacked menu labels the Solutions group; the row does not, because the
+   button carries the word instead. This is the other side of the header
+   breakpoint above, so it has to move with it. */
+@media (min-width: 1201px) { .nav-group-label { display: none; } }
 
 /* Cookie / privacy consent ------------------------------------------------- */
 .cookie-banner {
@@ -1270,7 +1276,7 @@ html[dir="rtl"] .case-link > [aria-hidden="true"] {
 .cookie-actions button, .cookie-actions .ghost { border-radius: var(--r-sm); }
 .legal-governing { border-radius: var(--r-sm); }
 .primary-nav .nav-group-menu { border-radius: var(--r-md); }
-@media (max-width: 1120px) { .primary-nav .nav-group-menu { border-radius: 0; } }
+@media (max-width: 1200px) { .primary-nav .nav-group-menu { border-radius: 0; } }
 
 /* ==========================================================================
    EMFT line-art kit — one micro-grammar shared by the hero market line

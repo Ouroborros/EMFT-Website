@@ -48,7 +48,6 @@ PAGES += [
 ]
 
 SOLUTIONS = [
-    ("virtual-courses.html", "Virtual Courses", "navVirtual"),
     ("coaching.html", "Coaching &amp; Technical Mentoring", "navCoaching"),
     ("assessments.html", "Assessments", "navAssessments"),
     ("speakers.html", "Keynote Speakers", "navSpeakers"),
@@ -93,6 +92,7 @@ def header(current):
           <li><a href="programs.html"%s data-i18n="navPrograms">Programs</a></li>
           <li><a href="case-studies.html"%s data-i18n="navCases">Case Studies</a></li>
           <li><a href="about.html"%s data-i18n="navAbout">About</a></li>
+          <li><a href="virtual-courses.html"%s data-i18n="navVirtual">Virtual Courses</a></li>
           <li><a href="https://emergingmarketft.com/elearning/" target="_blank" rel="noopener" class="nav-external"%s data-i18n="navPortal">Learning Portal</a></li>
           <li><button type="button" class="lang-toggle" id="lang-toggle">العربية</button></li>
           <li><a class="nav-contact" href="contact.html"%s data-i18n="navContact">Contact</a></li>
@@ -105,6 +105,7 @@ def header(current):
         cur("programs"),
         cur("cases"),
         cur("about"),
+        cur("virtual-courses"),
         cur("portal"),
         cur("contact"),
     )

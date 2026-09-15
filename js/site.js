@@ -10,7 +10,7 @@
   // the button becomes an inert group label.
   var groupToggle = document.querySelector('.nav-group-toggle');
   var groupMenu = document.getElementById('solutions-menu');
-  var stacked = function () { return window.matchMedia('(max-width: 1120px)').matches; };
+  var stacked = function () { return window.matchMedia('(max-width: 1200px)').matches; };
 
   if (groupToggle && groupMenu) {
     var closeGroup = function () { groupToggle.setAttribute('aria-expanded', 'false'); };
